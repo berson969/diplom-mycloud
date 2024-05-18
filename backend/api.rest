@@ -1,0 +1,67 @@
+@url = http://localhost:8000/api
+
+###
+# Открытие нового клиента
+POST {{url}}/users/
+Content-Type: application/json
+
+{
+	"email": "d13@d.com",
+	"first_name": "Joe1",
+    "last_name": "Smith",
+	"password": "qwerty54321"
+}
+
+###
+# Получение всех пользователей
+GET {{url}}/users/
+
+###
+# Удаление пользователя по id
+# @no-redirect
+DELETE {{url}}/users/15
+
+
+###
+
+#GET {{url}}/api/items?offset=58
+
+###
+
+#GET {{url}}/api/items?q=Кеды
+
+###
+
+#GET {{url}}/api/items?offset=6&categoryId=13
+
+###
+
+#GET {{url}}/api/items/21
+
+###
+
+#GET {{url}}/api/items/666
+
+###
+
+#POST {{url}}/api/order
+#Content-Type: application/json
+#
+#{
+#	"owner": {
+#		"phone": "+7xxxxxxxxxx",
+#		"address": "Moscow City"
+#	},
+#	"items": [
+#		{
+#			"id": 66,
+#			"price": 34000,
+#			"count": 1
+#		},
+#		{
+#			"id": 65,
+#			"price": 7600,
+#			"count": 1
+#		}
+#	]
+#}
