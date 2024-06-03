@@ -1,0 +1,21 @@
+.my-logo {
+	display: flex;
+	align-items: center;
+}
+
+.logo-image {
+	max-width: 50px;
+	color: #0d6efd;
+}
+
+.logo-image-small {
+	max-width: 20px;
+	color: #0d6efd;
+}
+
+.logo-text {
+	font-family: 'Poppins', sans-serif;
+	font-size: 30px;
+	font-weight: 900;
+	color: #0dcaf0;
+}
