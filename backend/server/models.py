@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from uuid import uuid4
 
 from django.contrib.auth.models import AbstractUser, Group, Permission
@@ -79,7 +80,11 @@ class File(models.Model):
 	def save(self, *args, **kwargs):
 		if not self.unique_id:
 			self.unique_id = uuid4().hex
+
 		name = self.file_name or self.file.name
+		if not Path(name).suffix:
+			extension = Path(self.file.name).suffix
+			self.file_name = f"{self.file_name}{extension}"
 		if self.file:
 			self.size = self.file.size
 		super().save(*args, **kwargs)

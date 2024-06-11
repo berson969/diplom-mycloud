@@ -16,10 +16,13 @@ class UserSerializer(serializers.ModelSerializer):
 			'password',
 			'user_folder',
 			'is_staff',
+			"is_authenticated",
+			'is_superuser'
 		]
 
 
 class FileSerializer(serializers.ModelSerializer):
+
 	class Meta:
 		model = File
 		fields = [
@@ -32,7 +35,7 @@ class FileSerializer(serializers.ModelSerializer):
 			'last_download_date',
 			'comment',
 			'path',
-			'unique_id'
+			'unique_id',
 		]
 
 	def validate(self, attrs):

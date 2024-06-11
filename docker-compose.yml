@@ -1,0 +1,56 @@
+volumes:
+    postgres-data:
+
+services:
+    postgresdb:
+        image: postgres:latest
+        container_name: postgresDB
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: ${DB_BASE}
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASS}
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+            - ./logs:/var/postgres_log
+        env_file:
+            - .env
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_BASE}" ]
+            interval: 10s
+            timeout: 15s
+            retries: 5
+            start_period: 10s
+        deploy:
+            resources:
+                limits:
+                    cpus: '1'
+                    memory: 1G
+
+    django-server:
+        build: ./backend
+        container_name: django-server
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: ${DB_BASE}
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASS}
+            POSTGRES_PORT: ${DB_PORT}
+            POSTGRES_HOST: ${DB_HOST}
+            DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
+        volumes:
+            - ./backend:/backend
+            - ./logs:/backend/logs
+        depends_on:
+            postgresdb:
+                condition: service_healthy
+        ports:
+            - "8000:8000"
+        env_file:
+            - .env
+
+
+
+

@@ -88,7 +88,6 @@ const SignUp: React.FC= () => {
 						<button
 							type="submit"
 							className="btn btn-primary"
-							style={{ color: '#fff', background: '#0dcaf0', borderColor: '#0dcaf0' }}
 						>
 							Зарегистрироваться
 						</button>

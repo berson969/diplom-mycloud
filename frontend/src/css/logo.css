@@ -5,12 +5,12 @@
 
 .logo-image {
 	max-width: 50px;
-	color: #0d6efd;
+	color:  #0dcaf0;
 }
 
 .logo-image-small {
 	max-width: 20px;
-	color: #0d6efd;
+	color:  #0dcaf0;
 }
 
 .logo-text {
@@ -18,4 +18,10 @@
 	font-size: 30px;
 	font-weight: 900;
 	color: #0dcaf0;
+}
+
+.username {
+	color: #0dcaf0;
+	font-size: medium;
+	font-style: italic;
 }

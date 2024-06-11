@@ -20,8 +20,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from server.urls import urlpatterns as server_router
+from server.views import user_login
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include(server_router)),
+  path('admin/', admin.site.urls),
+  path('api/', include(server_router)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

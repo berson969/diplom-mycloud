@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
 import os
 from pathlib import Path
@@ -38,25 +39,51 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'rest_framework',
 	'corsheaders',
+	'rest_framework',
 	'server',
 ]
 
 MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',
-	'corsheaders.middleware.CorsMiddleware',
-	'django.middleware.common.CommonMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
-	'django.middleware.common.CommonMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'corsheaders.middleware.CorsMiddleware',
+	'django.middleware.common.CommonMiddleware',
 ]
+
+CORS_ALLOW_HEADERS = default_headers + (
+	'Access-Control-Allow-Headers',
+	'Access-Control-Allow-Credentials',
+	'Access-Control-Allow-Origin',
+)
 
 CORS_ALLOWED_ORIGINS = [
 	"http://localhost:5173",
+	"http://localhost:8000",
+]
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = [
+	"http://localhost:5173",
+	"http://localhost:8000",
+]
+
+# Для разработки, не используйте в продакшене
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+#
+CORS_ALLOW_METHODS = [
+	"DELETE",
+	"GET",
+	"OPTIONS",
+	"PATCH",
+	"POST",
+	"PUT",
 ]
 
 ROOT_URLCONF = 'mycloud.urls'
@@ -85,11 +112,11 @@ WSGI_APPLICATION = 'mycloud.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
-		'NAME': os.getenv("POSTGRES_DB"),
-		'HOST': os.getenv("POSTGRES_HOST"),
-		'PORT': os.getenv("POSTGRES_PORT"),
-		'USER': os.getenv("POSTGRES_USER"),
-		'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
+		'NAME': os.getenv("DB_BASE"),
+		'HOST': os.getenv("DB_HOST"),
+		'PORT': os.getenv("DB_PORT"),
+		'USER': os.getenv("DB_USER"),
+		'PASSWORD': os.getenv("DB_PASS"),
 	}
 }
 

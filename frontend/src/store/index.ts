@@ -1,16 +1,22 @@
 import {configureStore} from "@reduxjs/toolkit";
-import {userApi} from "../api";
-import {setupListeners} from "@reduxjs/toolkit/query";
+import {fileApi, userApi} from "../api";
+import currentUserReducer from "../slices/currentUserSlice";
 
-
-export const store = configureStore({
+const store = configureStore({
 	reducer: {
-		// users: RootReducer,
+		currentUser: currentUserReducer,
 		[userApi.reducerPath]: userApi.reducer,
+		[fileApi.reducerPath]: fileApi.reducer,
 	},
 	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware().concat(userApi.middleware),
+		getDefaultMiddleware({
+			immutableCheck: false,
+			serializableCheck: false,
+		}).concat(userApi.middleware, fileApi.middleware),
 
 })
 
-setupListeners(store.dispatch);
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+export default store;
