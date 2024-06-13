@@ -28,7 +28,7 @@ const App: React.FC = () => {
 			case 'auth':
 				return <Storage />;
 			case 'edit':
-				return <EditFileModal file={file} />;
+				return <EditFileModal />;
 			default:
 				return null;
 		}

@@ -1,3 +1,6 @@
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import {SerializedError} from "@reduxjs/toolkit";
+
 export interface ActiveStateProps {
 	activeState?: string | null;
 	setActiveState: (component: string) => void;
@@ -7,6 +10,7 @@ export interface ActiveStateProps {
 export interface ErrorAlertProps {
 	typeError: string;
 	message: string;
+	visible: boolean;
 }
 
 export interface UserType {
@@ -58,4 +62,9 @@ export interface DeleteConfirmModalProps {
 
 export interface FileEditModalProps {
 	file: FileType;
+}
+
+export interface UploadFileResponse  {
+    data?: FileType;
+	error?: FetchBaseQueryError | SerializedError;
 }

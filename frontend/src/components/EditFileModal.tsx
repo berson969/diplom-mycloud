@@ -1,31 +1,58 @@
 import React, {useEffect, useState} from 'react';
-import {FileEditModalProps} from "../models";
 import Modal from "bootstrap/js/dist/modal";
-import {useUpdateFileMutation} from "../api";
+import {useDispatch, useSelector} from "react-redux";
 
-const EditFileModal: React.FC<FileEditModalProps> = ({ file}) => {
-    const [fileName, setFileName] = useState(file.file_name);
-    const [comment, setComment] = useState(file.comment);
-    const [ updateFile ] = useUpdateFileMutation();
+import {getCurrentUser, getEditFile, selectActiveState} from "../selectors";
+import ErrorAlert from "./ErrorAlert.tsx";
+import {useUpdateFileMutation} from "../api";
+import {setActiveState} from "../slices/currentUserSlice.ts";
+import {AppDispatch} from "../store";
+
+const EditFileModal: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    const updateFile = useSelector(getEditFile);
+    const currentUser =useSelector(getCurrentUser);
+    const activeState = useSelector(selectActiveState);
+    const [ updatingFile, { isLoading, error}] = useUpdateFileMutation();
+    const [fileName, setFileName] = useState('');
+    const [comment, setComment] = useState('');
+
+    if (!updateFile) {
+        return (
+        <ErrorAlert typeError="Ошибка : " message="Выберите файл" visible={true} />
+        )
+    } else if (!currentUser || currentUser !== updateFile.user) {
+        return (
+            <ErrorAlert typeError="Ошибка : " message="Редактирование этого файла запрещено" visible={true} />
+        )
+    }
 
     useEffect(() => {
         const modalElement = document.getElementById('fileEditModal');
         if (modalElement) {
             const modal = new Modal(modalElement);
-            modal.show();
+            if (activeState === 'edit') {
+                modal.show();
+            } else {
+                modal.hide()
+                dispatch(setActiveState('auth'));
+            }
         }
-    }, []);
+    }, [activeState]);
 
     const handleSave = async () => {
-        console.log("edit again")
         const data = {
-
+            user_folder: currentUser.user_folder,
+            id: updateFile.id,
+            file_name: fileName,
+            comment: comment,
         }
-        const response = await updateFile(data)
+        console.log("data update", data)
+        const response = await updatingFile(data)
         console.log("update ok", response)
-
-    };
-
+        console.log("data update 2", data)
+    }
 
     return (
         <div className="modal fade" id="fileEditModal" tabIndex={-1} aria-labelledby="fileEditModalLabel" aria-hidden="true">
@@ -64,7 +91,7 @@ const EditFileModal: React.FC<FileEditModalProps> = ({ file}) => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default EditFileModal;

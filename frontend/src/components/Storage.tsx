@@ -1,5 +1,4 @@
 import React from 'react';
-import {useGetUsersFilesQuery} from "../api";
 import Loader from "./Loader.tsx";
 import {getCurrentUser, getView} from "../selectors";
 import ErrorAlert from "./ErrorAlert.tsx";
@@ -10,28 +9,27 @@ import {setView} from "../slices/currentUserSlice";
 import UploadFile from "./UploadFile.tsx";
 import NotFoundFiles from "./NotFoundFiles.tsx";
 import FileContextMenu from "./FileContextMenu.tsx";
+import {useGetUsersFilesQuery} from "../api";
 
 const Storage: React.FC = () => {
 	const dispatch = useDispatch<AppDispatch>();
 	const currentUser = useSelector(getCurrentUser);
-	const { data: files, error , isLoading } = useGetUsersFilesQuery(currentUser);
+	if (!currentUser) return <Loader />;
+	const { data: files, isLoading, error }
+		= useGetUsersFilesQuery(currentUser?.user_folder ?? '',
+				{
+					skip: !currentUser,
+				});
 	const view = useSelector(getView);
 
 	const handleView = (tag: string) => {
-		sessionStorage.setItem('view', JSON.stringify(tag));
+		sessionStorage.setItem('view', tag);
 		dispatch(setView(tag));
 	}
+	// @ts-ignore
+	const errorMessage: string = error && error.data ? error.data : '';
+	console.log("storage files", files)
 
-	if (isLoading) return <Loader />;
-	if (error) {
-		// @ts-ignore
-		const errorMessage = error?.data?.detail ?? 'Неизвестная ошибка';
-		return (
-			<div className="container mx-auto mt-4">
-				<ErrorAlert typeError="Ошибка загрузки файлов:" message={errorMessage} />
-			</div>
-		);
-	}
 	return (
 		<div className="container mt-4">
 			<div className="d-flex justify-content-between mb-3">
@@ -54,7 +52,13 @@ const Storage: React.FC = () => {
 
 				</div>
 			</div>
+			{errorMessage &&
+				<div className="container mx-auto mt-4">
+					<ErrorAlert typeError="Ошибка загрузки файлов:" message={errorMessage} visible={false}/>
+				</div>
+			}
 			<div className={view === 'list' ? 'list-group' : 'row'}>
+				{isLoading && <Loader />}
 				{files && !files.length && <NotFoundFiles />}
 				{files && files.map((file: FileType) => (
 					<FileContextMenu  key={file.id} file={file} />

@@ -4,7 +4,7 @@ import Dropdown from 'rc-dropdown';
 import 'rc-dropdown/assets/index.css';
 
 import {FileContextMenuProps} from "../models";
-import {useDeleteFileMutation, useGetUsersFilesQuery} from "../api";
+import {useDeleteFileMutation, useDownloadFileMutation} from "../api";
 import {useDispatch, useSelector} from "react-redux";
 import {getCurrentUser, getView} from "../selectors";
 import {setActiveState} from "../slices/currentUserSlice.ts";
@@ -12,20 +12,23 @@ import {AppDispatch} from "../store";
 import FileList from "./FileList.tsx";
 import FileGrid from "./FileGrid.tsx";
 import DeleteConfirmModal from "./DeleteConfirmModal.tsx";
+import {setEditFile} from "../slices/filesSlice.ts";
 
 const FileContextMenu: React.FC<FileContextMenuProps> = ({ file } ) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const currentUser = useSelector(getCurrentUser);
     const [ deleteFile ] = useDeleteFileMutation();
-    const { refetch } = useGetUsersFilesQuery(currentUser);
+    // const { refetch } = useGetUsersFilesQuery(currentUser);
     const view = useSelector(getView);
+	const [downloadFile] = useDownloadFileMutation();
 
     const [showModal, setShowModal] = useState(false);
 
     const handleEdit = () => {
         console.log("edit ", file )
         dispatch(setActiveState('edit'))
+        dispatch(setEditFile(file))
     }
 
     const handleDelete = async () => {
@@ -42,7 +45,7 @@ const FileContextMenu: React.FC<FileContextMenuProps> = ({ file } ) => {
             }
             const response = await deleteFile(data);
             console.error('Успешное удаление:', response);
-            refetch();
+            // refetch();
             dispatch(setActiveState('auth'))
             setShowModal(false);
         } catch (err: any) {
@@ -50,6 +53,10 @@ const FileContextMenu: React.FC<FileContextMenuProps> = ({ file } ) => {
             console.error('Ошибка входа:', message);
         }
     }
+
+	const handleDownload = () => {
+		downloadFile(file.unique_id);
+	};
 
     const handleClose = () => {
         setShowModal(false);
@@ -76,8 +83,8 @@ const FileContextMenu: React.FC<FileContextMenuProps> = ({ file } ) => {
         >
             <div key={file.id} className={view === 'list' ? '' : 'col-md-3' }>
                 {view === 'list'
-                    ? <FileList file={file} />
-                    : <FileGrid file={file} />
+                    ? <FileList file={file} onDownload={handleDownload}/>
+                    : <FileGrid file={file} onDownload={handleDownload} />
                 }
             </div>
         </Dropdown>

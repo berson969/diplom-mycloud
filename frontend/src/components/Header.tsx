@@ -22,7 +22,6 @@ const Header: React.FC = () => {
 		}
 	}
 	const handleLogout = async () => {
-		console.log("currentUser", currentUser)
 		try {
 			if (!isLoading && currentUser) {
 				const response = await logoutUser(currentUser);

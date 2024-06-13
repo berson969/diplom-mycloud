@@ -1,10 +1,12 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {fileApi, userApi} from "../api";
 import currentUserReducer from "../slices/currentUserSlice";
+import filesReducer from "../slices/filesSlice"
 
 const store = configureStore({
 	reducer: {
 		currentUser: currentUserReducer,
+		files: filesReducer,
 		[userApi.reducerPath]: userApi.reducer,
 		[fileApi.reducerPath]: fileApi.reducer,
 	},

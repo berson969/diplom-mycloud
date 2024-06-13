@@ -142,3 +142,17 @@ class APITests(TestCase):
 			'path': response.json()['path'],
 			'unique_id': response.json()['unique_id']
 		})
+
+	def test_upload_files_without_correct_extension(self):
+		with open('resources/camera.svg', 'rb') as file:
+			response = self.client.post(
+				self.url,
+				{
+					'user': self.testuser.id,
+					'file_name': 'camera.svg',
+					'file': file,
+				})
+		# print("response", response.json())
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.json()['file'],
+						 ['File extension “svg” is not allowed. Allowed extensions are: tiff, jpg, png, jpeg, pdf, doc, docx, gif.'])

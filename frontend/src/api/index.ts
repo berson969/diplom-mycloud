@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery, retry} from '@reduxjs/toolkit/query/react';
+import {FileType} from "../models";
 
 // Функция для получения CSRF токена из куки
 function getCookie(name: string) {
@@ -97,13 +98,22 @@ export const userApi = createApi({
 export const  fileApi = createApi({
 	reducerPath: 'fileQuery',
 	baseQuery,
+	tagTypes: ['File'],
 
 	endpoints: (builder) => ({
-		getUsersFiles: builder.query({
-			query: (user) => `/files/${user.user_folder}`,
+		getUsersFiles: builder.query<FileType[], string>({
+			query: (userFolder) => `/files/${userFolder}`,
+			providesTags: (result) =>
+				result
+					? [
+						...result.map(({ id }) => ({ type: 'File' as const, id })),
+						{ type: 'File', id: 'LIST' },
+					]
+					: [{ type: 'File', id: 'LIST' }]
 		}),
-		downloadFile: builder.query({
-			query: (uniqueId) => `files/${uniqueId}`,
+		downloadFile: builder.mutation({
+			query: (uniqueId) => `download/${uniqueId}`,
+			invalidatesTags:  [{ type: 'File', id: 'LIST' }],
 		}),
 		uploadFile: builder.mutation({
 			query: (data) => ({
@@ -111,6 +121,7 @@ export const  fileApi = createApi({
 				method: 'POST',
 				body: data,
 			}),
+			invalidatesTags:  [{ type: 'File', id: 'LIST' }],
 		}),
 		updateFile: builder.mutation({
 			query: (data) => ({
@@ -118,12 +129,14 @@ export const  fileApi = createApi({
 				method: 'PATCH',
 				body: data,
 			}),
+			invalidatesTags: ({ id }) => [{ type: 'File', id }],
 		}),
 		deleteFile: builder.mutation({
 			query: (data) => ({
 				url: `/files/${data.user_folder}/${data.id}`,
 				method: 'DELETE',
 			}),
+			invalidatesTags: ( { id }) => [{ type: 'File', id }],
 		}),
 
 	})
@@ -140,7 +153,7 @@ export const {
 
 export const {
 	useGetUsersFilesQuery,
-	useDownloadFileQuery,
+	useDownloadFileMutation,
 	useUploadFileMutation,
 	useUpdateFileMutation,
 	useDeleteFileMutation,

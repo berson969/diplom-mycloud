@@ -90,7 +90,7 @@ const Login: React.FC = () => {
 							<label className="form-check-label" htmlFor="rememberMe">Запомнить меня</label>
 						</div>
 						{isLoading && <Loader />}
-						{error && <ErrorAlert typeError="Ошибка входа:" message={errorMessage} />}
+						{error && <ErrorAlert typeError="Ошибка входа:" message={errorMessage} visible={false}/>}
 						{!isLoading &&
 							<button
 								type="submit"
