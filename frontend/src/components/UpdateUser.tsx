@@ -7,8 +7,8 @@ import ErrorAlert from './ErrorAlert';
 import { getLoginUser } from '../selectors';
 import {setActiveState, setLoginUser} from "../slices/usersSlice";
 import getErrorMessage from "../hooks/getErrorMessage";
-import ShowPassword from "./ShowPassword.tsx";
 import Loader from "./Loader.tsx";
+import PasswordInput from "./PasswordInput.tsx";
 
 const UpdateUser: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -19,7 +19,6 @@ const UpdateUser: React.FC = () => {
     const [ username, setUsername] = useState(loginUser.username);
     const [ email, setEmail] = useState(loginUser.email);
     const [ password, setPassword] = useState('');
-    const [ showPassword, setShowPassword ] = useState<boolean>(false)
     const [ confirmPassword, setConfirmPassword] = useState('');
     const [ errorMessage, setErrorMessage] = useState('');
 
@@ -54,55 +53,44 @@ const UpdateUser: React.FC = () => {
     };
     if (isLoading) return <Loader />;
     return (
-        <div>
+        <div className="container-sm">
             {errorMessage && (
                 <ErrorAlert typeError="Ошибка:" message={errorMessage} visible={true} />
             )}
-            <div className="mb-3">
-                <label htmlFor="username" className="form-label">Имя пользователя</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="email" className="form-label">Email</label>
-                <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="password" className="form-label">Пароль</label>
-                <input
-                    type={showPassword ? "text" : "password"}
-                    className="form-control"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <ShowPassword showPassword={showPassword} setShowPassword={setShowPassword} />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="confirmPassword" className="form-label">Подтвердите пароль</label>
-                <input
-                    type={showPassword ? "text" : "password"}
-                    className="form-control"
-                    id="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <ShowPassword showPassword={showPassword} setShowPassword={setShowPassword} />
-            </div>
-            <div className="modal-footer gap-2">
-                <button type="button" className="btn btn-secondary" onClick={() => dispatch(setActiveState('auth'))}>Отмена</button>
-                <button type="button" className="btn btn-primary" onClick={handleSave}>Сохранить</button>
+            <div className="row">
+                <div className="col-md-6 mx-auto">
+                    <h1 className="text-center mb-4">Изменение данных пользователя</h1>
+                    <div className="mb-3">
+                        <label htmlFor="username" className="form-label">Имя пользователя</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Email</label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div className="mb-3 position-relative">
+                        <PasswordInput password={password} setPassword={setPassword} confirm={false}/>
+                    </div>
+                    <div className="mb-3 position-relative">
+                        <PasswordInput password={confirmPassword} setPassword={setConfirmPassword} confirm={true}/>
+                    </div>
+                    <div className="modal-footer gap-2">
+                        <button type="button" className="btn btn-secondary" onClick={() => dispatch(setActiveState('auth'))}>Отмена</button>
+                        <button type="button" className="btn btn-primary" onClick={handleSave}>Сохранить</button>
+                    </div>
+                </div>
             </div>
         </div>
     );

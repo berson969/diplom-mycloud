@@ -6,6 +6,7 @@ import ErrorAlert from "./ErrorAlert.tsx";
 import Loader from "./Loader.tsx";
 import {setActiveState, setLoginUser} from "../slices/usersSlice";
 import getErrorMessage from "../hooks/getErrorMessage.ts";
+import PasswordInput from "./PasswordInput.tsx";
 
 
 const Login: React.FC = () => {
@@ -72,16 +73,8 @@ const Login: React.FC = () => {
 								onChange={(e) => setUsername(e.target.value)}
 							/>
 						</div>
-						<div className="form-group mb-2">
-							<label htmlFor="password">Пароль:</label>
-							<input
-								type="password"
-								value={password}
-								className="form-control"
-								id="password"
-								placeholder="Введите пароль"
-								onChange={(e) => setPassword(e.target.value)}
-							/>
+						<div className="form-group mb-2 position-relative">
+							<PasswordInput password={password} setPassword={setPassword} confirm={false}/>
 						</div>
 						<div className="form-check mb-4">
 							<input

@@ -31,7 +31,7 @@ const Storage: React.FC = () => {
 	}, [currentUser, loginUser, dispatch]);
 
 	if (!currentUser) return <Loader />;
-	// const userFolder = currentUser.user_folder
+
 	const { data: files, isLoading, error }
 		= useGetFilesQuery(currentUser.user_folder);
 

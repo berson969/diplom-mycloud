@@ -1,7 +1,12 @@
 import React, {useState} from 'react';
 import {useCreateUserMutation} from "../api";
+import {setActiveState} from "../slices/usersSlice.ts";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../store";
+import PasswordInput from "./PasswordInput.tsx";
 
 const SignUp: React.FC= () => {
+	const dispatch = useDispatch<AppDispatch>()
 	const [createUser] = useCreateUserMutation();
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
@@ -23,6 +28,7 @@ const SignUp: React.FC= () => {
 				console.error('Error creating user:', result.error);
 			} else {
 				console.log('User created successfully', result.data);
+				dispatch(setActiveState('login'));
 			}
 		} catch (err) {
 			console.error('Failed to create user:', err);
@@ -58,27 +64,11 @@ const SignUp: React.FC= () => {
 								onChange={(e) => setEmail(e.target.value)}
 							/>
 						</div>
-						<div className="form-group mb-2">
-							<label htmlFor="password">Пароль:</label>
-							<input
-								type="password"
-								value={password}
-								className="form-control"
-								id="password"
-								placeholder="Введите пароль"
-								onChange={(e) => setPassword(e.target.value)}
-							/>
+						<div className="form-group mb-2 position-relative">
+							<PasswordInput password={password} setPassword={setPassword} confirm={false}/>
 						</div>
-						<div className="form-group  mb-4">
-							<label htmlFor="confirmPassword">Подтверждение пароля:</label>
-							<input
-								type="password"
-								value={confirmPassword}
-								className="form-control"
-								id="confirmPassword"
-								placeholder="Подтвердите пароль"
-								onChange={(e) => setConfirmPassword(e.target.value)}
-							/>
+						<div className="form-group  mb-4 position-relative">
+							<PasswordInput password={confirmPassword} setPassword={setConfirmPassword} confirm={true}/>
 						</div>
 						{errorMessage && (
 							<div className="alert alert-danger" role="alert">
