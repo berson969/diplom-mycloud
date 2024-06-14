@@ -9,13 +9,13 @@ import Logout from "./components/Logout.tsx";
 import Storage from "./components/Storage.tsx";
 import usePersistedUser from "./hooks/persistedUser";
 import {selectActiveState} from "./selectors";
-import EditFileModal from "./components/EditFileModal.tsx";
+import EditFile from "./components/EditFile";
+import UpdateUser from "./components/UpdateUser";
 
 
 const App: React.FC = () => {
 	usePersistedUser();
 	const activeState = useSelector(selectActiveState);
-	console.log('activeState', activeState)
 
 	const loginComponent = () => {
 		switch (activeState) {
@@ -28,7 +28,9 @@ const App: React.FC = () => {
 			case 'auth':
 				return <Storage />;
 			case 'edit':
-				return <EditFileModal />;
+				return <EditFile />;
+			case 'update':
+				return <UpdateUser />
 			default:
 				return null;
 		}

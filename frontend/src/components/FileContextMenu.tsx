@@ -7,7 +7,7 @@ import {FileContextMenuProps} from "../models";
 import {useDeleteFileMutation, useDownloadFileMutation} from "../api";
 import {useDispatch, useSelector} from "react-redux";
 import {getCurrentUser, getView} from "../selectors";
-import {setActiveState} from "../slices/currentUserSlice.ts";
+import {setActiveState} from "../slices/usersSlice";
 import {AppDispatch} from "../store";
 import FileList from "./FileList.tsx";
 import FileGrid from "./FileGrid.tsx";
@@ -19,7 +19,6 @@ const FileContextMenu: React.FC<FileContextMenuProps> = ({ file } ) => {
 
     const currentUser = useSelector(getCurrentUser);
     const [ deleteFile ] = useDeleteFileMutation();
-    // const { refetch } = useGetUsersFilesQuery(currentUser);
     const view = useSelector(getView);
 	const [downloadFile] = useDownloadFileMutation();
 
@@ -88,6 +87,7 @@ const FileContextMenu: React.FC<FileContextMenuProps> = ({ file } ) => {
                 }
             </div>
         </Dropdown>
+
         <DeleteConfirmModal
             showModal={showModal}
             onConfirm={handleConfirm}

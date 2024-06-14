@@ -141,7 +141,7 @@ class APITests(TestCase):
 		unique_id = self.file_instance.data['unique_id']
 		url_download = reverse('file-download', args=[unique_id, ])
 		response = self.client.get(url_download)
-		print("download", url_download, response)
+		# print("download", url_download, response)
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response['Content-Disposition'], 'attachment; filename="test_file_instance.jpg"')
 		file_instance = File.objects.get(unique_id=unique_id)

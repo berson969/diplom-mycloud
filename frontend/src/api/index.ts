@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery, retry} from '@reduxjs/toolkit/query/react';
-import {FileType} from "../models";
+import {FileType, UserType} from "../models";
 
 // Функция для получения CSRF токена из куки
 function getCookie(name: string) {
@@ -40,7 +40,7 @@ export const userApi = createApi({
 	baseQuery,
 
 	endpoints: (builder) => ({
-		getAllUsers: builder.query({
+		getAllUsers: builder.query<UserType[], void>({
 			query: () => `/users/`,
 		}),
 		createUser: builder.mutation({
@@ -69,7 +69,7 @@ export const userApi = createApi({
 					method: 'DELETE',
 				}},
 		}),
-		loginUser: builder.mutation({
+		loginAction: builder.mutation({
 			query: (data) => {
 				console.log('Login data:', data);
 				const formData = new URLSearchParams();
@@ -86,7 +86,7 @@ export const userApi = createApi({
 				};
 			},
 		}),
-		logoutUser: builder.mutation({
+		logoutAction: builder.mutation({
 			query: () => ({
 				url: '/logout/',
 				method: 'POST',
@@ -101,15 +101,15 @@ export const  fileApi = createApi({
 	tagTypes: ['File'],
 
 	endpoints: (builder) => ({
-		getUsersFiles: builder.query<FileType[], string>({
+		getFiles: builder.query<FileType[], string>({
 			query: (userFolder) => `/files/${userFolder}`,
 			providesTags: (result) =>
 				result
 					? [
 						...result.map(({ id }) => ({ type: 'File' as const, id })),
-						{ type: 'File', id: 'LIST' },
+						{ type: 'File' as const, id: 'LIST' },
 					]
-					: [{ type: 'File', id: 'LIST' }]
+					: [{ type: 'File' as const, id: 'LIST' }]
 		}),
 		downloadFile: builder.mutation({
 			query: (uniqueId) => `download/${uniqueId}`,
@@ -136,7 +136,13 @@ export const  fileApi = createApi({
 				url: `/files/${data.user_folder}/${data.id}`,
 				method: 'DELETE',
 			}),
-			invalidatesTags: ( { id }) => [{ type: 'File', id }],
+			invalidatesTags: ( response, error ,{ id }) => {
+				if (!response || !error) {
+					console.error('Ошибка при удалении файла или неожиданный формат ответа:', response, error);
+					return [];
+				}
+					return [{ type: 'File', id: id ?? response?.data?.id }]; // Use optional chaining for safer access
+			},
 		}),
 
 	})
@@ -147,12 +153,12 @@ export const {
 	useCreateUserMutation,
 	useUpdateUserMutation,
 	useDeleteUserMutation,
-	useLoginUserMutation,
-	useLogoutUserMutation,
+	useLoginActionMutation,
+	useLogoutActionMutation,
 } = userApi;
 
 export const {
-	useGetUsersFilesQuery,
+	useGetFilesQuery,
 	useDownloadFileMutation,
 	useUploadFileMutation,
 	useUpdateFileMutation,

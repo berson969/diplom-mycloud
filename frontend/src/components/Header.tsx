@@ -2,19 +2,17 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import Logo from "./Logo.tsx";
-import {useLogoutUserMutation} from "../api";
-import {getCurrentUser, selectActiveState} from "../selectors";
+import {useLogoutActionMutation} from "../api";
+import {getLoginUser, selectActiveState} from "../selectors";
 import { AppDispatch } from '../store';
-import {clearUser, setActiveState} from "../slices/currentUserSlice";
+import {clearUser, setActiveState} from "../slices/usersSlice";
 
 const Header: React.FC = () => {
 	const dispatch = useDispatch<AppDispatch>()
-	const [logoutUser, { isLoading }] = useLogoutUserMutation()
-	const currentUser = useSelector(getCurrentUser);
+	const [logoutUser, { isLoading }] = useLogoutActionMutation()
+	const loginUser = useSelector(getLoginUser);
 	const activeState = useSelector(selectActiveState)
-	const login = currentUser ? currentUser.username : null
-	console.log('login', login)
-	console.log('activeState', activeState)
+	const login = loginUser ? loginUser.username : null
 
 	const handleButton =  (tag: string) => {
 		if (tag) {
@@ -23,10 +21,10 @@ const Header: React.FC = () => {
 	}
 	const handleLogout = async () => {
 		try {
-			if (!isLoading && currentUser) {
-				const response = await logoutUser(currentUser);
+			if (!isLoading && loginUser) {
+				const response = await logoutUser(loginUser);
 				console.log('Успешный выход:', response);
-                sessionStorage.removeItem('currentUser');
+                sessionStorage.removeItem('loginUser');
 				dispatch(clearUser())
 				dispatch(setActiveState('logout'))
 			}
@@ -34,6 +32,11 @@ const Header: React.FC = () => {
 		console.error('Ошибка выхода:', err);
 		}
 
+	}
+
+	const handleEditUser = (e: React.MouseEvent) => {
+		e.preventDefault();
+		dispatch(setActiveState('update'));
 	}
 
 	return (
@@ -61,7 +64,13 @@ const Header: React.FC = () => {
 							Sign-up
 						</button>
 					)}
-					{login &&  <span className="username me-5">{login}</span>}
+					{login &&  <a
+						className="username me-5"
+						href="#"
+						onClick={(e)=> handleEditUser(e)}
+					>
+						{login}
+					</a>}
 					{login && (
 							<button
 								type="button"

@@ -1,19 +1,21 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {FileType} from "../models";
-// import {fileApi} from "../api";
+import { createSlice } from '@reduxjs/toolkit';
+import {EditFileType} from "../models";
+
+const initialState: EditFileType = {
+    editFile: null,
+};
 
 const filesSlice = createSlice({
     name: 'files',
-    initialState: { editFile: null, },
+    initialState,
     reducers: {
-        setEditFile: (state, action: PayloadAction<FileType | null>) => {
+        setEditFile: (state, action) => {
             state.editFile = action.payload;
         },
     },
 });
 
 export const {
-    // setFiles,
     setEditFile,
 } = filesSlice.actions;
 export default filesSlice.reducer;

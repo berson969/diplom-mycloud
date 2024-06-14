@@ -52,6 +52,58 @@ class APITests(TestCase):
 		response = self.client.get(f"{url}/users/")
 		self.assertEqual(response.status_code, 200)  # проверка получения всех пользователей
 
+	# Изменение данных пользователя
+	def test_update_user(self):
+		user_to_update = User.objects.create(username='updateuser', email="u@uu.com", password='updatepassword')
+		self.client.force_login(user_to_update)
+		payload = {
+			"username": "after_update",
+			"email": "u2@uu.com"
+		}
+		update_url = reverse('user-detail', kwargs={'pk': user_to_update.pk})
+		response = self.client.patch(update_url, data=payload, content_type='application/json')
+		# print('response update', response.json())
+		self.assertEqual(response.status_code, 200)
+		expected_data = {
+			'email': 'u2@uu.com',
+			'id': user_to_update.pk,
+			'is_authenticated': True,
+			'is_staff': False,
+			'is_superuser': False,
+			'password': 'updatepassword',
+			'user_folder': 'updateuser_folder',
+			'username': 'after_update'
+		}
+		self.assertEqual(response.json(),expected_data)
+		updated_user = User.objects.get(pk=user_to_update.pk)
+		self.assertEqual(updated_user.username, payload['username'])
+		self.assertEqual(updated_user.email, payload['email'])
+
+	# Изменение пароля пользователя
+	def test_update_password(self):
+		user_to_password_update = User.objects.create(username='passuser', email="p@uu.com", password='passpassword')
+		self.client.force_login(user_to_password_update)
+		payload = {
+			"password": "new_password"
+		}
+		update_url = reverse('user-detail', kwargs={'pk': user_to_password_update.pk})
+		response = self.client.patch(update_url, data=payload, content_type='application/json')
+		# print('response password update', response.json())
+		self.assertEqual(response.status_code, 200)
+		expected_data = {
+			'email': 'p@uu.com',
+			'id': user_to_password_update.pk,
+			'is_authenticated': True,
+			'is_staff': False,
+			'is_superuser': False,
+			'password': 'new_password',
+			'user_folder': 'passuser_folder',
+			'username': 'passuser'
+		}
+		self.assertEqual(response.json(), expected_data)
+		updated_user = User.objects.get(pk=user_to_password_update.pk)
+		self.assertEqual(updated_user.password, payload['password'])
+
 	# Удаление пользователя по ID
 	def test_delete_user(self):
 		user_to_delete = User.objects.create(username='deleteuser', email="s@s.com", password='deletepassword')

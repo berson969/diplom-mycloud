@@ -2,13 +2,15 @@ import React, {useRef, useState} from 'react';
 
 import {useUploadFileMutation} from "../api";
 import {useSelector} from "react-redux";
-import {getCurrentUser} from "../selectors";
+import {getCurrentUser, getLoginUser} from "../selectors";
 import ErrorAlert from "./ErrorAlert.tsx";
 import {UploadFileResponse} from "../models";
+import getErrorMessage from "../hooks/getErrorMessage.ts";
 
 
 const UploadFile: React.FC = () => {
     const currentUser = useSelector(getCurrentUser);
+    const loginUser = useSelector(getLoginUser);
     const [ uploadFile, { isLoading}] = useUploadFileMutation()
     const [file, setFile] = useState<File | null>(null);
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -33,20 +35,26 @@ const UploadFile: React.FC = () => {
 
         try {
             const response: UploadFileResponse = await uploadFile(formData);
-            console.log('Файл загружен успешно', response);
-            setFile(null);
-            if (fileName.current) {
-                fileName.current.value = '';
+            if (response.error && 'error' in response) {
+                setErrorMessage(getErrorMessage(response.error));
+            } else {
+                console.log('Файл загружен успешно', response);
             }
         } catch (uploadError: any)  {
             if ('status' in uploadError && 'data' in uploadError) {
-                setErrorMessage(`статус ${uploadError.status} ${uploadError.data}`);
+                setErrorMessage(`статус ${uploadError.status} ${uploadError.data.file}`);
             } else {
                 setErrorMessage('Неизвестная ошибка');
             }
             console.log('Ошибка при загрузке файла', uploadError);
+        } finally {
+            setFile(null)
+            if (fileName.current) {
+                fileName.current.value = '';
+            }
         }
     };
+    if (!loginUser || !currentUser || loginUser.id !== currentUser.id) return null;
     return (
         <div className="mt-4">
             <div className="mb-1">

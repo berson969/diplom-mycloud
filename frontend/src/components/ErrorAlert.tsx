@@ -1,6 +1,6 @@
 import React from 'react';
 import {ErrorAlertProps} from "../models";
-import {setActiveState} from "../slices/currentUserSlice.ts";
+import {setActiveState} from "../slices/usersSlice";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../store";
 

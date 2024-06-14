@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import {clearUser, setActiveState, setUser, setView} from '../slices/currentUserSlice';
+import {clearUser, setActiveState, setLoginUser, setView} from '../slices/usersSlice';
 
 const usePersistedUser = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const storedUser = sessionStorage.getItem('currentUser');
+		const storedLoginUser = sessionStorage.getItem('loginUser');
 		const storeView = sessionStorage.getItem('view');
-		if (storedUser) {
-			dispatch(setUser(JSON.parse(storedUser)));
+		if (storedLoginUser) {
+			dispatch(setLoginUser(JSON.parse(storedLoginUser)));
 			dispatch(setActiveState('auth'));
 			dispatch(setView(storeView ? storeView : 'list'))
 		} else {

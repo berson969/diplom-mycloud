@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 
-import {useLoginUserMutation} from "../api";
+import {useLoginActionMutation} from "../api";
 import ErrorAlert from "./ErrorAlert.tsx";
 import Loader from "./Loader.tsx";
-import {setActiveState, setUser} from "../slices/currentUserSlice";
+import {setActiveState, setLoginUser} from "../slices/usersSlice";
+import getErrorMessage from "../hooks/getErrorMessage.ts";
 
 
 const Login: React.FC = () => {
 	const dispatch = useDispatch();
-	const [loginUser, { isLoading, error }] = useLoginUserMutation()
+	const [loginAction, { isLoading, error }] = useLoginActionMutation()
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [rememberMe, setRememberMe] = useState(false);
@@ -37,16 +38,19 @@ const Login: React.FC = () => {
 					localStorage.removeItem('username');
 					localStorage.removeItem('password');
 				}
-				const response = await loginUser({username, password});
-				console.log('Успешный вход:', response.data);
-				sessionStorage.setItem('currentUser', JSON.stringify(response.data.user));
-				dispatch(setUser(response.data.user));
-				dispatch(setActiveState('auth'))
+				const response = await loginAction({username, password});
+				if (response && response.error && 'error' in response) {
+					setErrorMessage(getErrorMessage(response.error));
+				} else {
+					console.log('Успешный вход:', response.data);
+					sessionStorage.setItem('loginUser', JSON.stringify(response.data.user));
+					dispatch(setLoginUser(response.data));
+					dispatch(setActiveState('auth'));
+				}
 			}
-		} catch (err: any) {
-			console.error('Ошибка входа:', err);
-			const message = err.data.message ? err.data.message : 'неверное имя пользователя или пароль';
-			setErrorMessage(message);
+		} catch (error) {
+			console.error('Ошибка входа:', error);
+			setErrorMessage(getErrorMessage(error || 'Произошла ошибка при логине пользователя'));
 		}
 	};
 

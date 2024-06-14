@@ -1,11 +1,6 @@
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
-import {SerializedError} from "@reduxjs/toolkit";
+import {SerializedError} from "@reduxjs/toolkit";;
 
-export interface ActiveStateProps {
-	activeState?: string | null;
-	setActiveState: (component: string) => void;
-	currentUser?: UserType;
-}
 
 export interface ErrorAlertProps {
 	typeError: string;
@@ -23,9 +18,10 @@ export interface UserType {
 	is_authenticated: boolean;
 }
 
-export interface CurrentUserProps {
+export interface UserProps {
+	loginUser: UserType | null;
 	currentUser: UserType | null;
-	activeState: 'logout' | 'login' | 'auth' | 'sign-up' | 'edit';
+	activeState: 'logout' | 'login' | 'auth' | 'sign-up' | 'edit' | 'update';
 	view: 'list' | 'grid';
 	isLoading: boolean;
 	error: string;
@@ -60,11 +56,17 @@ export interface DeleteConfirmModalProps {
 	onClose: () => void;
 }
 
-export interface FileEditModalProps {
-	file: FileType;
-}
-
 export interface UploadFileResponse  {
     data?: FileType;
 	error?: FetchBaseQueryError | SerializedError;
 }
+
+export interface EditFileType {
+	editFile: FileType | null;
+}
+
+export interface ShowPasswordProps {
+	showPassword: boolean;
+	setShowPassword: (show: boolean) => void;
+}
+

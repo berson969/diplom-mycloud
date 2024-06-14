@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {CurrentUserProps} from "../models";
+import {UserProps} from "../models";
 import {userApi} from "../api";
 
-const initialState: CurrentUserProps = {
+const initialState: UserProps = {
+	loginUser: null,
 	currentUser: null,
 	activeState: 'logout',
 	view: 'list',
@@ -10,51 +11,56 @@ const initialState: CurrentUserProps = {
 	error: '',
 };
 
-const currentUserSlice = createSlice({
-	name: 'loginUser',
+const usersSlice = createSlice({
+	name: 'users',
 	initialState,
 	reducers: {
-		setUser(state, action) {
+		setLoginUser(state, action) {
+			state.loginUser = action.payload;
 			state.currentUser = action.payload;
 		},
-		 clearUser(state) {
-		 	state.currentUser = null;
-		 },
+		setCurrentUser(state, action) {
+			state.currentUser = action.payload;
+		},
+		clearUser(state) {
+		state.loginUser = null;
+		state.currentUser = null;
+		},
 		setActiveState(state, action) {
-			state.activeState = action.payload;
+		state.activeState = action.payload;
 		},
 		setView(state, action) {
-			state.view = action.payload;
+		state.view = action.payload;
 		}
-	},
+		},
 	extraReducers: (builder) => {
 		builder
-			.addMatcher(userApi.endpoints.loginUser.matchPending, (state) => {
+			.addMatcher(userApi.endpoints.loginAction.matchPending, (state) => {
 				console.log("loginUserPending", state);
 			})
-			.addMatcher(userApi.endpoints.loginUser.matchFulfilled, (state, action) => {
+			.addMatcher(userApi.endpoints.loginAction.matchFulfilled, (state, action) => {
 				console.log("loginUserFulfilled", state, action.payload.user);
 
 				state.isLoading = false;
 				state.currentUser = action.payload.user;
 				state.error = "";
 			})
-			.addMatcher(userApi.endpoints.loginUser.matchRejected, (state, action) => {
+			.addMatcher(userApi.endpoints.loginAction.matchRejected, (state, action) => {
 				console.log("loginUserRejected", state);
 				state.isLoading = false;
 				state.error = typeof (action.payload) == 'string' ? action.payload : 'Login failed';
 			})
-			.addMatcher(userApi.endpoints.logoutUser.matchPending, (state) => {
+			.addMatcher(userApi.endpoints.logoutAction.matchPending, (state) => {
 				console.log("logoutUserPending", state);
 			})
-			.addMatcher(userApi.endpoints.logoutUser.matchFulfilled, (state) => {
+			.addMatcher(userApi.endpoints.logoutAction.matchFulfilled, (state) => {
 				console.log("logoutUserFulfilled", state);
 
 				state.isLoading = false;
 				state.currentUser = null;
 				state.error = "";
 			})
-			.addMatcher(userApi.endpoints.logoutUser.matchRejected, (state, action) => {
+			.addMatcher(userApi.endpoints.logoutAction.matchRejected, (state, action) => {
 				console.log("loginUserRejected", state);
 				state.isLoading = false;
 				state.error = typeof (action.payload) == 'string' ? action.payload : 'Logout failed';
@@ -64,10 +70,11 @@ const currentUserSlice = createSlice({
 })
 
 export const {
-	setUser,
+	setLoginUser,
+	setCurrentUser,
 	clearUser,
 	setActiveState,
 	setView,
-} = currentUserSlice.actions;
+} = usersSlice.actions;
 
-export default currentUserSlice.reducer;
+export default usersSlice.reducer;
