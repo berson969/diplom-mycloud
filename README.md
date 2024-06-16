@@ -90,7 +90,7 @@ python manage.py runserver localhost:8000
 
 структура файл `.env` для фронтенда
 ```
-VITE_BASE_URL=http://localhost:8000/api
+VITE_BASE_URL=
 VITE_SECRET_KEY=super-secret-key
 ```
 
@@ -98,3 +98,7 @@ VITE_SECRET_KEY=super-secret-key
 - непонятно, достаточно ли настроек для обхода ограничений CORS : хотя удается реализовать прохождение запросов, но делаю это методом тыка, поэтому не понимаю насколько настройки необходимы и достаточны
 - есть ворнинги связанные со старой необновляемой библиотекой `"react-contexify": "^6.0.0"`, для использования кастомного контекстного меню (возможно переделаю на bootstrap) переделал на `rc-menu` оказалось тоже самое, есть вориннг связанный с устаревшим методом
 - сделал docker-compose.yml , который включает и приложение джанго серавера, но поке не работает
+- после неправильного логина не происходит подтягивания ( loginUser or currentUser) и хук  useGetFilesQuery(currentUser.user_folder) отрабатывает с ошибкой (решено , просто опечатался  в [Login.tsx](frontend%2Fsrc%2Fcomponents%2FLogin.tsx) )
+- [FileContextMenu.tsx](frontend%2Fsrc%2Fcomponents%2FFileContextMenu.tsx) при нескольких подряд действий для удаления зависает и не дает удалять следующие
+- при обновлении паролей [UpdateUser.tsx](frontend%2Fsrc%2Fcomponents%2FUpdateUser.tsx) новый пароль не соответствует введенному
+- есть ишью о том, что какой-то элемент формы не имеет id, пока этот элемент не нашел [AdminPanel.tsx](frontend%2Fsrc%2Fcomponents%2FAdminPanel.tsx)?? вроде убрал

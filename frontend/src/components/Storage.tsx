@@ -25,15 +25,15 @@ const Storage: React.FC = () => {
 			if (loginUser) {
 				dispatch(setCurrentUser(loginUser));
 			}
-		} else if (!currentUser.user_folder ) {
+		} else if (!currentUser.folder_name ) {
 			setErrorMessage('Нет папки пользователя');
 		}
 	}, [currentUser, loginUser, dispatch]);
 
-	if (!currentUser) return <Loader />;
+	if (!currentUser || !currentUser?.folder_name) return <Loader />;
 
 	const { data: files, isLoading, error }
-		= useGetFilesQuery(currentUser.user_folder);
+		= useGetFilesQuery(currentUser.folder_name);
 
 	useEffect(() => {
 		if (error) {

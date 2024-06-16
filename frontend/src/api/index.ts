@@ -1,6 +1,11 @@
 import {createApi, fetchBaseQuery, retry} from '@reduxjs/toolkit/query/react';
 import {FileType, UserType} from "../models";
 
+
+const BASE_URL = import.meta.env.VITE_BASE_URL
+	? `${import.meta.env.VITE_BASE_URL}/api`
+	: 'http://localhost:8000/api';
+
 // Функция для получения CSRF токена из куки
 function getCookie(name: string) {
 	let cookieValue = null;
@@ -20,7 +25,7 @@ function getCookie(name: string) {
 
 const baseQuery = retry(fetchBaseQuery(
 	{
-		baseUrl: import.meta.env.VITE_BASE_URL,
+		baseUrl: BASE_URL,
 		credentials: 'include',
 		prepareHeaders: (headers) => {
 			const csrftoken = getCookie('csrftoken')
@@ -117,7 +122,7 @@ export const  fileApi = createApi({
 		}),
 		uploadFile: builder.mutation({
 			query: (data) => ({
-				url: `/files/${data.user_folder}/`,
+				url: `/files/${data.folder_name}/`,
 				method: 'POST',
 				body: data,
 			}),
@@ -125,7 +130,7 @@ export const  fileApi = createApi({
 		}),
 		updateFile: builder.mutation({
 			query: (data) => ({
-				url: `/files/${data.user_folder}/${data.id}`,
+				url: `/files/${data.folder_name}/${data.id}`,
 				method: 'PATCH',
 				body: data,
 			}),
@@ -133,7 +138,7 @@ export const  fileApi = createApi({
 		}),
 		deleteFile: builder.mutation({
 			query: (data) => ({
-				url: `/files/${data.user_folder}/${data.id}`,
+				url: `/files/${data.folder_name}/${data.id}`,
 				method: 'DELETE',
 			}),
 			invalidatesTags: ( response, error ,{ id }) => {

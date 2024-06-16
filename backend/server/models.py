@@ -2,30 +2,28 @@ import os
 from pathlib import Path
 from uuid import uuid4
 
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import FileExtensionValidator
-from django.utils.translation import gettext_lazy as _
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 allowed_extensions = ['tiff', 'jpg', 'png', 'jpeg', 'pdf', 'doc', 'docx', 'gif']
 
 
 class User(AbstractUser):
-	"""
-		Стандартная модель пользователей
-	"""
+	"""Стандартная модель пользователей."""
 
 	username = models.CharField(verbose_name='Логин', unique=True)
 	first_name = models.CharField(verbose_name='Имя', max_length=40, blank=False)
 	last_name = models.CharField(verbose_name='Фамилия', max_length=40, blank=False)
-	user_folder = models.CharField(max_length=100, verbose_name="user_folder", blank=True)
+	folder_name = models.CharField(max_length=100, verbose_name="user_folder", blank=True)
 	is_staff = models.BooleanField(default=False)
 	is_superuser = models.BooleanField(default=False)
 
 	def save(self, *args, **kwargs):
-		if not self.user_folder:
-			self.user_folder = f"{self.username}_folder"
-		super(User, self).save(*args, **kwargs)
+		if not self.folder_name:
+			self.folder_name = f"{self.username}_folder"
+		super().save(*args, **kwargs)
 
 	def __str__(self):
 		return self.username
@@ -73,7 +71,7 @@ class File(models.Model):
 			unique_name = f"{base_name}_{counter}{extension}"
 			counter += 1
 
-		path = f"{user.user_folder}/{unique_name}"
+		path = f"{user.folder_name}/{unique_name}"
 		file_name = unique_name
 		return path, file_name
 
@@ -84,7 +82,7 @@ class File(models.Model):
 		name = self.file_name or self.file.name
 		if not Path(name).suffix:
 			extension = Path(self.file.name).suffix
-			self.file_name = f"{self.file_name}{extension}"
+			self.file_name = self.file_name + extension
 		if self.file:
 			self.size = self.file.size
 		super().save(*args, **kwargs)

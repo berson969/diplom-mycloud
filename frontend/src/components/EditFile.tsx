@@ -25,7 +25,7 @@ const EditFile: React.FC = () => {
 
     const handleSave = async () => {
         const data = {
-            user_folder: currentUser.user_folder,
+            folder_name: currentUser.folder_name,
             id: updateFile.id,
             file_name: fileName,
             comment: comment,

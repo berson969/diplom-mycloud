@@ -1,17 +1,17 @@
 import os
 
-from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.http import FileResponse, JsonResponse
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
-from django.http import JsonResponse, FileResponse
-from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, permissions, status
+from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import User, File
-from .serializers import UserSerializer, FileSerializer
+
+from .models import File, User
+from .serializers import FileSerializer, UserSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -35,11 +35,11 @@ class UserViewSet(viewsets.ModelViewSet):
 			if not isinstance(user, User):
 				raise ValueError("Created object is not a user")
 
-		except Exception as e:
-			return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+		except Exception as error:
+			return Response({'detail': str(error)}, status=status.HTTP_400_BAD_REQUEST)
 		response_data = {
 			'message': 'Успешная регистрация',
-			'user': UserSerializer(user).data
+			'user': UserSerializer(user).data,
 		}
 		return Response(response_data, status=status.HTTP_201_CREATED)
 
@@ -51,7 +51,7 @@ def user_login(request):
 		password = request.POST.get('password')
 		user = authenticate(request, username=username, password=password)
 
-		if user is not None:
+		if user:
 			login(request, user)
 			response_data = {
 				'message': 'Успешная авторизация',
@@ -62,8 +62,8 @@ def user_login(request):
 					'is_superuser': user.is_superuser,
 					'is_authenticated': user.is_authenticated,
 					'is_staff': user.is_staff,
-					'user_folder': user.user_folder,
-				}
+					'folder_name': user.folder_name,
+				},
 			}
 			return JsonResponse(response_data, status=status.HTTP_200_OK)
 		else:
@@ -73,7 +73,7 @@ def user_login(request):
 			return JsonResponse(response_data, status=status.HTTP_401_UNAUTHORIZED)
 	else:
 		response_data = {
-			'message': 'Метод не поддерживается'
+			'message': 'Метод не поддерживается',
 		}
 		return JsonResponse(response_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
@@ -99,14 +99,14 @@ class FileViewSet(viewsets.ModelViewSet):
 	serializer_class = FileSerializer
 	permission_classes = [permissions.IsAuthenticated]
 
-	def list(self, request, user_folder=None, *args, **kwargs):
+	def list(self, request, folder_name=None, *args, **kwargs):
 		if request.user.is_superuser:
 			# Получаем параметр user_folder из запроса, если он есть
-			if not user_folder:
+			if not folder_name:
 				return Response({"message": "Не указан идентификатор хранилища"}, status=status.HTTP_400_BAD_REQUEST)
 			# Проверяем, существует ли пользователь с указанным идентификатором хранилища
 			try:
-				user = User.objects.get(user_folder=user_folder)
+				user = User.objects.get(folder_name=folder_name)
 			except User.DoesNotExist:
 				return Response({"message": "Пользователь с указанным идентификатором хранилища не найден"},
 								status=status.HTTP_404_NOT_FOUND)
@@ -144,8 +144,8 @@ class FileViewSet(viewsets.ModelViewSet):
 		if file_path and os.path.isfile(f"storage/{file_path}"):
 			try:
 				os.remove(f"storage/{file_path}")
-			except OSError as e:
-				return Response({"message": f"Ошибка при удалении файла: {e}"},
+			except OSError as error:
+				return Response({"message": f"Ошибка при удалении файла: {error}"},
 								status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 		file_instance.delete()
 		return Response({"message": "Файл успешно удален"}, status=status.HTTP_204_NO_CONTENT)

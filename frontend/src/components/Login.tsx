@@ -45,7 +45,7 @@ const Login: React.FC = () => {
 				} else {
 					console.log('Успешный вход:', response.data);
 					sessionStorage.setItem('loginUser', JSON.stringify(response.data.user));
-					dispatch(setLoginUser(response.data));
+					dispatch(setLoginUser(response.data.user));
 					dispatch(setActiveState('auth'));
 				}
 			}

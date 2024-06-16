@@ -15,15 +15,15 @@ class APITests(TestCase):
 		self.testsuperuser = User.objects.create_superuser(username='admin_user', email='s@s.com', password='admin-password')
 		self.testuser = User.objects.create_user(username='testuser', email='d@d.com', password='testuserpassword')
 		self.client.login(username='testuser', password='testuserpassword')
-		self.url = reverse('file-list', kwargs={'user_folder': self.testuser.user_folder})
+		self.url = reverse('file-list', kwargs={'folder_name': self.testuser.folder_name})
 
 	def tearDown(self):
 		def remove_directory_if_exists(directory):
 			if os.path.exists(directory):
 				shutil.rmtree(directory)
 
-		remove_directory_if_exists(f'storage/{self.testuser.user_folder}')
-		remove_directory_if_exists(f'storage/{self.testsuperuser.user_folder}')
+		remove_directory_if_exists(f'storage/{self.testuser.folder_name}')
+		remove_directory_if_exists(f'storage/{self.testsuperuser.folder_name}')
 
 	# Загрузка файлов на сервер
 	def test_upload_files(self):
@@ -42,7 +42,7 @@ class APITests(TestCase):
 			'id': response.json()['id'],
 			'file_name': 'testfile2.jpg',
 			'user': self.testuser.id,
-			'file': f'/storage/{self.testuser.user_folder}/testfile2.jpg',
+			'file': f'/storage/{self.testuser.folder_name}/testfile2.jpg',
 			'size': 674769,
 			'upload_date': datetime.today().strftime('%Y-%m-%d'),
 			'last_download_date': None,
@@ -66,7 +66,7 @@ class APITests(TestCase):
 			'id': response.json()['id'],
 			'file_name': 'testfile4.jpg',
 			'user': self.testuser.id,
-			'file': f'/storage/{self.testuser.user_folder}/testfile4.jpg',
+			'file': f'/storage/{self.testuser.folder_name}/testfile4.jpg',
 			'size': 7701225,
 			'upload_date': datetime.today().strftime('%Y-%m-%d'),
 			'last_download_date': None,
@@ -90,7 +90,7 @@ class APITests(TestCase):
 			'id': response.json()['id'],
 			'file_name': 'testfile2.jpg',
 			'user': self.testuser.id,
-			'file': f'/storage/{self.testuser.user_folder}/testfile2.jpg',
+			'file': f'/storage/{self.testuser.folder_name}/testfile2.jpg',
 			'size': 674769,
 			'upload_date': datetime.today().strftime('%Y-%m-%d'),
 			'last_download_date': None,
@@ -111,7 +111,7 @@ class APITests(TestCase):
 			'id': response.json()['id'],
 			'file_name': 'testfile2_1.jpg',
 			'user': self.testuser.id,
-			'file': f'/storage/{self.testuser.user_folder}/testfile2_1.jpg',
+			'file': f'/storage/{self.testuser.folder_name}/testfile2_1.jpg',
 			'size': 674769,
 			'upload_date': datetime.today().strftime('%Y-%m-%d'),
 			'last_download_date': None,
@@ -134,7 +134,7 @@ class APITests(TestCase):
 			'id': response.json()['id'],
 			'file_name': 'testfile.jpg',
 			'user': self.testuser.id,
-			'file': f'/storage/{self.testuser.user_folder}/testfile.jpg',
+			'file': f'/storage/{self.testuser.folder_name}/testfile.jpg',
 			'size': 674769,
 			'upload_date': datetime.today().strftime('%Y-%m-%d'),
 			'last_download_date': None,

@@ -14,7 +14,7 @@ export interface UserType {
 	is_staff: boolean;
 	email: string;
 	id: number;
-	user_folder?: string;
+	folder_name?: string;
 	is_authenticated: boolean;
 }
 

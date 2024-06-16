@@ -1,0 +1,70 @@
+name: Server Backend Django application MyCloud
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Load .env file
+        uses: dotenv-linter/action-load-env@v1
+        with:
+          env-file: .env
+
+      - name: Install Docker Compose
+        run: sudo apt-get install -y docker-compose
+
+      - name: Start services using Docker Compose
+        run: docker-compose up -d
+        env:
+          DB_USER: ${{ env.DB_USER }}
+          DB_PASS: ${{ env.DB_PASS }}
+          DB_BASE: ${{ env.DB_BASE }}
+
+      - name: Install Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until docker-compose exec only-db pg_isready --username=$DB_USER --dbname=$DB_BASE; do
+          echo "Waiting for PostgreSQL to be ready..."
+          sleep 5
+          done
+        env:
+          DB_USER: ${{ env.DB_USER }}
+          DB_BASE: ${{ env.DB_BASE }}
+
+      - name: Install package
+        run: pip install -r requirements.txt
+
+      - name: Linter
+        run: flake8 /backend
+
+      - name: Tests
+        run: python manage.py test
+        env:
+          SECRET_KEY: ${{ env.SECRET_KEY }}
+          DEBUG: ${{ env.DEBUG }}
+          DB_NAME: ${{ env.DB_BASE }}
+          DB_USER: ${{ env.DB_USER }}
+          DB_PASSWORD: ${{ env.DB_PASS }}
+          DB_HOST: ${{ env.DB_HOST }}
+          DB_PORT: ${{ env.DB_PORT }}
+          ALLOWED_HOSTS: ${{ env.ALLOWED_HOSTS }}
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+#          script: expect /home/pull.exp
+          script: bash -S /home/start.sh

@@ -25,12 +25,12 @@ const UploadFile: React.FC = () => {
     };
 
     const onUploadFile = async () => {
-        if (!file || !currentUser?.user_folder || !currentUser.id) return;
+        if (!file || !currentUser?.folder_name || !currentUser.id) return;
 
         const formData = new FormData();
         formData.append('file', file, file.name);
         formData.append('user', currentUser.id.toString());
-        formData.append('user_folder', currentUser.user_folder);
+        formData.append('folder_name', currentUser.folder_name);
         formData.append('file_name',  file.name);
 
         try {

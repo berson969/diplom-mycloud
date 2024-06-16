@@ -37,7 +37,7 @@ const UpdateUser: React.FC = () => {
                 ...(password && { password }),
             }
         };
-
+        console.log("updateData", updateData)
         try {
             const response = await updateUser(updateData);
             if (response && response.error && 'error' in response) {
@@ -67,6 +67,7 @@ const UpdateUser: React.FC = () => {
                             className="form-control"
                             id="username"
                             value={username}
+                            autoComplete="off"
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
@@ -77,6 +78,7 @@ const UpdateUser: React.FC = () => {
                             className="form-control"
                             id="email"
                             value={email}
+                            autoComplete="off"
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>

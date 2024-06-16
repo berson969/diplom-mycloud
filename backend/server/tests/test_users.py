@@ -3,6 +3,7 @@ from uuid import uuid4
 
 from django.urls import reverse
 from django.test import TestCase, Client
+from django.contrib.auth.hashers import check_password
 from server.models import User, File
 
 # URL для вашего API
@@ -35,16 +36,16 @@ class APITests(TestCase):
 		response = self.client.post(f"{url}/users/", data=payload)
 		created_user = response.json()['user']
 		expected_user = {
-			'id': response.json()['user']['id'],
+			'id': created_user['id'],
 			'username': 'user1',
 			'email': 'd100@d.com',
-			'password': 'qwerty54321',
-			'user_folder': 'user1_folder',
+			'password': created_user['password'],
+			'folder_name': 'user1_folder',
 			'is_staff': False,
-			'is_superuser': False,
-			'is_authenticated': True,
 		}
 		self.assertEqual(created_user, expected_user)
+		just_now_create_user = User.objects.get(pk=created_user['id'])
+		self.assertTrue(check_password(payload['password'], just_now_create_user.password))
 		self.assertEqual(response.status_code, 201)  # Проверка создание нового пользователя
 
 	# Получение всех пользователей
@@ -54,7 +55,7 @@ class APITests(TestCase):
 
 	# Изменение данных пользователя
 	def test_update_user(self):
-		user_to_update = User.objects.create(username='updateuser', email="u@uu.com", password='updatepassword')
+		user_to_update = User.objects.create(username='user_before_update', email="u@uu.com", password='update_password')
 		self.client.force_login(user_to_update)
 		payload = {
 			"username": "after_update",
@@ -67,11 +68,9 @@ class APITests(TestCase):
 		expected_data = {
 			'email': 'u2@uu.com',
 			'id': user_to_update.pk,
-			'is_authenticated': True,
 			'is_staff': False,
-			'is_superuser': False,
-			'password': 'updatepassword',
-			'user_folder': 'updateuser_folder',
+			'password': 'update_password',
+			'folder_name': 'user_before_update_folder',
 			'username': 'after_update'
 		}
 		self.assertEqual(response.json(),expected_data)
@@ -81,7 +80,7 @@ class APITests(TestCase):
 
 	# Изменение пароля пользователя
 	def test_update_password(self):
-		user_to_password_update = User.objects.create(username='passuser', email="p@uu.com", password='passpassword')
+		user_to_password_update = User.objects.create(username='pass_user', email="p@uu.com", password='pass_password')
 		self.client.force_login(user_to_password_update)
 		payload = {
 			"password": "new_password"
@@ -93,16 +92,14 @@ class APITests(TestCase):
 		expected_data = {
 			'email': 'p@uu.com',
 			'id': user_to_password_update.pk,
-			'is_authenticated': True,
 			'is_staff': False,
-			'is_superuser': False,
-			'password': 'new_password',
-			'user_folder': 'passuser_folder',
-			'username': 'passuser'
+			'password': response.json()['password'],
+			'folder_name': 'pass_user_folder',
+			'username': 'pass_user'
 		}
 		self.assertEqual(response.json(), expected_data)
 		updated_user = User.objects.get(pk=user_to_password_update.pk)
-		self.assertEqual(updated_user.password, payload['password'])
+		self.assertTrue(check_password(payload['password'], updated_user.password))
 
 	# Удаление пользователя по ID
 	def test_delete_user(self):

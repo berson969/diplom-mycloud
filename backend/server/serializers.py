@@ -1,7 +1,7 @@
-import os
-
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
-from .models import User, File
+
+from .models import File, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -14,11 +14,18 @@ class UserSerializer(serializers.ModelSerializer):
 			# 'first_name',
 			# 'last_name',
 			'password',
-			'user_folder',
+			'folder_name',
 			'is_staff',
-			"is_authenticated",
-			'is_superuser'
 		]
+
+	def create(self, validated_data):
+		validated_data['password'] = make_password(validated_data['password'])
+		return super().create(validated_data)
+
+	def update(self, instance, validated_data):
+		if 'password' in validated_data:
+			validated_data['password'] = make_password(validated_data['password'])
+		return super().update(instance, validated_data)
 
 
 class FileSerializer(serializers.ModelSerializer):
@@ -44,7 +51,8 @@ class FileSerializer(serializers.ModelSerializer):
 		user_id = self.instance.user.id if self.instance else attrs['user'].id
 		if File.objects.filter(user=user_id, file_name=name).exists():
 			# Генерация уникального имени файла и пути
-			path, file_name = File().create_path_and_file_name(user_id, name or attrs['file'].name)
+			final_file_name = name or attrs['file'].name
+			path, file_name = File().create_path_and_file_name(user_id, final_file_name)
 
 			attrs['path'] = path
 			attrs['file_name'] = file_name

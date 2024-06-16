@@ -9,10 +9,11 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-from corsheaders.defaults import default_headers
-from dotenv import load_dotenv
 import os
 from pathlib import Path
+
+from corsheaders.defaults import default_headers
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -42,7 +43,7 @@ INSTALLED_APPS = [
 	'corsheaders',
 	'rest_framework',
 	'server',
-]
+]  # noqa: WPS407
 
 MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',
@@ -53,30 +54,29 @@ MIDDLEWARE = [
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
 	'django.middleware.common.CommonMiddleware',
-]
+]  # noqa: WPS407
 
 CORS_ALLOW_HEADERS = default_headers + (
 	'Access-Control-Allow-Headers',
 	'Access-Control-Allow-Credentials',
 	'Access-Control-Allow-Origin',
-)
+)  # noqa: WPS407
 
 CORS_ALLOWED_ORIGINS = [
-	"http://localhost:5173",
-	"http://localhost:8000",
-]
+	os.getenv("BACKEND_URL"),
+	os.getenv("FRONTEND_URL"),
+]  # noqa: WPS407
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
-	"http://localhost:5173",
-	"http://localhost:8000",
+	os.getenv("BACKEND_URL"),
+	os.getenv("FRONTEND_URL"),
 ]
 
 # Для разработки, не используйте в продакшене
-# CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-#
+
 CORS_ALLOW_METHODS = [
 	"DELETE",
 	"GET",
@@ -84,7 +84,7 @@ CORS_ALLOW_METHODS = [
 	"PATCH",
 	"POST",
 	"PUT",
-]
+]  # noqa: WPS407
 
 ROOT_URLCONF = 'mycloud.urls'
 
@@ -108,7 +108,6 @@ WSGI_APPLICATION = 'mycloud.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-# print(os.getenv("POSTGRES_HOST"), os.getenv("POSTGRES_DB"), os.getenv("POSTGRES_PORT"),os.getenv("POSTGRES_USER"), os.getenv("POSTGRES_PASSWORD"))
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
@@ -117,8 +116,8 @@ DATABASES = {
 		'PORT': os.getenv("DB_PORT"),
 		'USER': os.getenv("DB_USER"),
 		'PASSWORD': os.getenv("DB_PASS"),
-	}
-}
+	},
+}  # noqa: WPS407
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -136,7 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
 	{
 		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
 	},
-]
+]  # noqa: WPS407
 
 AUTHENTICATION_BACKENDS = [
 	'django.contrib.auth.backends.ModelBackend',
@@ -145,8 +144,8 @@ AUTHENTICATION_BACKENDS = [
 REST_FRAMEWORK = {
 	'DEFAULT_RENDERER_CLASSES': [
 		'rest_framework.renderers.JSONRenderer',
-	]
-}
+	],
+}  # noqa: WPS407
 
 # Internationalizationy
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

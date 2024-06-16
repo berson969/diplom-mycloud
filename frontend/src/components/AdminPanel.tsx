@@ -46,6 +46,7 @@ const AdminPanel: React.FC = () => {
             <div className="row gx-2 p-4">
                 <h5 className="col">Выберете пользователя</h5>
                 <select
+                    id="user-seect"
                     className="form-control col"
                     value={selectedUsername}
                     onChange={(event) => handleSetCurrentUser(event.target.value)}

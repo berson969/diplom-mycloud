@@ -15,7 +15,7 @@ class APITests(TestCase):
 		self.testsuperuser = User.objects.create_superuser(username='admin_user', email='s@s.com', password='admin-password')
 		self.testuser = User.objects.create_user(username='testuser', email='d@d.com', password='testuserpassword')
 		self.client.login(username='testuser', password='testuserpassword')
-		self.url = reverse('file-list', kwargs={'user_folder': self.testuser.user_folder})
+		self.url = reverse('file-list', kwargs={'folder_name': self.testuser.folder_name})
 		with open('resources/1.jpg', 'rb') as file:
 			self.file_instance = self.client.post(
 				self.url,
@@ -38,13 +38,13 @@ class APITests(TestCase):
 			if os.path.exists(directory):
 				shutil.rmtree(directory)
 
-		remove_directory_if_exists(f'storage/{self.testuser.user_folder}')
-		remove_directory_if_exists(f'storage/{self.testsuperuser.user_folder}')
+		remove_directory_if_exists(f'storage/{self.testuser.folder_name}')
+		remove_directory_if_exists(f'storage/{self.testsuperuser.folder_name}')
 
 	def test_change_comment(self):
 		self.client.login(username='testuser', password='testuserpassword')
 		url = reverse('file-detail', kwargs={
-			'user_folder': self.testuser.user_folder,
+			'folder_name': self.testuser.folder_name,
 			'pk': self.file_instance.json()['id']
 		})
 		response = self.client.patch(
@@ -58,7 +58,7 @@ class APITests(TestCase):
 	def test_rename_file(self):
 		self.client.login(username='testuser', password='testuserpassword')
 		url = reverse('file-detail', kwargs={
-			'user_folder': self.testuser.user_folder,
+			'folder_name': self.testuser.folder_name,
 			'pk': self.file_instance.json()['id']
 		})
 		response = self.client.patch(
@@ -73,7 +73,7 @@ class APITests(TestCase):
 	def test_rename_file_with_not_unique_name(self):
 		self.client.login(username='testuser', password='testuserpassword')
 		url = reverse('file-detail', kwargs={
-			'user_folder': self.testuser.user_folder,
+			'folder_name': self.testuser.folder_name,
 			'pk': self.file_instance.json()['id']
 		})
 		response = self.client.patch(
@@ -89,7 +89,7 @@ class APITests(TestCase):
 	def test_list_files(self):
 		self.client.login(username='testuser', password='testuserpassword')
 		# Генерируем URL для просмотра файлов того же пользователя
-		url = reverse('file-list', kwargs={'user_folder': self.testuser.user_folder})
+		url = reverse('file-list', kwargs={'folder_name': self.testuser.folder_name})
 		response = self.client.get(url)
 		# print("list", response.json())
 		self.assertEqual(response.status_code, 200)
@@ -99,28 +99,28 @@ class APITests(TestCase):
 		self.client.login(username='admin_user', password='admin-password')
 		with open('resources/5.jpg', 'rb') as file:
 			self.file_instance_3 = self.client.post(
-				reverse('file-list', kwargs={'user_folder': self.testsuperuser.user_folder}),
+				reverse('file-list', kwargs={'folder_name': self.testsuperuser.folder_name}),
 				{
 					'user': self.testsuperuser,
 					'file_name': 'test_fifth_file.jpg',
 					'file': file,
 				})
 		# Генерируем URL для просмотра файлов другого пользователя
-		url = reverse('file-list', kwargs={'user_folder': self.testuser.user_folder})
+		url = reverse('file-list', kwargs={'folder_name': self.testuser.folder_name})
 		response = self.client.get(url)
-		# print("list_as_admin", response.json())
+		# print("list_as_admin_1", response.json())
 		self.assertEqual(response.status_code, 200)
 		# Генерируем URL для просмотра файлов админа
-		url = reverse('file-list', kwargs={'user_folder': self.testsuperuser.user_folder})
+		url = reverse('file-list', kwargs={'folder_name': self.testsuperuser.folder_name})
 		response = self.client.get(url)
-		# print("list_as_admin", response.json())
+		# print("list_as_admin_2", response.json())
 		self.assertEqual(response.status_code, 200)
 
 	def test_list_files_as_not_admin(self):
 		self.client.login(username='admin_user', password='admin-password')
 		with open('resources/5.jpg', 'rb') as file:
 			self.file_instance_3 = self.client.post(
-				reverse('file-list', kwargs={'user_folder': self.testsuperuser.user_folder}),
+				reverse('file-list', kwargs={'folder_name': self.testsuperuser.folder_name}),
 				{
 					'user': self.testsuperuser.id,
 					'file_name': 'test_fifth_file.jpg',
@@ -129,7 +129,7 @@ class APITests(TestCase):
 		self.client.logout()
 		self.client.login(username='testuser', password='testuserpassword')
 		# Генерируем URL для просмотра файлов другого пользователя не под админом
-		url = reverse('file-list', kwargs={'user_folder': self.testsuperuser.user_folder})
+		url = reverse('file-list', kwargs={'folder_name': self.testsuperuser.folder_name})
 		response = self.client.get(url)
 		# print("list_not_admin", response.json())
 		self.assertEqual(response.status_code, 200)
@@ -151,18 +151,18 @@ class APITests(TestCase):
 	def test_delete_file(self):
 		self.client.login(username='testuser', password='testuserpassword')
 		url = reverse('file-detail', kwargs={
-			'user_folder': self.testuser.user_folder,
+			'folder_name': self.testuser.folder_name,
 			'pk': self.file_instance_2.json()['id']
 		})
-		self.assertTrue(os.path.isfile(f"storage/{self.testuser.user_folder}/{self.file_instance_2.json()['file_name']}"))
+		self.assertTrue(os.path.isfile(f"storage/{self.testuser.folder_name}/{self.file_instance_2.json()['file_name']}"))
 		response = self.client.delete(url)
 		self.assertEqual(response.status_code, 204)
-		self.assertFalse(os.path.isfile(f"storage/{self.testuser.user_folder}/{self.file_instance_2.json()['file_name']}"))
+		self.assertFalse(os.path.isfile(f"storage/{self.testuser.folder_name}/{self.file_instance_2.json()['file_name']}"))
 
 	def test_delete_not_exist_file(self):
 		self.client.login(username='testuser', password='testuserpassword')
 		url = reverse('file-detail', kwargs={
-			'user_folder': self.testuser.user_folder,
+			'folder_name': self.testuser.folder_name,
 			'pk': 999999
 		})
 		response = self.client.delete(url)

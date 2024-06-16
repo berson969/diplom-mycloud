@@ -40,7 +40,7 @@ const FileContextMenu: React.FC<FileContextMenuProps> = ({ file } ) => {
         try {
             const data = {
                 id: file.id,
-                user_folder: currentUser.user_folder,
+                folder_name: currentUser.folder_name,
             }
             const response = await deleteFile(data);
             console.error('Успешное удаление:', response);
