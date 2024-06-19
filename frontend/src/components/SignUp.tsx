@@ -50,6 +50,7 @@ const SignUp: React.FC= () => {
 								className="form-control"
 								id="username"
 								placeholder="Введите имя пользователя"
+								autoComplete="off"
 								onChange={(e) => setUsername(e.target.value)}
 							/>
 						</div>
@@ -61,14 +62,15 @@ const SignUp: React.FC= () => {
 								className="form-control"
 								id="email"
 								placeholder="Введите email"
+								autoComplete="off"
 								onChange={(e) => setEmail(e.target.value)}
 							/>
 						</div>
 						<div className="form-group mb-2 position-relative">
-							<PasswordInput password={password} setPassword={setPassword} confirm={false}/>
+							<PasswordInput password={password} setPassword={setPassword} confirm={false} autoComplete={false}/>
 						</div>
 						<div className="form-group  mb-4 position-relative">
-							<PasswordInput password={confirmPassword} setPassword={setConfirmPassword} confirm={true}/>
+							<PasswordInput password={confirmPassword} setPassword={setConfirmPassword} confirm={true} autoComplete={false}/>
 						</div>
 						{errorMessage && (
 							<div className="alert alert-danger" role="alert">

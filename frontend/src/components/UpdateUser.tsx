@@ -83,10 +83,10 @@ const UpdateUser: React.FC = () => {
                         />
                     </div>
                     <div className="mb-3 position-relative">
-                        <PasswordInput password={password} setPassword={setPassword} confirm={false}/>
+                        <PasswordInput password={password} setPassword={setPassword} confirm={false} autoComplete={false}/>
                     </div>
                     <div className="mb-3 position-relative">
-                        <PasswordInput password={confirmPassword} setPassword={setConfirmPassword} confirm={true}/>
+                        <PasswordInput password={confirmPassword} setPassword={setConfirmPassword} confirm={true} autoComplete={false}/>
                     </div>
                     <div className="modal-footer gap-2">
                         <button type="button" className="btn btn-secondary" onClick={() => dispatch(setActiveState('auth'))}>Отмена</button>

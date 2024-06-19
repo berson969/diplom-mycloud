@@ -70,11 +70,12 @@ const Login: React.FC = () => {
 								className="form-control"
 								id="username"
 								placeholder="Введите имя пользователя"
+								autoComplete="on"
 								onChange={(e) => setUsername(e.target.value)}
 							/>
 						</div>
 						<div className="form-group mb-2 position-relative">
-							<PasswordInput password={password} setPassword={setPassword} confirm={false}/>
+							<PasswordInput password={password} setPassword={setPassword} confirm={false} autoComplete={true}/>
 						</div>
 						<div className="form-check mb-4">
 							<input
