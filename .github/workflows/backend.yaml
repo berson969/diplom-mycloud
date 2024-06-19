@@ -13,9 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Load .env file
-        uses: dotenv-linter/action-load-env@v1
-        with:
-          env-file: .env
+        run: source .env
 
       - name: Install Docker Compose
         run: sudo apt-get install -y docker-compose

@@ -12,3 +12,4 @@ urllib3==2.2.1
 psycopg2-binary
 flake8
 wemake-python-styleguide
+gunicorn
