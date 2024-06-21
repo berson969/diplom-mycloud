@@ -16,14 +16,22 @@ jobs:
         run: source .env
 
       - name: Install Docker Compose
-        run: sudo apt-get install -y docker-compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
+
+      - name: Start Docker service
+        run: sudo systemctl start docker || true
 
       - name: Start services using Docker Compose
         run: docker-compose up -d
         env:
-          DB_USER: ${{ env.DB_USER }}
-          DB_PASS: ${{ env.DB_PASS }}
-          DB_BASE: ${{ env.DB_BASE }}
+            SECRET_KEY: ${{ env.SECRET_KEY }}
+            DEBUG: ${{ env.DEBUG }}
+            DB_NAME: ${{ env.DB_BASE }}
+            DB_USER: ${{ env.DB_USER }}
+            DB_PASSWORD: ${{ env.DB_PASS }}
+            DB_HOST: ${{ env.DB_HOST }}
+            DB_PORT: ${{ env.DB_PORT }}
+            ALLOWED_HOSTS: ${{ env.ALLOWED_HOSTS }}
 
       - name: Install Python
         uses: actions/setup-python@v3
