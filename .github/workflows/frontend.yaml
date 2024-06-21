@@ -21,17 +21,16 @@ jobs:
               run: cd frontend
 
             - name: Install dependencies
+              working-directory: frontend
               env:
                   VITE_BASE_URL: http://localhost
               run: npm install
 
             - name: Build React app
+              working-directory: frontend
               run: npm run build
 
             - name: Deploy to GitHub Pages
               uses: JamesIves/github-pages-deploy-action@v4
               with:
-                  # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  # BRANCH: gh-pages
-                  # DIST: build
                   FOLDER: build
