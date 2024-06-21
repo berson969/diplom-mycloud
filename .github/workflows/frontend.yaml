@@ -33,5 +33,5 @@ jobs:
             - name: Deploy to GitHub Pages
               uses: JamesIves/github-pages-deploy-action@v4
               with:
-                  TOKEN: ${{ secrets.GITHUB_TOKEN}}
+                  TOKEN: ${{ secrets.DEPLOY_GITHUB_TOKEN}}
                   FOLDER: frontend/dist
