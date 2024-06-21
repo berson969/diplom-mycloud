@@ -35,3 +35,4 @@ jobs:
               with:
                   TOKEN: ${{ secrets.DEPLOY_GITHUB_TOKEN}}
                   FOLDER: frontend/dist
+                  RSYNC_EXTRA_FLAGS: '--exclude .git --exclude .github --exclude backend --exclude nginx --exclude logs'
