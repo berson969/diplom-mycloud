@@ -3,6 +3,9 @@ name: Deploy React Frontend
 on:
     push:
         branches: [main]
+permissions:
+    contents: write
+
 
 jobs:
     build-frontend:
