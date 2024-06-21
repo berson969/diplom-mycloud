@@ -2,7 +2,7 @@
 
 [![Server Backend Django application MyCloud](https://github.com/berson969/diplom-mycloud/actions/workflows/backend.yaml/badge.svg?branch=main&event=deployment_status)](https://github.com/berson969/diplom-mycloud/actions/workflows/backend.yaml)
 
-[![Deploy React Frontend](https://github.com/berson969/diplom-mycloud/actions/workflows/frontend.yaml/badge.svg?branch=gh-pages&event=deployment)](https://github.com/berson969/diplom-mycloud/actions/workflows/frontend.yaml)
+[![Deploy React Frontend](https://github.com/berson969/diplom-mycloud/actions/workflows/frontend.yaml/badge.svg)](https://github.com/berson969/diplom-mycloud/actions/workflows/frontend.yaml)
 
 ## Облачное хранилище My Cloud
 
