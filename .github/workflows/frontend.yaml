@@ -30,11 +30,7 @@ jobs:
               working-directory: frontend
               run: npm run build
 
-            - name: Print environment variables
-              run: env
-
             - name: Deploy to GitHub Pages
               uses: JamesIves/github-pages-deploy-action@v4
               with:
-                  TOKEN: ${{ secrets.GITHUB_TOKEN}}
                   FOLDER: frontend/dist
