@@ -17,9 +17,6 @@ jobs:
               with:
                   node-version: '20'
 
-            - name: Change working directory to frontend
-              run: cd frontend
-
             - name: Install dependencies
               working-directory: frontend
               env:
