@@ -2,8 +2,8 @@ import {createApi, fetchBaseQuery, retry} from '@reduxjs/toolkit/query/react';
 import {FileType, UserType} from "../models";
 
 
-const BASE_URL = import.meta.env.VITE_BASE_URL
-	? `${import.meta.env.VITE_BASE_URL}/api`
+const BASE_URL = import.meta.env.VITE_BASE_QUERY_URL
+	? `${import.meta.env.VITE_BASE_QUERY_URL}/api`
 	: 'http://localhost:8000/api';
 
 // Функция для получения CSRF токена из куки

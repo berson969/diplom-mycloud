@@ -23,7 +23,8 @@ jobs:
             - name: Install dependencies
               working-directory: frontend
               env:
-                  VITE_BASE_URL: http://localhost
+                  VITE_BASE_QUERY_URL: http://localhost
+                  VITE_BASE_URL: /diplom-mycloud/
               run: npm install
 
             - name: Build React app
