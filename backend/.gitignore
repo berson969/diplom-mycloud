@@ -1,3 +1,4 @@
+static/
 storage/
 server/__pycache__/
 mycloud/__pycache__/
@@ -167,3 +168,4 @@ chrome-user-data
 __pycache__/
 *.pyc
 /server/migrations/__pycache__ 2/
+/static/

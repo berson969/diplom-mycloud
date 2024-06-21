@@ -1,3 +1,9 @@
+frontend/src/components/EditFileModal.tsx
+frontend/src/components/Example.tsx
+frontend/src/components/ExampleDropdown.tsx
+frontend/src/components/ProgressBar.tsx
+frontend/src/hooks/funcUploadWithProgress.ts
+
 # Django #
 *.log
 *.pot
