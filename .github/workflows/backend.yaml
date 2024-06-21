@@ -12,41 +12,35 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Load .env file
-        run: source .env
-
       - name: Install Docker Compose
         run: sudo apt-get update && sudo apt-get install -y docker-compose
-
-      - name: Start Docker service
-        run: sudo systemctl start docker || true
 
       - name: Start services using Docker Compose
         run: docker-compose up -d
         env:
-            SECRET_KEY: ${{ env.SECRET_KEY }}
-            DEBUG: ${{ env.DEBUG }}
-            DB_NAME: ${{ env.DB_BASE }}
-            DB_USER: ${{ env.DB_USER }}
-            DB_PASSWORD: ${{ env.DB_PASS }}
-            DB_HOST: ${{ env.DB_HOST }}
-            DB_PORT: ${{ env.DB_PORT }}
-            ALLOWED_HOSTS: ${{ env.ALLOWED_HOSTS }}
+            SECRET_KEY: ${{ secrets.SECRET_KEY }}
+            DEBUG: ${{ secrets.DEBUG }}
+            DB_NAME: ${{ secrets.DB_BASE }}
+            DB_USER: ${{ secrets.DB_USER }}
+            DB_PASSWORD: ${{ secrets.DB_PASS }}
+            DB_HOST: ${{ secrets.DB_HOST }}
+            DB_PORT: ${{ secrets.DB_PORT }}
+            ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
 
       - name: Install Python
         uses: actions/setup-python@v3
         with:
-          python-version: 3.9
+          python-version: 3.10
 
       - name: Wait for PostgreSQL to be ready
         run: |
-          until docker-compose exec only-db pg_isready --username=$DB_USER --dbname=$DB_BASE; do
+          until docker-compose exec only-db pg_isready --username=${{ secrets.DB_USER }} --dbname=${{ secrets.DB_BASE }}; do
           echo "Waiting for PostgreSQL to be ready..."
           sleep 5
           done
         env:
-          DB_USER: ${{ env.DB_USER }}
-          DB_BASE: ${{ env.DB_BASE }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_BASE: ${{ secrets.DB_BASE }}
 
       - name: Install package
         run: pip install -r requirements.txt
@@ -57,14 +51,14 @@ jobs:
       - name: Tests
         run: python manage.py test
         env:
-          SECRET_KEY: ${{ env.SECRET_KEY }}
-          DEBUG: ${{ env.DEBUG }}
-          DB_NAME: ${{ env.DB_BASE }}
-          DB_USER: ${{ env.DB_USER }}
-          DB_PASSWORD: ${{ env.DB_PASS }}
-          DB_HOST: ${{ env.DB_HOST }}
-          DB_PORT: ${{ env.DB_PORT }}
-          ALLOWED_HOSTS: ${{ env.ALLOWED_HOSTS }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: ${{ secrets.DEBUG }}
+          DB_NAME: ${{ secrets.DB_BASE }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASS }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
 
       - name: Deploy to server
         uses: appleboy/ssh-action@master
