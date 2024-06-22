@@ -2,7 +2,9 @@
 
 python manage.py migrate
 python manage.py collectstatic --no-input
-#python manage.py test
+
+flake8 .
+python manage.py test
 
 #python manage.py createsuperuser --noinput --username=admin --email=admin@example.com
 #echo "adminadmin" | python manage.py changepassword admin

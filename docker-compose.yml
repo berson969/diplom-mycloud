@@ -11,6 +11,12 @@ services:
         depends_on:
             - backend
 
+    linter:
+        build: ./backend
+        command: [ "flake8" ]
+        volumes:
+            - ./backend:/app
+
     backend:
         container_name: "backend-server"
         build:
@@ -28,6 +34,17 @@ services:
             DJANGO_SETTINGS_MODULE: "${DJANGO_SETTINGS_MODULE}"
             DB_HOST: "${DB_HOST}"
         depends_on:
+            - only-db
+            - linter
+
+    tests:
+        build: ./backend
+        volumes:
+            - ./backend:/app
+            - static_volume:/app/static
+            - storage:/storage
+        depends_on:
+            - backend
             - only-db
 
     only-db:

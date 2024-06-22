@@ -1,4 +1,6 @@
 frontend/src/hooks/funcUploadWithProgress.ts
+.github/workflows/__backend.yaml
+
 
 # Django #
 *.log

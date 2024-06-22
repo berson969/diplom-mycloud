@@ -1,71 +1,37 @@
-name: Server Backend Django application MyCloud
+name: Deploy Docker Compose Application
 
 on:
-  push:
-    branches: [main]
+    push:
+        branches: [ main ]
 
 jobs:
-  build-backend:
-    runs-on: ubuntu-latest
-    environment: mycloud-env
+    deploy:
+        runs-on: ubuntu-latest
+        environment: mycloud-env
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
 
-      - name: Install Docker Compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose
+            - name: Set up SSH with credentials
+              uses: actions/setup-ssh@v2
+              with:
+                  ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  ssh-host: ${{ secrets.SSH_HOST }}
+                  ssh-user: ${{ secrets.SSH_USER }}
 
-      - name: Start services using Docker Compose
-        run: docker-compose up -d
-        env:
-            SECRET_KEY: ${{ secrets.SECRET_KEY }}
-            DEBUG: ${{ secrets.DEBUG }}
-            DB_NAME: ${{ secrets.DB_BASE }}
-            DB_USER: ${{ secrets.DB_USER }}
-            DB_PASSWORD: ${{ secrets.DB_PASS }}
-            DB_HOST: ${{ secrets.DB_HOST }}
-            DB_PORT: ${{ secrets.DB_PORT }}
-            ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+            - name: Install Docker Compose on server
+              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo apt-get update && sudo apt-get install -y docker-compose"
 
-      - name: Install Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: 3.10
+            - name: Copy Docker Compose file to server
+              uses: sftp-git/action@v4
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  password: ${{ secrets.SSH_PASSWORD }}
+                  port: 22
+                  source_dir: .
+                  dest_dir: /home/${{ secrets.SSH_USER }}
 
-      - name: Wait for PostgreSQL to be ready
-        run: |
-          until docker-compose exec only-db pg_isready --username=${{ secrets.DB_USER }} --dbname=${{ secrets.DB_BASE }}; do
-          echo "Waiting for PostgreSQL to be ready..."
-          sleep 5
-          done
-        env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_BASE: ${{ secrets.DB_BASE }}
-
-      - name: Install package
-        run: pip install -r requirements.txt
-
-      - name: Linter
-        run: flake8 /backend
-
-      - name: Tests
-        run: python manage.py test
-        env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          DEBUG: ${{ secrets.DEBUG }}
-          DB_NAME: ${{ secrets.DB_BASE }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASS }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
-
-      - name: Deploy to server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-#          script: expect /home/pull.exp
-          script: bash -S /home/start.sh
+            - name: Deploy Docker Compose application on server
+              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker-compose -f /home/${{ secrets.SSH_USER }}/docker-compose.yml up -d"
