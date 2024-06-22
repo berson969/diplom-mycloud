@@ -1,4 +1,4 @@
-name: Deploy Docker Compose Application
+name: Deploy Backend Application
 
 on:
     push:
@@ -11,7 +11,13 @@ jobs:
 
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
+              with:
+                  sparse-checkout: |
+                      .github/workflows/backend.yaml
+                      backend
+                      nginx
+                      docker-compose.yaml
 
             - name: Set up SSH with credentials
               uses: actions/setup-ssh@v2
