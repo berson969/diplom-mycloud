@@ -1,0 +1,70 @@
+/*.btn-primary,*/
+/*.btn-primary:hover,*/
+/*.btn-primary:focus,*/
+/*.btn-primary:active {*/
+/*  color: #fff;*/
+/*  background-color: #0dcaf0;*/
+/*  border-color: #0dcaf0;*/
+/*}*/
+
+/*.btn-outline-primary,*/
+/*.btn-outline-primary:hover,*/
+/*.btn-outline-primary:focus,*/
+/*.btn-outline-primary:active {*/
+/*  color:#0dcaf0;*/
+/*  background-color:  #fff;;*/
+/*  border-color: #0dcaf0;*/
+/*}*/
+
+/* Переопределение цветов Bootstrap */
+:root {
+  --bs-primary: #0dcaf0;
+  --bs-secondary: #6c757d;
+  --bs-success: #198754;
+  --bs-info: #0dcaf0;
+  --bs-warning: #ffc107;
+  --bs-danger: #dc3545;
+  --bs-light: #f8f9fa;
+  --bs-dark: #212529;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn:disabled {
+  color: #ffffff;
+  background-color: #0dcaf0;
+  border-color: #0dcaf0;
+}
+
+.btn-outline-primary,
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  color: #0dcaf0;
+  background-color: #fff;
+  border-color: #0dcaf0;
+}
+
+a {
+  text-decoration: none;
+  color: #0dcaf0;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.form-check-input:checked {
+  background-color:#0dcaf0;
+  border-color: #0dcaf0;
+}
+
+.dropdown-item:active {
+  background-color: #0dcaf0;
+}
+
+.btn[type="button"]:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1) !important;
+}
+
