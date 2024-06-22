@@ -20,16 +20,14 @@ jobs:
               with:
                   node-version: '20'
 
-            - name: Install dependencies
+            - name: Install dependencies & Build React app
               working-directory: frontend
               env:
                   VITE_BASE_QUERY_URL: http://localhost
                   VITE_BASE_URL: /diplom-mycloud/
-              run: npm install
-
-            - name: Build React app
-              working-directory: frontend
-              run: npm run build
+              run: |
+                  npm install
+                  npm run build
 
             - name: Deploy to GitHub Pages
               uses: JamesIves/github-pages-deploy-action@v4
