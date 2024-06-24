@@ -29,14 +29,13 @@ jobs:
               run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo apt-get update && sudo apt-get install -y docker-compose"
 
             - name: Copy Docker Compose file to server
-              uses: sftp-git/action@v4
+              uses: apple boy/scp-action@v0.1.0
               with:
-                  host: ${{ secrets.SSH_HOST }}
-                  username: ${{ secrets.SSH_USER }}
-                  password: ${{ secrets.SSH_PASSWORD }}
-                  port: 22
-                  source_dir: .
-                  dest_dir: /home/${{ secrets.SSH_USER }}
+                host: ${{ secrets.SSH_HOST }}
+                username: ${{ secrets.SSH_USER }}
+                password: ${{ secrets.SSH_PASSWORD }}
+                source: "docker-compose.yaml"
+                target: "/home/${{ secrets.SSH_USER }}/docker-compose.yml"
 
             - name: Deploy Docker Compose application on server
               run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker-compose -f /home/${{ secrets.SSH_USER }}/docker-compose.yml up -d"
