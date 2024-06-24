@@ -18,6 +18,9 @@ jobs:
                       backend
                       nginx
                       docker-compose.yaml
+                    
+            - name: List files in the workspace
+              run: ls -R
 
             - name: Set up SSH with credentials
               uses: webfactory/ssh-agent@v0.9.0
