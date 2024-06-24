@@ -50,4 +50,4 @@ jobs:
                 ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls -l /home/${{ secrets.SSH_USER }}/docker-compose.yml"
           
             - name: Deploy Docker Compose application on server
-              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/${{ secrets.SSH_USER }} && docker-compose up -d"
+              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/${{ secrets.SSH_USER }} && docker-compose -f docker-compose.yml up -d"
