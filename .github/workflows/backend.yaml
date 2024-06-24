@@ -20,11 +20,10 @@ jobs:
                       docker-compose.yaml
 
             - name: Set up SSH with credentials
-              uses: actions/setup-ssh@v2
+              uses: webfactory/ssh-agent@v0.9.0
               with:
                   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  ssh-host: ${{ secrets.SSH_HOST }}
-                  ssh-user: ${{ secrets.SSH_USER }}
+                 
 
             - name: Install Docker Compose on server
               run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo apt-get update && sudo apt-get install -y docker-compose"
