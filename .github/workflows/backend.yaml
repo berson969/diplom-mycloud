@@ -23,7 +23,11 @@ jobs:
               uses: webfactory/ssh-agent@v0.9.0
               with:
                   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-                 
+                  
+            - name: Add server to known hosts
+              run: |
+                mkdir -p ~/.ssh
+                ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts     
 
             - name: Install Docker Compose on server
               run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo apt-get update && sudo apt-get install -y docker-compose"
