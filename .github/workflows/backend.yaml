@@ -47,7 +47,7 @@ jobs:
 
             - name: Verify file existence
               run: |
-                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls -l /home/${{ secrets.SSH_USER }}/docker-compose.yml"
+                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls -l"
           
             - name: Deploy Docker Compose application on server
-              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker-compose -f ./docker-compose.yml up -d"
+              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker-compose -f /home/${{ secrets.SSH_USER }}/docker-compose.yml up -d"
