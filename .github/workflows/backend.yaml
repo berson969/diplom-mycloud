@@ -29,7 +29,7 @@ jobs:
               run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo apt-get update && sudo apt-get install -y docker-compose"
 
             - name: Copy Docker Compose file to server
-              uses: apple boy/scp-action@v0.1.0
+              uses: appleboy/scp-action@v0.1.0
               with:
                 host: ${{ secrets.SSH_HOST }}
                 username: ${{ secrets.SSH_USER }}
