@@ -17,11 +17,6 @@ jobs:
                       backend/
                       nginx/
                       docker-compose.yaml
-
-            - name: Create .env file in repository
-              run: echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env &&
-                echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env &&
-                echo "OTHER_SECRET=${{ secrets.OTHER_SECRET }}" >> .env
                     
             - name: List files in the workspace
               run: ls -R
@@ -50,13 +45,6 @@ jobs:
                 password: ${{ secrets.SSH_PASSWORD }}
                 source: "."
                 target: "/home/${{ secrets.SSH_USER }}"
-
-            - name: Create .env file on server
-              run: |
-                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo 'SECRET_KEY=${{ secrets.SECRET_KEY }}' > /home/${{ secrets.SSH_USER }}/project/.env"
-                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo 'DATABASE_URL=${{ secrets.DATABASE_URL }}' >> /home/${{ secrets.SSH_USER }}/project/.env"
-                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo 'OTHER_SECRET=${{ secrets.OTHER_SECRET }}' >> /home/${{ secrets.SSH_USER }}/project/.env"
-
 
             - name: Verify file existence
               run: |
