@@ -12,12 +12,12 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
-              with:
-                  sparse-checkout: |
-                      .github/workflows/backend.yaml
-                      backend
-                      nginx
-                      docker-compose.yaml
+#              with:
+#                  sparse-checkout: |
+#                      .github/workflows/backend.yaml
+#                      backend
+#                      nginx
+#                      docker-compose.yaml
                     
             - name: List files in the workspace
               run: ls -R
