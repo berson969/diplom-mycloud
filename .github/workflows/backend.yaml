@@ -36,9 +36,9 @@ jobs:
                 ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
                   sudo apt-get update && \
                   sudo apt-get install -y openssl && \
-                  sudo mkdir -p /etc/nginx/ssl && \
+                  sudo mkdir -p /nginx/ssl && \
                   sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-                    -keyout /etc/nginx/ssl/cert.key -out /etc/nginx/ssl/cert.crt \
+                    -keyout /nginx/ssl/cert.key -out /nginx/ssl/cert.crt \
                     -subj '/CN=${{ secrets.SSH_HOST }}/O=Netology/C=RU' \
                 "
 
