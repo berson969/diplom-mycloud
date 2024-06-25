@@ -22,6 +22,12 @@ jobs:
               uses: webfactory/ssh-agent@v0.9.0
               with:
                   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+            - name: Clear target directory on server
+              run: |
+                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+                  rm -rf /home/${{ secrets.SSH_USER }}/*
+                "      
                   
             - name: Add server to known hosts
               run: |
@@ -46,12 +52,6 @@ jobs:
               run: |
                 ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
                   sudo apt-get update && sudo apt-get install -y docker-compose
-                "
-
-            - name: Clear target directory on server
-              run: |
-                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-                  rm -rf /home/${{ secrets.SSH_USER }}/*
                 "
 
             - name: Copy Docker Compose file to server
