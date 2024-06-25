@@ -17,9 +17,6 @@ jobs:
                       backend/
                       nginx/
                       docker-compose.yml
-                    
-            - name: List files in the workspace
-              run: ls -R
 
             - name: Set up SSH with credentials
               uses: webfactory/ssh-agent@v0.9.0
@@ -32,13 +29,29 @@ jobs:
                 if ssh-keygen -F ${{ secrets.SSH_HOST }} > /dev/null; then
                 ssh-keygen -R ${{ secrets.SSH_HOST }}
                 fi
-                ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts    
+                ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts   
+                
+            - name: Install OpenSSL and generate self-signed certificate
+              run: |
+                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+                  sudo apt-get update && \
+                  sudo apt-get install -y openssl && \
+                  sudo mkdir -p /etc/nginx/ssl && \
+                  sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+                    -keyout /etc/nginx/ssl/cert.key -out /etc/nginx/ssl/cert.crt \
+                    -subj '/CN=${{ secrets.SSH_HOST }}/O=Netology/C=RU' \
+                "
 
             - name: Install Docker Compose on server
-              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo apt-get update && sudo apt-get install -y docker-compose"
+              run: |
+                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+                  sudo apt-get update && sudo apt-get install -y docker-compose
+                "
 
             - name: Clear target directory on server
-              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "rm -rf /home/${{ secrets.SSH_USER }}/*"
+              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+                rm -rf /home/${{ secrets.SSH_USER }}/*
+                "
 
             - name: Copy Docker Compose file to server
               uses: appleboy/scp-action@v0.1.0
@@ -51,7 +64,12 @@ jobs:
 
             - name: Verify file existence
               run: |
-                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls /home/${{ secrets.SSH_USER }}"
+                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+                  ls /home/${{ secrets.SSH_USER }}
+                "
           
             - name: Deploy Docker Compose application on server
-              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker-compose -f /home/${{ secrets.SSH_USER }}/docker-compose.yml up -d"
+              run: |
+                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+                  docker-compose -f /home/${{ secrets.SSH_USER }}/docker-compose.yml up -d
+                "
