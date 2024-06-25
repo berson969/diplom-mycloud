@@ -7,7 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 COPY . /app/
-COPY ../.env /app/.env
+
 COPY gunicorn.service /etc/systemd/system/gunicorn.service
 
 # install dependencies
