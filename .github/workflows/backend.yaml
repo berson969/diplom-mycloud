@@ -24,7 +24,7 @@ jobs:
                   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
             - name: Clear target directory on server
-              run: |
+              run:
                 ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
                   rm -rf /home/${{ secrets.SSH_USER }}/*
                 "      
