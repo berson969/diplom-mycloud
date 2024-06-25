@@ -21,6 +21,8 @@ media
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/modules.xml
 
 # AWS User-specific
 .idea/**/aws.xml
