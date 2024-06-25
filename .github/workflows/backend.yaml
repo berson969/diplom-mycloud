@@ -22,12 +22,6 @@ jobs:
               uses: webfactory/ssh-agent@v0.9.0
               with:
                   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-            - name: Clear target directory on server
-              run: |
-                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-                  rm -rf /home/${{ secrets.SSH_USER }}/* \
-                "      
                   
             - name: Add server to known hosts
               run: |
@@ -36,6 +30,12 @@ jobs:
                 ssh-keygen -R ${{ secrets.SSH_HOST }}
                 fi
                 ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts   
+
+            - name: Clear target directory on server
+              run: |
+                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+                  rm -rf /home/${{ secrets.SSH_USER }}/* \
+                "      
                 
             - name: Install OpenSSL and generate self-signed certificate
               run: |
