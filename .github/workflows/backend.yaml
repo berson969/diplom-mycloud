@@ -34,6 +34,9 @@ jobs:
             - name: Install Docker Compose on server
               run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo apt-get update && sudo apt-get install -y docker-compose"
 
+            - name: Clear target directory on server
+              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "rm -rf /home/${{ secrets.SSH_USER }}/*"
+
             - name: Copy Docker Compose file to server
               uses: appleboy/scp-action@v0.1.0
               with:
