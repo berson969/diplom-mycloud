@@ -16,7 +16,7 @@ jobs:
                   sparse-checkout: |
                       backend/
                       nginx/
-                      docker-compose.yaml
+                      docker-compose.yml
                     
             - name: List files in the workspace
               run: ls -R
@@ -29,7 +29,10 @@ jobs:
             - name: Add server to known hosts
               run: |
                 mkdir -p ~/.ssh
-                ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts     
+                if ssh-keygen -F ${{ secrets.SSH_HOST }} > /dev/null; then
+                ssh-keygen -R ${{ secrets.SSH_HOST }}
+                fi
+                ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts    
 
             - name: Install Docker Compose on server
               run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo apt-get update && sudo apt-get install -y docker-compose"
