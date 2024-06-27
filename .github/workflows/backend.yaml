@@ -39,13 +39,11 @@ jobs:
                 
             - name: Install OpenSSL and generate self-signed certificate
               run: |
-                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-                  sudo apt-get update && \
-                  sudo apt-get install -y openssl && \
-                  sudo mkdir -p /nginx/ssl && \
-                  sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-                    -keyout /nginx/ssl/cert.key -out /nginx/ssl/cert.crt \
-                    -subj '/CN=${{ secrets.SSH_HOST }}/O=MyCloud/C=RU' \
+                sudo mkdir -p /home/${{ secrets.SSH_USER }}/nginx/ssl && \
+                sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+                  - keyout /home/${{ secrets.SSH_USER }}/nginx/ssl/cert.key \
+                  - out /home/${{ secrets.SSH_USER }}/nginx/ssl/cert.crt \
+                  - subj '/CN=${{ secrets.SSH_HOST }}/O=MyCloud/C=RU' \
                 "
 
             - name: Install Docker Compose on server
@@ -72,5 +70,5 @@ jobs:
             - name: Deploy Docker Compose application on server
               run: |
                 ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-                  cd /home/${{ secrets.SSH_USER }} && docker-compose down && docker-compose up -d
+                  cd /home/${{ secrets.SSH_USER }} && docker-compose up -d
                  "
