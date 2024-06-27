@@ -44,9 +44,9 @@ jobs:
                     sudo apt-get install -y openssl && \
                     sudo mkdir -p /home/${{ secrets.SSH_USER }}/nginx/ssl && \
                     sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-                      - keyout /home/${{ secrets.SSH_USER }}/nginx/ssl/cert.key \
-                      - out /home/${{ secrets.SSH_USER }}/nginx/ssl/cert.crt \
-                      - subj '/CN=${{ secrets.SSH_HOST }}/O=MyCloud/C=RU' \
+                      -keyout /home/${{ secrets.SSH_USER }}/nginx/ssl/cert.key \
+                      -out /home/${{ secrets.SSH_USER }}/nginx/ssl/cert.crt \
+                      -subj '/CN=${{ secrets.SSH_HOST }}/O=MyCloud/C=RU' \
                 "
 
             - name: Install Docker Compose on server
