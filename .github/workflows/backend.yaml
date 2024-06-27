@@ -45,7 +45,7 @@ jobs:
                   sudo mkdir -p /nginx/ssl && \
                   sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
                     -keyout /nginx/ssl/cert.key -out /nginx/ssl/cert.crt \
-                    -subj '/CN=${{ secrets.SSH_HOST }}/O=Netology/C=RU' \
+                    -subj '/CN=${{ secrets.SSH_HOST }}/O=MyCloud/C=RU' \
                 "
 
             - name: Install Docker Compose on server
