@@ -9,7 +9,7 @@ services:
         volumes:
             - static_volume:/app/static
             - storage:/storage
-            - /home/root/nginx/ssl:/etc/nginx/ssl
+            - /home/root/nginx:/etc/nginx
         depends_on:
             - backend
 
