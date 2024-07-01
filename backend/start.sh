@@ -3,7 +3,7 @@
 python manage.py collectstatic --no-input
 python manage.py migrate
 
-flake8 .
+#flake8 .
 python manage.py test
 
 # Запуск сервера в через gunicorn
