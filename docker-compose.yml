@@ -19,8 +19,8 @@ services:
             context: ./backend
         volumes:
             - ./backend:/app
-            - static_volume:/static
-            - storage:/storage
+            - static_volume:/app/staticfiles
+            - storage:/app/storage
         expose:
             - 8000
         depends_on:
