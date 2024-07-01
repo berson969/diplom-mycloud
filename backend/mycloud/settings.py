@@ -15,12 +15,9 @@ from pathlib import Path
 from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
 
-current_file_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(current_file_path))
-dotenv_path = os.path.join(project_root, '.env')
 
-load_dotenv(dotenv_path)
-print(dotenv_path, os.getenv("SECRET_KEY"))
+load_dotenv()
+print(os.getenv("ALLOWED_HOSTS"), os.getenv("SECRET_KEY"))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

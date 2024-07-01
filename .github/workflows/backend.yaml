@@ -85,6 +85,12 @@ jobs:
                   echo 'FRONTEND_URL=${{ secrets.FRONTEND_URL }}' >> /home/${{ secrets.SSH_USER }}/.env
                 "
 
+            - name: Copy .env file to another directory on server
+              run: |
+                  ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+                    sudo cp /home/${{ secrets.SSH_USER }}/.env /home/${{ secrets.SSH_USER }}/backend/.env \
+                  "
+
             - name: Verify file existence
               run: |
                 ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
