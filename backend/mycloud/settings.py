@@ -16,6 +16,8 @@ from pathlib import Path
 from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
 
+logger = logging.getLogger(__name__)
+
 current_file_path = os.path.abspath(__file__)
 project_root = os.path.dirname(os.path.dirname(current_file_path))
 dotenv_path = os.path.join(project_root, '.env')
