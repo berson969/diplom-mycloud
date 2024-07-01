@@ -31,8 +31,6 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(', ')
-print(ALLOWED_HOSTS)
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -163,8 +161,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_URL = '/static/'
+STATIC_ROOT = "/app/static/"
 MEDIA_URL = "/storage/"
 MEDIA_ROOT = BASE_DIR / "storage"
 

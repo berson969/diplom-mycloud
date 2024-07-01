@@ -2,8 +2,7 @@ FROM nginx:latest
 
 # Установка OpenSSL и копирование SSL сертификатов
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends openssl \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y --no-install-recommends openssl
 
 # Создание директории для SSL
 RUN  mkdir -p /etc/nginx/ssl
