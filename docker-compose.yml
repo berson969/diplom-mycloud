@@ -14,15 +14,13 @@ services:
             - backend
 
     backend:
-        container_name: "backend-server"
+        container_name: backend-server
         build:
             context: ./backend
         volumes:
             - ./backend:/app
             - static_volume:/app/static
             - storage:/storage
-#        ports:
-#            - '8000:8000'
         # close backend from outside
         expose:
             - 8000

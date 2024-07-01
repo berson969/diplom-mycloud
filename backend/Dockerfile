@@ -11,6 +11,9 @@ COPY . /app/
 COPY gunicorn.service /etc/systemd/system/gunicorn.service
 
 # install dependencies
+RUN python -m venv venv
+RUN source venv/bin/activate
+
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
