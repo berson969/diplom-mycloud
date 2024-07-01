@@ -14,7 +14,7 @@ services:
             - backend
 
     backend:
-        container_name: backend-server
+        container_name: backend
         build:
             context: ./backend
         volumes:
