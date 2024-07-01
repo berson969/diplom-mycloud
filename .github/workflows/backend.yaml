@@ -47,6 +47,12 @@ jobs:
                       -out /home/${{ secrets.SSH_USER }}/nginx/ssl/cert.crt \
                       -subj '/CN=${{ secrets.SSH_HOST }}/O=MyCloud/C=RU' \
                 "
+            - name: Fix permissions for nginx directory
+              run: |
+                  ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+                    sudo chown -R ${{ secrets.SSH_USER }}:$${{ secrets.SSH_USER }} /home/${{ secrets.SSH_USER }}/nginx && \
+                    sudo chmod -R 755 /home/${{ secrets.SSH_USER }}/nginx \
+                  "
 
             - name: Install Docker Compose on server
               run: |
