@@ -24,13 +24,13 @@ services:
         # close backend from outside
         expose:
             - 8000
-        environment:
-            DJANGO_SETTINGS_MODULE: "${DJANGO_SETTINGS_MODULE}"
-            DB_HOST: "${DB_HOST}"
-            DB_PORT: "${DB_PORT}"
-            DB_USER: "${DB_USER}"
-            DB_PASS: "${DB_PASS}"
-            DB_BASE: "${DB_BASE}"
+#        environment:
+#            DJANGO_SETTINGS_MODULE: "${DJANGO_SETTINGS_MODULE}"
+#            DB_HOST: "${DB_HOST}"
+#            DB_PORT: "${DB_PORT}"
+#            DB_USER: "${DB_USER}"
+#            DB_PASS: "${DB_PASS}"
+#            DB_BASE: "${DB_BASE}"
         depends_on:
             - only-db
 
