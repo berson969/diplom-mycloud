@@ -13,8 +13,8 @@ import os
 import logging
 from pathlib import Path
 
-from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
+from corsheaders.defaults import default_headers
 
 logger = logging.getLogger(__name__)
 
