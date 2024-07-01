@@ -6,6 +6,11 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+RUN apt-get update && \
+    apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/*
+
+
 COPY ./backend /app
 
 COPY gunicorn.service /etc/systemd/system/gunicorn.service
@@ -16,7 +21,7 @@ EXPOSE 8000
 
 # Настройка прав доступа для start.sh
 RUN chmod +x /app/start.sh
-# RUN chmod +x /app/gunicorn_config.py
+
 RUN chmod +x /etc/systemd/system/gunicorn.service
 
 
