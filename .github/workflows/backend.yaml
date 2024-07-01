@@ -100,5 +100,5 @@ jobs:
             - name: Deploy Docker Compose application on server
               run: |
                 ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-                  cd /home/${{ secrets.SSH_USER }} && sudo docker-compose up -d
+                  cd /home/${{ secrets.SSH_USER }} && sudo docker-compose up -d --force-recreate
                  "
