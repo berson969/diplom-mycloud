@@ -31,7 +31,6 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(', ')
-print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
 # Application definition
 
 INSTALLED_APPS = [
@@ -163,9 +162,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = "/app/static/"
+STATIC_ROOT = BASE_DIR / "static"
 MEDIA_URL = "/storage/"
-MEDIA_ROOT = "/app/storage"
+MEDIA_ROOT = BASE_DIR / "storage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
