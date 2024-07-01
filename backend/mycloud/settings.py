@@ -17,7 +17,6 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
-print(os.getenv("ALLOWED_HOSTS"), os.getenv("SECRET_KEY"))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,6 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(', ')
+print(ALLOWED_HOSTS)
 
 # Application definition
 
