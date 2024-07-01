@@ -16,7 +16,6 @@ jobs:
                   sparse-checkout: |
                       backend/
                       nginx/
-                      docker-compose.yml
 
             - name: Set up SSH with credentials
               uses: webfactory/ssh-agent@v0.9.0
@@ -34,7 +33,7 @@ jobs:
             - name: Clear target directory on server
               run: |
                 ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-                  rm -rf /home/${{ secrets.SSH_USER }}/* \
+                  sudo rm -rf /home/${{ secrets.SSH_USER }}/* \
                 "
 
             - name: Install OpenSSL and generate self-signed certificate
