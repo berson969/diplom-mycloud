@@ -24,7 +24,7 @@ jobs:
               working-directory: frontend
               env:
                   VITE_BASE_QUERY_URL: https://185.10.45.10
-                  VITE_BASE_URL: /diplom-mycloud/
+                  BUILD_PREFIX: diplom-mycloud/
               run: |
                   npm install
                   npm run build
