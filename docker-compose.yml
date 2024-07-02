@@ -1,32 +1,5 @@
 services:
-    nginx:
-        container_name: nginx-proxy
-        build: ./nginx
-        restart: always
-        ports:
-            - '80:80'
-            - '443:443'
-        volumes:
-            - static_volume:/static
-            - storage:/storage
-            - ./nginx:/etc/nginx
-        depends_on:
-            - backend
-
-    backend:
-        container_name: backend
-        build:
-            context: ./backend
-        volumes:
-            - ./backend:/app
-            - static_volume:/app/staticfiles
-            - storage:/app/storage
-        expose:
-            - 8000
-        depends_on:
-            - only-db
-
-    only-db:
+    postgres:
         container_name: "${DB_HOST}"
         image: postgres:latest
         ports:
@@ -43,6 +16,33 @@ services:
             retries: 5
         volumes:
             - postgres_data:/var/lib/postgresql/data/
+
+    backend:
+        container_name: backend
+        build:
+            context: ./backend
+        volumes:
+            - ./backend:/app
+            - static_volume:/app/staticfiles
+            - storage:/storage
+        expose:
+            - 8000
+        depends_on:
+            - postgres
+
+    nginx:
+        container_name: nginx-proxy
+        build: ./nginx
+        restart: always
+        ports:
+            - '80:80'
+            - '443:443'
+        volumes:
+            - static_volume:/usr/share/nginx/html/static
+            - storage:/storage
+        #            - ./nginx:/etc/nginx
+        depends_on:
+            - backend
 
 volumes:
     postgres_data:

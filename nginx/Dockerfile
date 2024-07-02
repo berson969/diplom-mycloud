@@ -9,6 +9,7 @@ RUN apt-get update \
 RUN  mkdir -p /etc/nginx/ssl
 # Копирование SSL сертификатов из монтированной директории
 COPY ssl /etc/nginx/ssl
+COPY --from=backend /app/staticfiles /usr/share/nginx/html/static
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx nginx.conf /etc/nginx/conf.d
