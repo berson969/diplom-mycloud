@@ -119,6 +119,13 @@ DATABASES = {
 	},
 }  # noqa: WPS407
 
+print('ENVIroment')
+print(os.getenv("DB_BASE"))
+print(os.getenv("DB_HOST"))
+print(os.getenv("DB_PORT"))
+print(os.getenv("DB_USER"))
+print(os.getenv("DB_PASS"))
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
