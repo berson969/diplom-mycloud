@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
 				<div className="col-md-4 d-flex align-items-center">
 					<a href="/" className="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
 						<img
-							src="../../public/logo_mycloud.png"
+							src="/logo_mycloud.png"
 							alt="My Cloud"
 							className="logo-image-small img-fluid me-2"
 						/>
