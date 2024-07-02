@@ -65,6 +65,8 @@ CORS_ALLOW_HEADERS = default_headers + (
 CORS_ALLOWED_ORIGINS = [
 	os.getenv("BACKEND_URL"),
 	os.getenv("FRONTEND_URL"),
+	"https://localhost",
+	"http://localhost"
 ]  # noqa: WPS407
 
 CSRF_COOKIE_SECURE = True
@@ -72,6 +74,8 @@ SESSION_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
 	os.getenv("BACKEND_URL"),
 	os.getenv("FRONTEND_URL"),
+	"https://localhost",
+	"http://localhost"
 ]
 
 # Для разработки, не используйте в продакшене
@@ -119,13 +123,6 @@ DATABASES = {
 	},
 }  # noqa: WPS407
 
-print('ENVIroment')
-print(os.getenv("DB_BASE"))
-print(os.getenv("DB_HOST"))
-print(os.getenv("DB_PORT"))
-print(os.getenv("DB_USER"))
-print(os.getenv("DB_PASS"))
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -169,9 +166,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "static"
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = BASE_DIR / "storage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
