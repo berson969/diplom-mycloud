@@ -1,4 +1,4 @@
-FROM python:3.10-alpine
+FROM python:3.10-slim
 
 WORKDIR /app
 
@@ -8,23 +8,21 @@ ENV PYTHONUNBUFFERED 1
 
 COPY . /app/
 
-COPY gunicorn.service /etc/systemd/system/gunicorn.service
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    gcc \
+    curl \
+    nano \
+    && apt-get clean
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 8000
-
-# Настройка прав доступа для start.sh
-#RUN chmod +x /app/start.sh
-
+# Настройка прав доступа для gunicorn.service
+COPY gunicorn.service /etc/systemd/system/gunicorn.service
 RUN chmod +x /etc/systemd/system/gunicorn.service
 
-RUN python manage.py collectstatic --no-input
-#RUN python manage.py migrate
+EXPOSE 8000
 
-#RUN flake8 .
-#RUN python manage.py test --noinput --keepdb
-
-
-#ENTRYPOINT ["/app/start.sh"]
-CMD gunicorn mycloud.wsgi:application  -b 0.0.0.0:8000
+RUN chmod +x /app/start.sh
+CMD ["/app/start.sh"]

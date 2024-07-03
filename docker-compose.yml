@@ -25,15 +25,20 @@ services:
             - ./backend:/app
             - static_volume:/app/static
             - storage:/storage
-        expose:
-            - 8000
+#        expose:
+#            - 8000
+        ports:
+            - 8000:8000
         depends_on:
             - postgres
 
     nginx:
         container_name: nginx-proxy
-        image: nginx:latest
+        build:
+            context: ./nginx
         restart: always
+        environment:
+            SERVER_NAME: ${SERVER_NAME:-localhost}
         ports:
             - '80:80'
             - '433:433'

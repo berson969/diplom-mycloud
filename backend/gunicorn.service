@@ -6,7 +6,11 @@ After=network.target
 User=root
 Group=www-data
 WorkingDirectory=/home/root/app
-ExecStart=/home/root/app/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/root/appа/mycloud/mycloud.sock mycloud.wsgi:application
+ExecStart=/home/root/app/venv/bin/gunicorn \
+	--access-logfile - \
+	--error-logfile - \
+	--workers 3 \
+	--bind unix:/home/root/appа/mycloud/mycloud.sock mycloud.wsgi:application
 
 
 [Install]
