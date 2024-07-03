@@ -1,6 +1,6 @@
 FROM certbot/certbot
 
-RUN apk add --no-cache nginx-common
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.18/community x86_64 nginx-common
 
 COPY nginx/certbot /etc/letsencrypt
 ENV SERVER_NAME=${SERVER_NAME:-localhost}
