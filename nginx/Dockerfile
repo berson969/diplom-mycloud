@@ -1,5 +1,11 @@
 FROM nginx:latest
 
+RUN apt-get update && apt-get install -y \
+    snapd \
+    curl \
+    nano \
+    && apt-get clean \
+
 ENV SERVER_NAME=${SERVER_NAME:-localhost}
 RUN echo SERVER_NAME
 
