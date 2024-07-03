@@ -41,14 +41,15 @@ services:
 
     nginx-proxy:
         container_name: nginx-proxy
-        build:
-            context: ./nginx
+        image: nginx:latest
+#        build:
+#            context: ./nginx
         restart: always
         environment:
             SERVER_NAME: "${SERVER_NAME}"
-        ports:
-            - '80:80'
-            - '433:433'
+#        ports:
+#            - '80:80'
+#            - '433:433'
         volumes:
             - /etc/letsencrypt:/etc/letsencrypt
             - static_volume:/usr/share/nginx/static
