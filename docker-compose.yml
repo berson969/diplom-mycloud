@@ -38,7 +38,7 @@ services:
             - '80:80'
             - '433:433'
         volumes:
-            - static_volume:/usr/share/nginx/html/static
+            - static_volume:/usr/share/nginx/static
             - storage:/storage
             - ./nginx:/etc/nginx
         depends_on:
