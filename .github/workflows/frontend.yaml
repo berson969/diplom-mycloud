@@ -23,7 +23,7 @@ jobs:
             - name: Install dependencies & Build React app
               working-directory: frontend
               env:
-                  VITE_BASE_QUERY_URL: http://185.10.45.10
+                  VITE_BASE_QUERY_URL: https://185.10.45.10
                   BUILD_PREFIX: diplom-mycloud/
               run: |
                   npm install
