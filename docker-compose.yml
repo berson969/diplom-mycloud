@@ -32,7 +32,14 @@ services:
         depends_on:
             - postgres
 
-    nginx:
+    certbot:
+        build: ./certbot
+        container_name: certbot
+        volumes:
+            - ./nginx/certbot:/etc/letsencrypt
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
+    nginx-proxy:
         container_name: nginx-proxy
         build:
             context: ./nginx
@@ -43,12 +50,14 @@ services:
             - '80:80'
             - '433:433'
         volumes:
+            - /etc/letsencrypt:/etc/letsencrypt
             - static_volume:/usr/share/nginx/static
             - storage:/storage
             - ./nginx:/etc/nginx
         depends_on:
             - postgres
             - backend
+            - certbot
 
 volumes:
     postgres_data:

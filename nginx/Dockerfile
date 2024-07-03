@@ -1,14 +1,12 @@
 FROM nginx:latest
 
-RUN apt update \
-    && apt install -y \
-    snapd  \
+RUN apt-get update && apt-get install -y  \
+    certbot \
     curl \
     nano \
-    && apt clean
+    && apt-get clean
 
 ENV SERVER_NAME=${SERVER_NAME:-localhost}
-RUN echo SERVER_NAME
 
 COPY nginx.conf.template /etc/nginx/nginx.conf
 COPY ssl /etc/nginx/ssl
