@@ -2,7 +2,7 @@ FROM certbot/certbot
 
 RUN apk add --no-cache nginx
 
-COPY nginx/certbot /etc/letsencrypt
+#COPY nginx/certbot /etc/letsencrypt
 ENV SERVER_NAME=${SERVER_NAME:-localhost}
 
 COPY nginx.conf.template /etc/nginx/nginx.conf
