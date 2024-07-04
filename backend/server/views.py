@@ -44,7 +44,7 @@ class UserViewSet(viewsets.ModelViewSet):
 		return Response(response_data, status=status.HTTP_201_CREATED)
 
 
-@csrf_exempt
+# @csrf_exempt
 def user_login(request):
 	if request.method == 'POST':
 		username = request.POST.get('username')
@@ -78,7 +78,7 @@ def user_login(request):
 		return JsonResponse(response_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
-@csrf_exempt
+# @csrf_exempt
 def user_logout(request):
 	try:
 		logout(request)
