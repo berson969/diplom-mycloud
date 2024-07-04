@@ -77,8 +77,6 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_COOKIE_SECURE = secure
 SESSION_COOKIE_SECURE = secure
-print('secure', secure)
-
 
 CSRF_TRUSTED_ORIGINS = [
 	os.getenv("BACKEND_URL"),
