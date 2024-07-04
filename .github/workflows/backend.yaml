@@ -70,7 +70,7 @@ jobs:
                   echo 'ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}' >> /home/${{ secrets.SSH_USER }}/.env && \
                   echo 'BACKEND_URL=https://185.10.45.10' >> /home/${{ secrets.SSH_USER }}/.env && \
                   echo 'SERVER_NAME=185.10.45.10' >> /home/${{ secrets.SSH_USER }}/.env && \
-                  echo 'FRONTEND_URL=https://berson969.github.io/' >> /home/${{ secrets.SSH_USER }}/.env
+                  echo 'FRONTEND_URL=https://berson969.github.io' >> /home/${{ secrets.SSH_USER }}/.env
                 "
 
             - name: Copy .env file to another directory on server
