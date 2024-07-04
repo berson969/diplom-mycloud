@@ -1,0 +1,7 @@
+.thick-line {
+    border-top: 10px solid #C0C0C0; /* Толстая линия */
+}
+
+.thin-line {
+    border-top: 1px solid #808080; /* Тонкая линия */
+}

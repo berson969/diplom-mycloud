@@ -1,0 +1,7 @@
+# Сюда вставить базовый URL беенда
+#VITE_BASE_QUERY_URL=http://localhost
+VITE_BASE_QUERY_URL=https://berson969.github.io/diplom-mycloud/
+# Такое впечатление что VITE_SECRET_KEY уже не нужен
+#VITE_SECRET_KEY=super-secret-key
+
+VITE_BASE_URL=/diplom-mycloud/
