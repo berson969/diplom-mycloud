@@ -6,12 +6,13 @@ const BASE_URL = import.meta.env.VITE_BASE_QUERY_URL
 	? `${import.meta.env.VITE_BASE_QUERY_URL}/api`
 	: 'https://localhost/api';
 
+console.log('BASE_URL',BASE_URL)
+
 // Функция для получения CSRF токена из куки
 function getCookie(name: string) {
 	let cookieValue = null;
 	if (document.cookie && document.cookie !== '') {
 		const cookies = document.cookie.split(';');
-        console.log('cookies', cookies)
 		for (let i = 0; i < cookies.length; i++) {
  			const cookie = cookies[i].trim();
  			if (cookie.substring(0, name.length + 1) === (name + '=')) {
@@ -145,11 +146,11 @@ export const  fileApi = createApi({
 				method: 'DELETE',
 			}),
 			invalidatesTags: ( response, error ,{ id }) => {
-				if (!response || !error) {
+				if (!response || error) {
 					console.error('Ошибка при удалении файла или неожиданный формат ответа:', response, error);
 					return [];
 				}
-					return [{ type: 'File', id: id ?? response?.data?.id }]; // Use optional chaining for safer access
+					return [{ type: 'File', id: id ?? response?.data?.id }];
 			},
 		}),
 

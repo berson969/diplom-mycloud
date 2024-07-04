@@ -2,6 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import Logo from "./Logo.tsx";
+import "../css/line.css";
 import {useLogoutActionMutation} from "../api";
 import {getLoginUser, selectActiveState} from "../selectors";
 import { AppDispatch } from '../store';
@@ -82,6 +83,10 @@ const Header: React.FC = () => {
 					)}
 				</div>
 			</header>
+			<div className="line-container text-center  mb-5">
+				<hr className="thick-line mb-4" />
+				<hr className="thin-line " />
+			</div>
 		</div>
 
 	);
