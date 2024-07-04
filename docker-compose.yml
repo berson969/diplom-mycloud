@@ -24,43 +24,33 @@ services:
         volumes:
             - ./backend:/app
             - static_volume:/app/static
-            - storage:/storage
-#        expose:
-#            - 8000
-        ports:
-            - 8000:8000
+            - storage_volume:/app/storage
+        expose:
+            - 8000
         depends_on:
             - postgres
-
-    certbot:
-        build: ./certbot
-        container_name: certbot
-        volumes:
-            - ./nginx/certbot:/etc/letsencrypt
-            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
 
     nginx-proxy:
         container_name: nginx-proxy
-        image: nginx:latest
 #        build:
 #            context: ./nginx
+        image: nginx:mainline
         restart: always
         environment:
-            SERVER_NAME: "${SERVER_NAME}"
-#        ports:
-#            - '80:80'
-#            - '433:433'
+            SERVER_NAME: "${SERVER_NAME:-localhost}"
+        ports:
+            - '80:80'
+            - '443:443'
+        command: sh -c "chmod +x /home/run.sh && /home/run.sh"
         volumes:
-            - /etc/letsencrypt:/etc/letsencrypt
-            - static_volume:/usr/share/nginx/static
-            - storage:/storage
-            - ./nginx:/etc/nginx
+            - static_volume:/static
+            - storage_volume:/storage
+            - ./nginx:/home
         depends_on:
             - postgres
             - backend
-            - certbot
 
 volumes:
     postgres_data:
     static_volume:
-    storage:
+    storage_volume:
