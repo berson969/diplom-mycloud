@@ -66,16 +66,19 @@ CORS_ALLOWED_ORIGINS = [
 	os.getenv("BACKEND_URL"),
 	os.getenv("FRONTEND_URL"),
 	"https://localhost",
-	"http://localhost"
+	"http://localhost:5174",
+	"http://localhost:5173",
 ]  # noqa: WPS407
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False #True
+SESSION_COOKIE_SECURE = False #True
 CSRF_TRUSTED_ORIGINS = [
 	os.getenv("BACKEND_URL"),
 	os.getenv("FRONTEND_URL"),
 	"https://localhost",
-	"http://localhost"
+	"http://localhost",
+	"http://localhost:5173",
+	" http://localhost:5174",
 ]
 
 # Для разработки, не используйте в продакшене

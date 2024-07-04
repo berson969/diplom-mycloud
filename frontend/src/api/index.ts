@@ -4,13 +4,14 @@ import {FileType, UserType} from "../models";
 
 const BASE_URL = import.meta.env.VITE_BASE_QUERY_URL
 	? `${import.meta.env.VITE_BASE_QUERY_URL}/api`
-	: 'http://localhost:8000/api';
+	: 'https://localhost/api';
 
 // Функция для получения CSRF токена из куки
 function getCookie(name: string) {
 	let cookieValue = null;
 	if (document.cookie && document.cookie !== '') {
 		const cookies = document.cookie.split(';');
+        console.log('cookies', cookies)
 		for (let i = 0; i < cookies.length; i++) {
  			const cookie = cookies[i].trim();
  			if (cookie.substring(0, name.length + 1) === (name + '=')) {
@@ -29,7 +30,6 @@ const baseQuery = retry(fetchBaseQuery(
 		credentials: 'include',
 		prepareHeaders: (headers) => {
 			const csrftoken = getCookie('csrftoken')
-			// const csrfToken = (getState() as RootState).currentUser.csrfToken;
 			if (csrftoken) {
 				headers.set('X-CSRFToken', csrftoken);
 			}
@@ -37,7 +37,7 @@ const baseQuery = retry(fetchBaseQuery(
 		},
 	}),
 	{
-	maxRetries: 1,
+	maxRetries: 3,
 });
 
 export const userApi = createApi({
@@ -122,7 +122,7 @@ export const  fileApi = createApi({
 		}),
 		uploadFile: builder.mutation({
 			query: (data) => ({
-				url: `/files/${data.folder_name}/`,
+				url: `/files/${data.get('folder_name')}/`,
 				method: 'POST',
 				body: data,
 			}),
@@ -133,6 +133,9 @@ export const  fileApi = createApi({
 				url: `/files/${data.folder_name}/${data.id}`,
 				method: 'PATCH',
 				body: data,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
 			}),
 			invalidatesTags: ({ id }) => [{ type: 'File', id }],
 		}),

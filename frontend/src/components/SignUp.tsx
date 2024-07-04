@@ -4,6 +4,7 @@ import {setActiveState} from "../slices/usersSlice.ts";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../store";
 import PasswordInput from "./PasswordInput.tsx";
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 const SignUp: React.FC= () => {
 	const dispatch = useDispatch<AppDispatch>()
@@ -24,8 +25,19 @@ const SignUp: React.FC= () => {
 
 		try {
 			const result = await createUser({ username, email, password });
-			if (result.error) {
-				console.error('Error creating user:', result.error);
+			if (result.error ) {
+                if ('data' in result.error && result.error?.data) {
+                    const typedError: FetchBaseQueryError = result.error.data as FetchBaseQueryError;
+                    if ('detail' in typedError) {
+                        const error = typedError.detail;
+                        console.error('Error creating user:', error);
+                        setErrorMessage(`Ошибка:  ${error}`);
+                    }
+				} else {
+					console.error('Error creating user (no data):', result.error);
+					setErrorMessage('Ошибка: Не удалось получить детали ошибки.');
+				}
+
 			} else {
 				console.log('User created successfully', result.data);
 				dispatch(setActiveState('login'));

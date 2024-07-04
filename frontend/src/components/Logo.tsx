@@ -2,7 +2,7 @@ import React from 'react';
 import "../css/logo.css"
 
 const Logo: React.FC = () => {
-	const prefix = process.env.BUILD_PREFIX || '';
+	const prefix = import.meta.env.BUILD_PREFIX || '';
 
 	return (
 		<div className="col-md-3 mb-2 mb-md-0">

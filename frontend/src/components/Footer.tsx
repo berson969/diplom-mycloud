@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Footer: React.FC = () => {
-	const prefix = process.env.BUILD_PREFIX || '';
+	const prefix = import.meta.env.BUILD_PREFIX || '';
 	return (
 		<div className="">
 			<footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4  border-top">
