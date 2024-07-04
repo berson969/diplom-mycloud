@@ -13,9 +13,11 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v4
               with:
-                  sparse-checkout: |
-                      backend/*
-                      nginx/*
+                path: .
+                fetch-depth: 0
+                ref: main
+                extra_args: |
+                  rsync -a --exclude .git backend/ nginx/ .
 
             - name: Set up SSH with credentials
               uses: webfactory/ssh-agent@v0.9.0
