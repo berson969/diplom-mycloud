@@ -31,7 +31,7 @@ services:
             - postgres
 
     nginx-proxy:
-        container_name: nginx-proxy
+        container_name: proxy
 #        build:
 #            context: ./nginx
         image: nginx:mainline

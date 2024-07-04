@@ -16,7 +16,8 @@ jobs:
                   sparse-checkout: |
                       backend/
                       nginx/
-                      certbot/
+                      static/
+                      storage/
 
             - name: Set up SSH with credentials
               uses: webfactory/ssh-agent@v0.9.0

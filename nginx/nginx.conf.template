@@ -19,6 +19,7 @@ http {
 		# Определить место хранения статики
 		location /static/ {
 			alias /static/;
+			autoindex on;
 		}
 
 		# Определить место хранилища
