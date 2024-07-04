@@ -11,6 +11,7 @@ console.log('BASE_URL',BASE_URL)
 // Функция для получения CSRF токена из куки
 function getCookie(name: string) {
 	let cookieValue = null;
+    console.log('document.cookie', document.cookie)
 	if (document.cookie && document.cookie !== '') {
 		const cookies = document.cookie.split(';');
 		for (let i = 0; i < cookies.length; i++) {
@@ -25,19 +26,17 @@ function getCookie(name: string) {
 }
 
 
-const baseQuery = retry(fetchBaseQuery(
-	{
-		baseUrl: BASE_URL,
-		credentials: 'include',
-		prepareHeaders: (headers) => {
-			const csrftoken = getCookie('csrftoken')
-			if (csrftoken) {
-				headers.set('X-CSRFToken', csrftoken);
-			}
-			return headers;
-		},
-	}),
-	{
+const baseQuery = retry(fetchBaseQuery({
+	baseUrl: BASE_URL,
+	credentials: 'include',
+	prepareHeaders: (headers) => {
+		const csrftoken = getCookie('csrftoken')
+		if (csrftoken) {
+			headers.set('X-CSRFToken', csrftoken);
+		}
+		return headers;
+	},
+}), {
 	maxRetries: 3,
 });
 
