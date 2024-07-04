@@ -14,10 +14,8 @@ jobs:
               uses: actions/checkout@v4
               with:
                   sparse-checkout: |
-                      backend/
-                      nginx/
-                      static/
-                      storage/
+                      backend/*
+                      nginx/*
 
             - name: Set up SSH with credentials
               uses: webfactory/ssh-agent@v0.9.0
@@ -37,24 +35,6 @@ jobs:
                 ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
                   sudo rm -rf /home/${{ secrets.SSH_USER }}/* \
                 "
-
-#            - name: Install OpenSSL and generate self-signed certificate
-#              run: |
-#                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-#                    sudo apt-get update && \
-#                    sudo apt-get install -y openssl && \
-#                    sudo mkdir -p /home/${{ secrets.SSH_USER }}/nginx/ssl && \
-#                    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-#                      -keyout /home/${{ secrets.SSH_USER }}/nginx/ssl/cert.key \
-#                      -out /home/${{ secrets.SSH_USER }}/nginx/ssl/cert.crt \
-#                      -subj '/CN=${{ secrets.SSH_HOST }}/O=MyCloud/C=RU' \
-#                "
-#            - name: Fix permissions for nginx directory
-#              run: |
-#                  ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-#                    sudo chown -R ${{ secrets.SSH_USER }}:$${{ secrets.SSH_USER }} /home/${{ secrets.SSH_USER }}/nginx && \
-#                    sudo chmod -R 755 /home/${{ secrets.SSH_USER }}/nginx \
-#                  "
 
             - name: Install Docker Compose on server
               run: |
