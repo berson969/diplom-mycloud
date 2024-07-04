@@ -5,10 +5,10 @@ import { AppDispatch } from '../store';
 import { useDispatch } from 'react-redux';
 
 const Logo: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch<AppDispatch>();
 	const prefix = import.meta.env.BUILD_PREFIX || '';
 
-    const handleReverse = (e: React.MouseEvent) => {
+    const handleReverse = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         dispatch(setActiveState('login'));
     }
@@ -18,7 +18,7 @@ const Logo: React.FC = () => {
 			<a
 				href="/"
 				className="d-inline-flex link-body-emphasis text-decoration-none my-logo"
-                onClick={(e)=> handleReverse(e)}
+                onClick={handleReverse}
 			>
 				<img
 					src={`${prefix}logo_mycloud.png`}
