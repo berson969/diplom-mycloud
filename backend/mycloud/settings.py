@@ -54,7 +54,7 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	'server.middleware.ReferrerPolicyMiddleware',
+	'mycloud.middleware.ReferrerPolicyMiddleware',
 ]  # noqa: WPS407
 
 REFERRER_POLICY = 'no-referrer-when-downgrade'
