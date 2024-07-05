@@ -70,6 +70,7 @@ CORS_EXPOSE_HEADERS = [
 
 CORS_ALLOWED_ORIGINS = [
 	os.getenv("FRONTEND_URL"),
+	"https://berson969.github.io/diplom-mycloud/",
 	"http://localhost:4173",
 	"http://localhost:5173",
 ]  # noqa: WPS407
