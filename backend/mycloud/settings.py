@@ -54,7 +54,11 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'server.middleware.ReferrerPolicyMiddleware',
 ]  # noqa: WPS407
+
+REFERRER_POLICY = 'no-referrer-when-downgrade'
+
 
 CORS_ALLOW_HEADERS = default_headers + (
 	'Access-Control-Allow-Headers',
