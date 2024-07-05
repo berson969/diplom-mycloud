@@ -54,17 +54,13 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	'mycloud.middleware.ReferrerPolicyMiddleware',
 ]  # noqa: WPS407
-
-REFERRER_POLICY = 'no-referrer-when-downgrade'
-
 
 CORS_ALLOW_HEADERS = default_headers + (
 	'Access-Control-Allow-Headers',
 	'Access-Control-Allow-Credentials',
 	'Access-Control-Allow-Origin',
-# 	 'X-CSRFToken',
+	 'X-CSRFToken',
 )  # noqa: WPS407
 
 CORS_EXPOSE_HEADERS = [
