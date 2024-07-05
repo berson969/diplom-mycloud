@@ -6,8 +6,6 @@ const BASE_URL = import.meta.env.VITE_BASE_QUERY_URL
 	? `${import.meta.env.VITE_BASE_QUERY_URL}/api`
 	: 'https://localhost/api';
 
-console.log('BASE_URL',BASE_URL)
-
 // Функция для получения CSRF токена из куки
 function getCookie(name: string) {
 	let cookieValue = null;
@@ -29,6 +27,7 @@ function getCookie(name: string) {
 const baseQuery = retry(fetchBaseQuery({
 	baseUrl: BASE_URL,
 	credentials: 'include',
+    mode: 'cors',
 	prepareHeaders: (headers) => {
 		const csrftoken = getCookie('csrftoken')
 		if (csrftoken) {

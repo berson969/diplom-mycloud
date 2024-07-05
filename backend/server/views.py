@@ -5,7 +5,7 @@ from django.http import FileResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie, csrf_protect
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -44,7 +44,8 @@ class UserViewSet(viewsets.ModelViewSet):
 		return Response(response_data, status=status.HTTP_201_CREATED)
 
 
-# @csrf_exempt
+@csrf_exempt
+# @csrf_protect
 def user_login(request):
 	if request.method == 'POST':
 		username = request.POST.get('username')
@@ -79,6 +80,7 @@ def user_login(request):
 
 
 # @csrf_exempt
+@csrf_protect
 def user_logout(request):
 	try:
 		logout(request)

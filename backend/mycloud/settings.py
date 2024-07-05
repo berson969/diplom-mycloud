@@ -18,11 +18,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-if os.getenv("BACKEND_URL") == 'https://localhost':
-	secure = False
-else:
-	secure = True
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -33,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG")
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 't')
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(', ')
 
@@ -65,25 +60,31 @@ CORS_ALLOW_HEADERS = default_headers + (
 	'Access-Control-Allow-Headers',
 	'Access-Control-Allow-Credentials',
 	'Access-Control-Allow-Origin',
+# 	 'X-CSRFToken',
 )  # noqa: WPS407
 
+CORS_EXPOSE_HEADERS = [
+    'Content-Type',
+    'X-CSRFToken',
+] # noqa: WPS407
+
 CORS_ALLOWED_ORIGINS = [
-	os.getenv("BACKEND_URL"),
 	os.getenv("FRONTEND_URL"),
-	"https://localhost",
 	"http://localhost:4173",
 	"http://localhost:5173",
 ]  # noqa: WPS407
 
-CSRF_COOKIE_SECURE = secure
-SESSION_COOKIE_SECURE = secure
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+
+# SESSION_COOKIE_SAMESITE = 'None'
+# CSRF_COOKIE_SAMESITE = 'None'
 
 CSRF_TRUSTED_ORIGINS = [
-	os.getenv("BACKEND_URL"),
 	os.getenv("FRONTEND_URL"),
 	"http://localhost:5173",
 	"http://localhost:4173",
-]
+] # noqa: WPS407
 
 # Для разработки, не используйте в продакшене
 CORS_ALLOW_CREDENTIALS = True
