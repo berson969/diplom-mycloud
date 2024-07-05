@@ -27,7 +27,6 @@ function getCookie(name: string) {
 const baseQuery = retry(fetchBaseQuery({
 	baseUrl: BASE_URL,
 	credentials: 'include',
-    mode: 'cors',
 	prepareHeaders: (headers) => {
 		const csrftoken = getCookie('csrftoken')
 		if (csrftoken) {
@@ -144,11 +143,11 @@ export const  fileApi = createApi({
 				method: 'DELETE',
 			}),
 			invalidatesTags: ( response, error ,{ id }) => {
-				if (!response || error) {
+				if (error || !response) {
 					console.error('Ошибка при удалении файла или неожиданный формат ответа:', response, error);
 					return [];
 				}
-					return [{ type: 'File', id: id ?? response?.data?.id }];
+				return [{ type: 'File', id: id ?? response?.data?.id }];
 			},
 		}),
 

@@ -25,7 +25,7 @@ const Logo: React.FC = () => {
 					alt="My Cloud"
 					className="logo-image img-fluid me-2"
 				/>
-				<span className="logo-text">MY CLOUD</span>
+				<span className="logo-text p-3">MY CLOUD</span>
 			</a>
 		</div>
 	);

@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 import {getCurrentUser, getEditFile} from "../selectors";
 import ErrorAlert from "./ErrorAlert.tsx";
-import {useUpdateFileMutation} from "../api";
+import {useGetFilesQuery, useUpdateFileMutation} from "../api";
 import {setActiveState} from "../slices/usersSlice";
 import {AppDispatch} from "../store";
 import {FileType} from "../models";
@@ -20,6 +20,9 @@ const EditFile: React.FC = () => {
     const [fileName, setFileName] = useState(updateFile.file_name);
     const [comment, setComment] = useState(updateFile.comment);
     const [errorMessage, setErrorMessage ] = useState('')
+
+    const folderName = currentUser?.folder_name;
+    const { refetch } = useGetFilesQuery(folderName || '');
 
     if (!currentUser || currentUser.id !== updateFile.user) return <ErrorAlert typeError="Ошибка : " message="Редактирование этого файла запрещено" visible={true} />;
 
@@ -38,11 +41,14 @@ const EditFile: React.FC = () => {
         } catch (error) {
             console.error('Ошибка при обновлении файла2:', error);
             if (error) setErrorMessage(getErrorMessage(error));
+        } finally {
+            refetch();
         }
     }
 
     const handleCancel = () => {
         dispatch(setActiveState('auth'));
+        refetch();
     }
 
     if (errorMessage) return <ErrorAlert typeError="Ошибка при обновлении файла:" message={errorMessage} visible={true} />;

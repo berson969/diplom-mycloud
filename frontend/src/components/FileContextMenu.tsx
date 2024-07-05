@@ -4,7 +4,7 @@ import Dropdown from 'rc-dropdown';
 import 'rc-dropdown/assets/index.css';
 
 import {FileContextMenuProps} from "../models";
-import {useDeleteFileMutation, useDownloadFileMutation} from "../api";
+import {useDeleteFileMutation, useDownloadFileMutation, useGetFilesQuery} from "../api";
 import {useDispatch, useSelector} from "react-redux";
 import {getCurrentUser, getView} from "../selectors";
 import {setActiveState} from "../slices/usersSlice";
@@ -21,6 +21,8 @@ const FileContextMenu: React.FC<FileContextMenuProps> = ({ file } ) => {
     const [ deleteFile ] = useDeleteFileMutation();
     const view = useSelector(getView);
 	const [downloadFile] = useDownloadFileMutation();
+    const folderName = currentUser?.folder_name;
+    const { refetch } = useGetFilesQuery(folderName || '');
 
     const [showModal, setShowModal] = useState(false);
 
@@ -44,8 +46,7 @@ const FileContextMenu: React.FC<FileContextMenuProps> = ({ file } ) => {
             }
             const response = await deleteFile(data);
             console.error('Успешное удаление:', response);
-            // refetch();
-            dispatch(setActiveState('auth'))
+            refetch();
             setShowModal(false);
         } catch (err: any) {
             const message = err.data.message ? err.data.message : 'неверное имя пользователя или пароль';

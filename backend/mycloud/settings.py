@@ -70,7 +70,7 @@ CORS_EXPOSE_HEADERS = [
 
 CORS_ALLOWED_ORIGINS = [
 	os.getenv("FRONTEND_URL"),
-	"https://berson969.github.io/diplom-mycloud/",
+	f"https://{os.getenv('SERVER_NAME')}",
 	"http://localhost:4173",
 	"http://localhost:5173",
 ]  # noqa: WPS407
@@ -83,6 +83,7 @@ SESSION_COOKIE_SECURE = not DEBUG
 
 CSRF_TRUSTED_ORIGINS = [
 	os.getenv("FRONTEND_URL"),
+	f"https://{os.getenv('SERVER_NAME')}",
 	"http://localhost:5173",
 	"http://localhost:4173",
 ] # noqa: WPS407

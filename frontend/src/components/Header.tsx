@@ -2,11 +2,11 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import Logo from "./Logo.tsx";
-import "../css/line.css";
 import {useLogoutActionMutation} from "../api";
 import {getLoginUser, selectActiveState} from "../selectors";
 import { AppDispatch } from '../store';
 import {clearUser, setActiveState} from "../slices/usersSlice";
+import Lines from './Lines.tsx';
 
 const Header: React.FC = () => {
 	const dispatch = useDispatch<AppDispatch>()
@@ -41,10 +41,10 @@ const Header: React.FC = () => {
 	}
 
 	return (
-		<div className="container">
+		<>
 			<header className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
 				<Logo />
-				<h1 className="col-md-6">Облачное хранилище MyCloud</h1>
+				<h1 className="col-md-6 p-3">Облачное хранилище MyCloud</h1>
 
 				<div className="col-md-3 text-end">
 					{!login  && ['logout', 'sign-up', ].includes(activeState) && (
@@ -83,12 +83,8 @@ const Header: React.FC = () => {
 					)}
 				</div>
 			</header>
-			<div className="line-container text-center  mb-5">
-				<hr className="thick-line mb-4" />
-				<hr className="thin-line " />
-			</div>
-		</div>
-
+			<Lines />
+		</>
 	);
 };
 

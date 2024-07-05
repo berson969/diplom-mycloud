@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 
-import {useUploadFileMutation} from "../api";
+import {useGetFilesQuery, useUploadFileMutation} from "../api";
 import {useSelector} from "react-redux";
 import {getCurrentUser, getLoginUser} from "../selectors";
 import ErrorAlert from "./ErrorAlert.tsx";
@@ -16,6 +16,8 @@ const UploadFile: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const fileName = useRef<HTMLInputElement | null>(null);
 
+    const folderName = currentUser?.folder_name;
+    const { refetch } = useGetFilesQuery(folderName || '');
     const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files && files.length > 0) {
@@ -49,6 +51,7 @@ const UploadFile: React.FC = () => {
             console.log('Ошибка при загрузке файла', uploadError);
         } finally {
             setFile(null)
+            refetch()
             if (fileName.current) {
                 fileName.current.value = '';
             }

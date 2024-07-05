@@ -23,6 +23,7 @@ services:
             context: ./backend
         volumes:
             - ./backend:/app
+            - .env:/app/.env
             - static_volume:/app/static
             - storage_volume:/app/storage
         expose:
