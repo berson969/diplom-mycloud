@@ -38,7 +38,7 @@ services:
         image: nginx:mainline
         restart: always
         environment:
-            SERVER_NAME: "${SERVER_NAME:-localhost}"
+            SERVER_NAME: "${SERVER_NAME}"
         ports:
             - '80:80'
             - '443:443'
