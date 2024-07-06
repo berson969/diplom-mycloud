@@ -40,6 +40,11 @@ jobs:
                 ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
                   sudo rm -rf /home/${{ secrets.SSH_USER }}/* \
                 "
+            - name: Check directory on server
+              run: |
+                ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+                  ls -aR  /home/${{ secrets.SSH_USER }}
+                "
 
             - name: Install Docker Compose on server
               run: |

@@ -60,11 +60,13 @@ CORS_ALLOW_HEADERS = default_headers + (
 	'Access-Control-Allow-Headers',
 	'Access-Control-Allow-Credentials',
 	'Access-Control-Allow-Origin',
-	 'X-CSRFToken',
+	'Authorization',
+    'X-CSRFToken',
 )  # noqa: WPS407
 
 CORS_EXPOSE_HEADERS = [
     'Content-Type',
+    'Authorization',
     'X-CSRFToken',
 ] # noqa: WPS407
 

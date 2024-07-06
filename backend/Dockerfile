@@ -2,8 +2,9 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# set environment variables
+# Установка переменной окружения для предотвращения создания .pyc файлов
 ENV PYTHONDONTWRITEBYTECODE 1
+# Установка переменной окружения для вывода вывода Python в стандартный поток вывода без буферизации
 ENV PYTHONUNBUFFERED 1
 
 COPY . /app/

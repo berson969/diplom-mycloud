@@ -4,7 +4,8 @@ import {FileType, UserType} from "../models";
 
 const BASE_URL = import.meta.env.VITE_BASE_QUERY_URL
 	? `${import.meta.env.VITE_BASE_QUERY_URL}/api`
-	: 'https://localhost/api';
+	// : 'https://localhost/api';
+	: 'https://185.10.45.10/api';
 
 // Функция для получения CSRF токена из куки
 function getCookie(name: string) {
@@ -28,10 +29,19 @@ const baseQuery = retry(fetchBaseQuery({
 	baseUrl: BASE_URL,
 	credentials: 'include',
 	prepareHeaders: (headers) => {
-		const csrftoken = getCookie('csrftoken')
+		const csrftoken = getCookie('csrftoken');
+		const sessionid = getCookie('sessionid');
+		// const sessionid = sessionStorage.getItem('sessionid');
+
 		if (csrftoken) {
 			headers.set('X-CSRFToken', csrftoken);
+			console.log('X-CSRFToken', csrftoken)
 		}
+		if (sessionid) {
+			headers.set('Authorization', `Session ${sessionid}`);
+			console.log(`Session ${sessionid}`)
+		}
+
 		return headers;
 	},
 }), {
