@@ -44,7 +44,7 @@ jobs:
             - name: Install Docker Compose on server
               run: |
                 ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-                  apt-get update && apt-get install -y docker-compose
+                  sudo apt-get update && sudo apt-get install -y docker-compose
                 "
 
             - name: Copy Docker Compose file to server
