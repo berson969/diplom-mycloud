@@ -1,14 +1,14 @@
 services:
     postgres:
-        container_name: "${DB_HOST}"
+        container_name: ${DB_HOST}
         image: postgres:16-alpine
         ports:
             - "${DB_PORT}:5432"
         restart: unless-stopped
         environment:
-            POSTGRES_USER: "${DB_USER}"
-            POSTGRES_PASSWORD: "${DB_PASS}"
-            POSTGRES_DB: "${DB_BASE}"
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASS}
+            POSTGRES_DB: ${DB_BASE}
         healthcheck:
             test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_BASE}" ]
             interval: 10s
@@ -38,7 +38,7 @@ services:
         image: nginx:mainline
         restart: always
         environment:
-            SERVER_NAME: "${SERVER_NAME}"
+            SERVER_NAME: ${SERVER_NAME}
         ports:
             - '80:80'
             - '443:443'
