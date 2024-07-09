@@ -68,7 +68,7 @@ jobs:
                   echo 'DEBUG=False' >> /home/${{ secrets.SSH_USER }}/.env && \
                   echo 'ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}' >> /home/${{ secrets.SSH_USER }}/.env && \
                   echo 'SERVER_NAME=185.10.45.10' >> /home/${{ secrets.SSH_USER }}/.env && \
-                  echo 'FRONTEND_URL=https://berson969.github.io' >> /home/${{ secrets.SSH_USER }}/.env \
+                  echo 'FRONTEND_URL=https://berson969.github.io' >> /home/${{ secrets.SSH_USER }}/.env && \
                   echo 'ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}' >> /home/${{ secrets.SSH_USER }}/.env
                 "
 
