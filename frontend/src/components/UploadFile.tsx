@@ -47,7 +47,7 @@ const UploadFile: React.FC = () => {
             if ('status' in uploadError && 'data' in uploadError) {
                 setErrorMessage(`статус ${uploadError.status} ${uploadError.data.file}`);
             } else {
-                setErrorMessage(`Неизвестная ошибка ${uploadError}`);
+                setErrorMessage(`Неизвестная ошибка`);
             }
             console.log('Ошибка при загрузке файла', uploadError);
         } finally {

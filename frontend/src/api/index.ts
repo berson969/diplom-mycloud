@@ -4,8 +4,8 @@ import {FileType, UserType} from "../models";
 
 const BASE_URL = import.meta.env.VITE_BASE_QUERY_URL
 	? `${import.meta.env.VITE_BASE_QUERY_URL}/api`
-	: 'https://localhost/api';
-	// : 'https://185.10.45.10/api';
+	// : 'https://localhost/api';
+	: 'https://185.10.45.10/api';
 
 // Функция для получения CSRF токена из куки
 function getCookie(name: string) {
@@ -54,7 +54,7 @@ export const userApi = createApi({
 
 	endpoints: (builder) => ({
 		getAllUsers: builder.query<UserType[], void>({
-			query: () => '/users/',
+			query: () => `/users/`,
 		}),
 		createUser: builder.mutation({
 			query: (data) => {
@@ -96,7 +96,8 @@ export const userApi = createApi({
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded',
 					},
-				}},
+				};
+			},
 		}),
 		logoutAction: builder.mutation({
 			query: () => ({
@@ -159,6 +160,7 @@ export const  fileApi = createApi({
 				return [{ type: 'File', id: id ?? response?.data?.id }];
 			},
 		}),
+
 	})
 })
 

@@ -68,14 +68,9 @@ jobs:
                   echo 'DEBUG=False' >> /home/${{ secrets.SSH_USER }}/.env && \
                   echo 'ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}' >> /home/${{ secrets.SSH_USER }}/.env && \
                   echo 'SERVER_NAME=185.10.45.10' >> /home/${{ secrets.SSH_USER }}/.env && \
-                  echo 'FRONTEND_URL=https://berson969.github.io' >> /home/${{ secrets.SSH_USER }}/.env
+                  echo 'FRONTEND_URL=https://berson969.github.io' >> /home/${{ secrets.SSH_USER }}/.env \
+                  echo 'ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}' >> /home/${{ secrets.SSH_USER }}/.env
                 "
-
-            - name: Copy .env file to another directory on server
-              run: |
-                  ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-                    cp /home/${{ secrets.SSH_USER }}/.env /home/${{ secrets.SSH_USER }}/backend/.env \
-                  "
 
             - name: Deploy Docker Compose application on server
               run: |
