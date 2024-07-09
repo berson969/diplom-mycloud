@@ -11,12 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from distutils.util import strtobool
 
 from corsheaders.defaults import default_headers
-from dotenv import load_dotenv
-
-
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 't')
+DEBUG = strtobool(os.environ.get('DEBUG', 'false'))
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(', ')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(', ')
 
 # Application definition
 INSTALLED_APPS = [
@@ -61,34 +58,31 @@ CORS_ALLOW_HEADERS = default_headers + (
 	'Access-Control-Allow-Credentials',
 	'Access-Control-Allow-Origin',
 	'Authorization',
-    'X-CSRFToken',
+	'X-CSRFToken',
 )  # noqa: WPS407
 
 CORS_EXPOSE_HEADERS = [
-    'Content-Type',
-    'Authorization',
-    'X-CSRFToken',
-] # noqa: WPS407
+	'Content-Type',
+	'Authorization',
+	'X-CSRFToken',
+]  # noqa: WPS407
+
+FRONTEND_URL = os.environ.get('FRONTEND_URL', '')
+SERVER_NAME = os.environ.get('SERVER_NAME', '')
+if SERVER_NAME == '':
+	BACKEND_URL = ""
+else:
+	BACKEND_URL = f"https://{SERVER_NAME}"
 
 CORS_ALLOWED_ORIGINS = [
-	os.getenv("FRONTEND_URL"),
-	f"https://{os.getenv('SERVER_NAME')}",
-	"http://localhost:4173",
+	FRONTEND_URL,
+	BACKEND_URL,
 	"http://localhost:5173",
 ]  # noqa: WPS407
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
-
-# SESSION_COOKIE_SAMESITE = 'None'
-# CSRF_COOKIE_SAMESITE = 'None'
-
-CSRF_TRUSTED_ORIGINS = [
-	os.getenv("FRONTEND_URL"),
-	f"https://{os.getenv('SERVER_NAME')}",
-	"http://localhost:5173",
-	"http://localhost:4173",
-] # noqa: WPS407
 
 # Для разработки, не используйте в продакшене
 CORS_ALLOW_CREDENTIALS = True
@@ -127,11 +121,11 @@ WSGI_APPLICATION = 'mycloud.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
-		'NAME': os.getenv("DB_BASE"),
-		'HOST': os.getenv("DB_HOST"),
-		'PORT': os.getenv("DB_PORT"),
-		'USER': os.getenv("DB_USER"),
-		'PASSWORD': os.getenv("DB_PASS"),
+		'NAME': os.environ.get("DB_BASE"),
+		'HOST': os.environ.get("DB_HOST"),
+		'PORT': os.environ.get("DB_PORT"),
+		'USER': os.environ.get("DB_USER"),
+		'PASSWORD': os.environ.get("DB_PASS"),
 	},
 }  # noqa: WPS407
 
@@ -178,7 +172,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "storage"
 

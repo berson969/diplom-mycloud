@@ -4,8 +4,8 @@ services:
     postgres:
         container_name: ${DB_HOST}
         image: postgres:16-alpine
-        ports:
-            - "${DB_PORT}:5432"
+        expose:
+            - ${DB_PORT}
         restart: unless-stopped
         environment:
             POSTGRES_USER: ${DB_USER}
@@ -23,10 +23,21 @@ services:
         container_name: backend
         build:
             context: ./backend
+            args:
+                DB_HOST: ${DB_HOST}
+                DB_PORT: ${DB_PORT}
+                DB_BASE: ${DB_BASE}
+                DB_USER: ${DB_USER}
+                DB_PASS: ${DB_PASS}
+                APP_DEBUG: ${APP_DEBUG}
+                SECRET_KEY: ${SECRET_KEY}
+                ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+                FRONTEND_URL: ${FRONTEND_URL}
+                SERVER_NAME: ${SERVER_NAME}
+                ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+        restart: always
         volumes:
-            - ./backend:/app
-            - .env:/app/.env
-            - static_volume:/app/static
+            - static_volume:/app/staticfiles
             - storage_volume:/app/storage
         expose:
             - 8000
@@ -44,11 +55,10 @@ services:
             - '443:443'
         command: sh -c "chmod +x /home/run.sh && /home/run.sh"
         volumes:
-            - static_volume:/static
+            - static_volume:/staticfiles
             - storage_volume:/storage
             - ./nginx:/home
         depends_on:
-            - postgres
             - backend
 
 volumes:

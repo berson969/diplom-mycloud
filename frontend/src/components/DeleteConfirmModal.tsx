@@ -12,6 +12,7 @@ const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({ showModal, onCl
                 modal.show();
             } else {
                 modal.hide();
+
             }
         }
     }, [showModal]);

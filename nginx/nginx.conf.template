@@ -11,14 +11,14 @@ http {
 		listen 443 ssl;
 		listen [::]:443 ssl;
 
-		ssl_certificate /home/ssl/cert.crt;
-		ssl_certificate_key /home/ssl/cert.key;
+		ssl_certificate /home/ssl/mysite.crt;
+		ssl_certificate_key /home/ssl/mysite.key;
 
 		server_name ${SERVER_NAME};
 
 		# Определить место хранения статики
 		location /static/ {
-			alias /static/;
+			alias /staticfiles/;
 			autoindex on;
 		}
 

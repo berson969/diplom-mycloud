@@ -16,9 +16,9 @@ const UpdateUser: React.FC = () => {
     if (!loginUser) return;
     const [updateUser, {isLoading}] = useUpdateUserMutation();
 
-    const [ username, setUsername] = useState(loginUser.username);
-    const [ email, setEmail] = useState(loginUser.email);
-    const [ password, setPassword] = useState('');
+    const [ username, setUsername] = useState<string>(loginUser.username);
+    const [ email, setEmail] = useState<string>(loginUser.email);
+    const [ password, setPassword] = useState<string>('');
     const [ confirmPassword, setConfirmPassword] = useState('');
     const [ errorMessage, setErrorMessage] = useState('');
 
@@ -46,6 +46,7 @@ const UpdateUser: React.FC = () => {
                 console.log("response Update", response)
                 dispatch(setLoginUser(response.data));
                 dispatch(setActiveState('auth'));
+				setErrorMessage('')
             }
         } catch (error) {
             setErrorMessage(getErrorMessage(error || 'Произошла ошибка при обновлении пользователя'));

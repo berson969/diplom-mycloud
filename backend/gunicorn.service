@@ -7,8 +7,8 @@ User=root
 Group=www-data
 WorkingDirectory=/home/root/app
 ExecStart=/home/root/app/venv/bin/gunicorn \
-	--access-logfile - \
-	--error-logfile - \
+	--access-logfile  /home/root/app/logs/gunicorn_access.log \
+	--error-logfile  /home/root/app/logs/gunicorn_error.log \
 	--workers 3 \
 	--bind unix:/home/root/appа/mycloud/mycloud.sock mycloud.wsgi:application
 

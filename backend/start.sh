@@ -1,4 +1,12 @@
 #!/bin/sh
+set -e
+
+# Wait for the database to be ready
+echo "Connect $DB_HOST:$DB_PORT from user $DB_USER..."
+until pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER"; do
+  echo "Waiting for database..."
+  sleep 2
+done
 
 python manage.py collectstatic --no-input
 

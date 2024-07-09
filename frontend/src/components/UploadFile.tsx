@@ -18,8 +18,8 @@ const UploadFile: React.FC = () => {
 
     const folderName = currentUser?.folder_name;
     const { refetch } = useGetFilesQuery(folderName || '');
-    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
+    const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
         if (files && files.length > 0) {
             const selectedFile = files[0];
             setFile(selectedFile);
@@ -41,19 +41,22 @@ const UploadFile: React.FC = () => {
                 setErrorMessage(getErrorMessage(response.error));
             } else {
                 console.log('Файл загружен успешно', response);
+				setErrorMessage('');
             }
         } catch (uploadError: any)  {
             if ('status' in uploadError && 'data' in uploadError) {
                 setErrorMessage(`статус ${uploadError.status} ${uploadError.data.file}`);
             } else {
-                setErrorMessage('Неизвестная ошибка');
+                setErrorMessage(`Неизвестная ошибка ${uploadError}`);
             }
             console.log('Ошибка при загрузке файла', uploadError);
         } finally {
             setFile(null)
             refetch()
             if (fileName.current) {
-                fileName.current.value = '';
+				if ("value" in fileName.current) {
+					fileName.current.value = '';
+				}
             }
         }
     };

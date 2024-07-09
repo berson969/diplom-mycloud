@@ -61,7 +61,7 @@ jobs:
                 ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
                   echo 'DB_BASE=${{ secrets.DB_BASE }}' > /home/${{ secrets.SSH_USER }}/.env && \
                   echo 'DB_HOST=${{ secrets.DB_HOST }}' >> /home/${{ secrets.SSH_USER }}/.env && \
-                  echo 'DB_PORT=${{ secrets.DB_PORT }}' >> /home/${{ secrets.SSH_USER }}/.env && \
+                  echo 'DB_PORT=5433' >> /home/${{ secrets.SSH_USER }}/.env && \
                   echo 'DB_USER=${{ secrets.DB_USER }}' >> /home/${{ secrets.SSH_USER }}/.env && \
                   echo 'DB_PASS=${{ secrets.DB_PASS }}' >> /home/${{ secrets.SSH_USER }}/.env && \
                   echo 'SECRET_KEY=${{ secrets.SECRET_KEY }}' >> /home/${{ secrets.SSH_USER }}/.env && \

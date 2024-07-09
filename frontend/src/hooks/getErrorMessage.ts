@@ -1,7 +1,7 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
 
-const getErrorMessage = (error: FetchBaseQueryError | SerializedError | undefined): string => {
+const getErrorMessage = (error: string): string => {
     if (error) {
         if ('status' in error) {
             // FetchBaseQueryError
