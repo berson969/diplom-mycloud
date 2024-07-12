@@ -9,7 +9,8 @@ import {setActiveState, setLoginUser} from "../slices/usersSlice";
 import getErrorMessage from "../hooks/getErrorMessage";
 import Loader from "./Loader.tsx";
 import PasswordInput from "./PasswordInput.tsx";
-import {ErrorProps} from "../models";
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import {SerializedError} from "@reduxjs/toolkit";
 
 const UpdateUser: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -50,7 +51,7 @@ const UpdateUser: React.FC = () => {
 				setErrorMessage('')
             }
         } catch (error) {
-			const errorMessage = getErrorMessage(error);
+			const errorMessage = getErrorMessage(error as FetchBaseQueryError | SerializedError);
             setErrorMessage(errorMessage);
         }
     };

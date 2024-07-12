@@ -63,6 +63,3 @@ export interface ShowPasswordProps {
 	setShowPassword: (show: boolean) => void;
 }
 
-export interface ErrorProps {
-	error: FetchBaseQueryError | SerializedError | undefined
-}

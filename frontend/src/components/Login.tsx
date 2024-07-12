@@ -7,7 +7,8 @@ import Loader from "./Loader.tsx";
 import {setActiveState, setLoginUser} from "../slices/usersSlice";
 import getErrorMessage from "../hooks/getErrorMessage.ts";
 import PasswordInput from "./PasswordInput.tsx";
-import {ErrorProps} from "../models";
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import {SerializedError} from "@reduxjs/toolkit";
 
 
 const Login: React.FC = () => {
@@ -52,7 +53,7 @@ const Login: React.FC = () => {
 			}
 		} catch (error) {
 			console.error('Ошибка входа:', error);
-			const errorMessage = getErrorMessage(error);
+			const errorMessage = getErrorMessage(error as FetchBaseQueryError | SerializedError);
 			setErrorMessage(errorMessage);
 		}
 	};
