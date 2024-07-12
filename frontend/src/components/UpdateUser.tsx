@@ -49,8 +49,9 @@ const UpdateUser: React.FC = () => {
                 dispatch(setActiveState('auth'));
 				setErrorMessage('')
             }
-        } catch (error: ErrorProps) {
-            setErrorMessage(getErrorMessage(error));
+        } catch (error) {
+			const errorMessage = getErrorMessage(error);
+            setErrorMessage(errorMessage);
         }
     };
     if (isLoading) return <Loader />;

@@ -50,9 +50,10 @@ const Login: React.FC = () => {
 					dispatch(setActiveState('auth'));
 				}
 			}
-		} catch (error: ErrorProps) {
+		} catch (error) {
 			console.error('Ошибка входа:', error);
-			setErrorMessage(getErrorMessage(error));
+			const errorMessage = getErrorMessage(error);
+			setErrorMessage(errorMessage);
 		}
 	};
 
