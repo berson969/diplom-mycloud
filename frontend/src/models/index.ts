@@ -1,6 +1,5 @@
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
-import {SerializedError} from "@reduxjs/toolkit";;
-
+import {SerializedError} from "@reduxjs/toolkit";
 
 export interface ErrorAlertProps {
 	typeError: string;
@@ -40,12 +39,6 @@ export interface FileType {
 	user: number;
 }
 
-export interface ContextMenuProps {
-	file: FileType;
-	onEdit: (id: number) => void;
-	onDelete: (id: number) => void;
-}
-
 export interface FileContextMenuProps {
 	file: FileType;
 }
@@ -70,3 +63,6 @@ export interface ShowPasswordProps {
 	setShowPassword: (show: boolean) => void;
 }
 
+export interface ErrorProps {
+	error: FetchBaseQueryError | SerializedError | undefined
+}

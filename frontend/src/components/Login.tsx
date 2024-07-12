@@ -7,6 +7,7 @@ import Loader from "./Loader.tsx";
 import {setActiveState, setLoginUser} from "../slices/usersSlice";
 import getErrorMessage from "../hooks/getErrorMessage.ts";
 import PasswordInput from "./PasswordInput.tsx";
+import {ErrorProps} from "../models";
 
 
 const Login: React.FC = () => {
@@ -49,7 +50,7 @@ const Login: React.FC = () => {
 					dispatch(setActiveState('auth'));
 				}
 			}
-		} catch (error) {
+		} catch (error: ErrorProps) {
 			console.error('Ошибка входа:', error);
 			setErrorMessage(getErrorMessage(error));
 		}

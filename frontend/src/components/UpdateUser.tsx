@@ -9,6 +9,7 @@ import {setActiveState, setLoginUser} from "../slices/usersSlice";
 import getErrorMessage from "../hooks/getErrorMessage";
 import Loader from "./Loader.tsx";
 import PasswordInput from "./PasswordInput.tsx";
+import {ErrorProps} from "../models";
 
 const UpdateUser: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -48,7 +49,7 @@ const UpdateUser: React.FC = () => {
                 dispatch(setActiveState('auth'));
 				setErrorMessage('')
             }
-        } catch (error) {
+        } catch (error: ErrorProps) {
             setErrorMessage(getErrorMessage(error));
         }
     };
