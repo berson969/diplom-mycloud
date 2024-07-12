@@ -49,7 +49,7 @@ const UpdateUser: React.FC = () => {
 				setErrorMessage('')
             }
         } catch (error) {
-            setErrorMessage(getErrorMessage(error || 'Произошла ошибка при обновлении пользователя'));
+            setErrorMessage(getErrorMessage(error));
         }
     };
     if (isLoading) return <Loader />;

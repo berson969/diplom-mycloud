@@ -11,7 +11,7 @@ import PasswordInput from "./PasswordInput.tsx";
 
 const Login: React.FC = () => {
 	const dispatch = useDispatch();
-	const [loginAction, { isLoading, error }] = useLoginActionMutation()
+	const [login, { isLoading, error }] = useLoginActionMutation()
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [rememberMe, setRememberMe] = useState(false);
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
 					localStorage.removeItem('username');
 					localStorage.removeItem('password');
 				}
-				const response = await loginAction({username, password});
+				const response = await login({username, password});
 				if (response && response.error && 'error' in response) {
 					setErrorMessage(getErrorMessage(response.error));
 				} else {
@@ -51,7 +51,7 @@ const Login: React.FC = () => {
 			}
 		} catch (error) {
 			console.error('Ошибка входа:', error);
-			setErrorMessage(getErrorMessage(error || 'Произошла ошибка при логине пользователя'));
+			setErrorMessage(getErrorMessage(error));
 		}
 	};
 
