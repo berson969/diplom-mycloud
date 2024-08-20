@@ -3,6 +3,7 @@ import React from 'react';
 import {FileType} from "../models";
 import FileIcon from "./FileIcon";
 import {formattedFileSize} from "../hooks/formattedFileSize";
+import '../css/card.css';
 
 
 const FileGrid: React.FC<{file: FileType, onDownload: ()=> void}> = ({file, onDownload}) => {
@@ -15,7 +16,7 @@ const FileGrid: React.FC<{file: FileType, onDownload: ()=> void}> = ({file, onDo
 			>
                 <FileIcon fileName={file.file_name} />
                 <div className="card-body">
-                    <h6 className="card-title ">{`${file.file_name} - ${formattedFileSize(file.size)}`}</h6>
+                    <h6 className="card-title text-break">{`${file.file_name} - ${formattedFileSize(file.size)}`}</h6>
                 </div>
             </a>
         </div>

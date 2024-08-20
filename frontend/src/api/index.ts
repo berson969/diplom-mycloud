@@ -1,21 +1,21 @@
 import {createApi, fetchBaseQuery, retry} from '@reduxjs/toolkit/query/react';
 import {FileType, UserType} from "../models";
 
-// Функция для получения CSRF токена из куки
+// Функция для получения CSRF токена из cookie
 function getCookie(name: string) {
 	let cookieValue = null;
     console.log('document.cookie', document.cookie)
 	if (document.cookie && document.cookie !== '') {
 		const cookies = document.cookie.split(';');
 		for (let i = 0; i < cookies.length; i++) {
- 			const cookie = cookies[i].trim();
- 			if (cookie.substring(0, name.length + 1) === (name + '=')) {
- 				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
- 				break;
- 			}
+			const cookie = cookies[i].trim();
+			if (cookie.substring(0, name.length + 1) === (name + '=')) {
+				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				break;
+			}
 		}
- 	}
- 	return cookieValue;
+	}
+	return cookieValue;
 }
 
 const baseQuery = retry(fetchBaseQuery({
@@ -23,22 +23,15 @@ const baseQuery = retry(fetchBaseQuery({
 	credentials: 'include',
 	prepareHeaders: (headers) => {
 		const csrftoken = getCookie('csrftoken');
-		const sessionid = getCookie('sessionid');
-		// const sessionid = sessionStorage.getItem('sessionid');
-		headers.set('Content-Type', 'application/json');
+
 		if (csrftoken) {
 			headers.set('X-CSRFToken', csrftoken);
 			console.log('X-CSRFToken', csrftoken);
 		}
-		if (sessionid) {
-			headers.set('Authorization', `Session ${sessionid}`);
-			console.log(`Session ${sessionid}`);
-		}
-
 		return headers;
 	},
 }), {
-	maxRetries: 3,
+	maxRetries: 1,
 });
 
 export const userApi = createApi({
@@ -78,17 +71,10 @@ export const userApi = createApi({
 		loginAction: builder.mutation({
 			query: (data) => {
 				console.log('Login data:', data);
-				const formData = new URLSearchParams();
-				for (const key in data) {
-					formData.append(key, data[key]);
-				}
 				return {
 					url: '/login/',
 					method: 'POST',
-					body: formData.toString(),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded',
-					},
+					body: JSON.stringify(data),
 				};
 			},
 		}),
@@ -134,9 +120,6 @@ export const  fileApi = createApi({
 				url: `/files/${data.folder_name}/${data.id}`,
 				method: 'PATCH',
 				body: data,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
 			}),
 			invalidatesTags: ({ id }) => [{ type: 'File', id }],
 		}),
@@ -161,7 +144,7 @@ export const {
 	useGetAllUsersQuery,
 	useCreateUserMutation,
 	useUpdateUserMutation,
-	useDeleteUserMutation,
+	// useDeleteUserMutation,
 	useLoginActionMutation,
 	useLogoutActionMutation,
 } = userApi;

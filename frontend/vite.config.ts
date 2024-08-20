@@ -9,8 +9,8 @@ export default defineConfig(({ mode }) => {
 	// Логируем конфигурацию для отладки
 	console.log('Vite config:', {
 		base: env.VITE_BUILD_PREFIX ?? '/',
-		'process.env.VITE_BASE_QUERY_URL': JSON.stringify(env.VITE_BASE_QUERY_URL),
-		'process.env.VITE_BUILD_PREFIX': JSON.stringify(env.VITE_BUILD_PREFIX)
+		'process.env.VITE_BASE_QUERY_URL': env.VITE_BASE_QUERY_URL,
+		'process.env.VITE_BUILD_PREFIX': env.VITE_BUILD_PREFIX
 	})
 
 	return {

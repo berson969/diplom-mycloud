@@ -1,4 +1,5 @@
 from datetime import datetime
+from json import dumps
 from uuid import uuid4
 
 from django.urls import reverse
@@ -6,7 +7,7 @@ from django.test import TestCase, Client
 from django.contrib.auth.hashers import check_password
 from server.models import User, File
 
-# URL для вашего API
+# URL для тестового API
 url = 'http://localhost:8000/api'
 
 
@@ -123,7 +124,11 @@ class APITests(TestCase):
 			"username": "admin",
 			"password": "admin-password"
 		}
-		response = self.client.post(login_url, data=payload)
+		response = self.client.post(
+			login_url,
+			data=payload,
+			content_type='application/json'
+		)
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json()['message'], "Успешная авторизация")
 
@@ -141,9 +146,27 @@ class APITests(TestCase):
 			"username": "admin",
 			"password": "password"
 		}
-		response = self.client.post(login_url, data=payload)
+		response = self.client.post(
+			login_url,
+			data=payload,
+			content_type='application/json'
+		)
 		self.assertEqual(response.status_code, 401)
 		self.assertEqual(response.json()['message'], 'Неверный логин или пароль')
+
+	def test_wrong_json(self):
+		login_url = reverse('user-login')
+		payload = {
+			"username": "admin",
+			"password": "password"
+		}
+		response = self.client.post(
+			login_url,
+			data=payload,
+			content_type='application/www-form-urlencoded'
+		)
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.json()['message'], 'Invalid JSON')
 
 	def test_login_with_wrong_method(self):
 		login_url = reverse('user-login')

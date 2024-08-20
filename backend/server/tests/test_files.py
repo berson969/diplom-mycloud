@@ -52,6 +52,7 @@ class APITests(TestCase):
 			{'comment': 'Updated comment'},
 			content_type='application/json',
 		)
+		# print('response', response.json())
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json()['comment'], 'Updated comment')
 
@@ -154,6 +155,7 @@ class APITests(TestCase):
 			'folder_name': self.testuser.folder_name,
 			'pk': self.file_instance_2.json()['id']
 		})
+		# print("file_instance_2", self.file_instance_2.json())
 		self.assertTrue(os.path.isfile(f"storage/{self.testuser.folder_name}/{self.file_instance_2.json()['file_name']}"))
 		response = self.client.delete(url)
 		self.assertEqual(response.status_code, 204)

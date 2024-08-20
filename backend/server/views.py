@@ -1,13 +1,15 @@
 import os
+from json import JSONDecodeError, loads
 
+from rest_framework.authentication import SessionAuthentication
 from django.contrib.auth import authenticate, login, logout
 from django.http import FileResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie, csrf_protect
-from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 
 from .models import File, User
@@ -17,6 +19,7 @@ from .serializers import FileSerializer, UserSerializer
 class UserViewSet(viewsets.ModelViewSet):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
+	# authentication_classes = [SessionAuthentication]
 
 	def get_permissions(self):
 		if self.action == 'destroy':
@@ -47,9 +50,14 @@ class UserViewSet(viewsets.ModelViewSet):
 @csrf_exempt
 def user_login(request):
 	if request.method == 'POST':
-		username = request.POST.get('username')
-		password = request.POST.get('password')
-		user = authenticate(request, username=username, password=password)
+		try:
+			data = loads(request.body)
+			username = data.get('username')
+			password = data.get('password')
+			user = authenticate(request, username=username, password=password)
+		except JSONDecodeError:
+			response_data = {'message': 'Invalid JSON'}
+			return JsonResponse(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 		if user:
 			login(request, user)
@@ -93,10 +101,10 @@ def user_logout(request):
 		return JsonResponse(response_data, status=status.HTTP_302_FOUND)
 
 
-@method_decorator(ensure_csrf_cookie, name='dispatch')
 class FileViewSet(viewsets.ModelViewSet):
 	queryset = File.objects.all()
 	serializer_class = FileSerializer
+	authentication_classes = [SessionAuthentication]
 	permission_classes = [permissions.IsAuthenticated]
 
 	def list(self, request, folder_name=None, *args, **kwargs):
@@ -119,7 +127,10 @@ class FileViewSet(viewsets.ModelViewSet):
 		serializer = self.serializer_class(queryset, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
 
+	@action(detail=False, methods=['post'], parser_classes=[MultiPartParser, FormParser])
 	def create(self, request, *args, **kwargs):
+		# print('data', request.data)
+		# print('files:', request.FILES)
 		serializer = FileSerializer(data=request.data)
 		if serializer.is_valid():
 			file_instance = serializer.save(user=request.user)

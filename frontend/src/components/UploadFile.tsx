@@ -30,13 +30,14 @@ const UploadFile: React.FC = () => {
         if (!file || !currentUser?.folder_name || !currentUser.id) return;
 
         const formData = new FormData();
-        formData.append('file', file, file.name);
+        formData.append('file', file);
         formData.append('user', currentUser.id.toString());
         formData.append('folder_name', currentUser.folder_name);
         formData.append('file_name',  file.name);
 
         try {
             const response: UploadFileResponse = await uploadFile(formData);
+            console.log('responseUpload', response)
             if (response.error && 'error' in response) {
                 setErrorMessage(getErrorMessage(response.error));
             } else {

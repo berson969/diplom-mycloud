@@ -5,6 +5,7 @@ from .models import File, User
 
 
 class UserSerializer(serializers.ModelSerializer):
+
 	class Meta:
 		model = User
 		fields = [
@@ -59,10 +60,7 @@ class FileSerializer(serializers.ModelSerializer):
 		return attrs
 
 	def create(self, validated_data):
-		# Дополнительная логика при создании новой записи
-		instance = File(**validated_data)
-		instance.save()
-		return instance
+		return super().create(validated_data)
 
 	def update(self, instance, validated_data):
 		# Дополнительная логика при обновлении записи

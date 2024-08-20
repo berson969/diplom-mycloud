@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import os
+# import os
 from pathlib import Path
-from distutils.util import strtobool
+from config import config
+# from distutils.util import strtobool
 
 from corsheaders.defaults import default_headers
 
@@ -22,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = config.secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = strtobool(os.environ.get('DEBUG', 'false'))
+DEBUG = config.app_debug
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(', ')
+ALLOWED_HOSTS = config.allowed_hosts
 
 # Application definition
 INSTALLED_APPS = [
@@ -53,6 +54,7 @@ MIDDLEWARE = [
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]  # noqa: WPS407
 
+# Settings for CORS
 CORS_ALLOW_HEADERS = default_headers + (
 	'Access-Control-Allow-Headers',
 	'Access-Control-Allow-Credentials',
@@ -67,8 +69,8 @@ CORS_EXPOSE_HEADERS = [
 	'X-CSRFToken',
 ]  # noqa: WPS407
 
-FRONTEND_URL = os.environ.get('FRONTEND_URL', '')
-SERVER_NAME = os.environ.get('SERVER_NAME', '')
+FRONTEND_URL = config.frontend_url
+SERVER_NAME = config.server_name
 if SERVER_NAME == '':
 	BACKEND_URL = ""
 else:
@@ -78,13 +80,16 @@ CORS_ALLOWED_ORIGINS = [
 	FRONTEND_URL,
 	BACKEND_URL,
 	"http://localhost:5173",
+	"http://localhost:8000",
 ]  # noqa: WPS407
+
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
 
-# Для разработки, не используйте в продакшене
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = [
@@ -121,11 +126,11 @@ WSGI_APPLICATION = 'mycloud.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
-		'NAME': os.environ.get("DB_BASE"),
-		'HOST': os.environ.get("DB_HOST"),
-		'PORT': os.environ.get("DB_PORT"),
-		'USER': os.environ.get("DB_USER"),
-		'PASSWORD': os.environ.get("DB_PASS"),
+		'NAME': config.db_base,
+		'HOST': config.db_host,
+		'PORT': config.db_port,
+		'USER': config.db_user,
+		'PASSWORD': config.db_pass,
 	},
 }  # noqa: WPS407
 

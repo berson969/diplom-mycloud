@@ -30,10 +30,11 @@ const Storage: React.FC = () => {
 		}
 	}, [currentUser, loginUser, dispatch]);
 
-	if (!currentUser || !currentUser?.folder_name) return <Loader />;
-
 	const { data: files, isLoading, error }
-		= useGetFilesQuery(currentUser.folder_name);
+		= useGetFilesQuery(currentUser?.folder_name ?? '', {skip: !currentUser?.folder_name,});
+
+	console.log('Files data:', files);
+	console.log('Error:', error);
 
 	useEffect(() => {
 		if (error) {
@@ -45,6 +46,8 @@ const Storage: React.FC = () => {
 		sessionStorage.setItem('view', tag);
 		dispatch(setView(tag));
 	}
+
+	if (!currentUser || !currentUser?.folder_name) return <Loader />;
 
 	console.log("storage files", files)
 

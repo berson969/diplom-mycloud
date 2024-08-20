@@ -17,11 +17,13 @@ const FileList : React.FC<{file: FileType, onDownload: ()=> void}> = ({file, onD
                 className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                 onClick={onDownload}
             >
-                <span>{file.file_name}</span>
+                <div className="col-8 text-break px-1">
+                    <span>{file.file_name}</span>
+                </div>
                 <div className="col-4 d-flex justify-content-between">
-                    <span className="fst-italic fs-6">{formattedFileSize(file.size)}</span>
+                    <span className="fst-italic fs-6 px-1">{formattedFileSize(file.size)}</span>
                     <span>{new Date(file.upload_date).toLocaleDateString('ru-RU', dateFormatOptions)}</span>
-                    <span className="fst-italic fs-6">
+                    <span className="fst-italic fs-6 px-1 text-break">
                         {file.last_download_date
                             ? new Date(file.last_download_date).toLocaleDateString('ru-RU', dateFormatOptions)
                             : 'нет скачиваний'}
