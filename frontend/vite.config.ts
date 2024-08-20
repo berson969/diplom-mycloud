@@ -6,7 +6,7 @@ export default defineConfig(({ mode }) => {
 	// Загружаем переменные окружения
 	const env = loadEnv(mode, process.cwd(), '')
 
-	// Логируем конфигурацию для отладки
+	// Дотируем конфигурацию для отладки
 	console.log('Vite config:', {
 		base: env.VITE_BUILD_PREFIX ?? '/',
 		'process.env.VITE_BASE_QUERY_URL': env.VITE_BASE_QUERY_URL,
