@@ -94,7 +94,7 @@ export const  fileApi = createApi({
 
 	endpoints: (builder) => ({
 		getFiles: builder.query<FileType[], string>({
-			query: (userFolder) => `/files/${userFolder}`,
+			query: (userFolder) => `/files/${userFolder}/`,
 			providesTags: (result) =>
 				result
 					? [

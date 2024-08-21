@@ -79,7 +79,7 @@ else:
 CORS_ALLOWED_ORIGINS = [
 	FRONTEND_URL,
 	BACKEND_URL,
-	"http://localhost:5173",
+	"https://localhost:5173",
 	"http://localhost:8000",
 ]  # noqa: WPS407
 

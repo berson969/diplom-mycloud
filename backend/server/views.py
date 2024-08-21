@@ -1,7 +1,7 @@
 import os
 from json import JSONDecodeError, loads
 
-from rest_framework.authentication import SessionAuthentication
+# from rest_framework.authentication import SessionAuthentication
 from django.contrib.auth import authenticate, login, logout
 from django.http import FileResponse, JsonResponse
 from django.shortcuts import get_object_or_404
@@ -104,7 +104,7 @@ def user_logout(request):
 class FileViewSet(viewsets.ModelViewSet):
 	queryset = File.objects.all()
 	serializer_class = FileSerializer
-	authentication_classes = [SessionAuthentication]
+	# authentication_classes = [SessionAuthentication]
 	permission_classes = [permissions.IsAuthenticated]
 
 	def list(self, request, folder_name=None, *args, **kwargs):
