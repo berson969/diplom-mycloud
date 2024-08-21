@@ -1,5 +1,4 @@
 .github/workflows/backend.yaml
-.github/workflows/frontend.yaml
 
 frontend/src/hooks/funcUploadWithProgress.ts
 .github/workflows/__backend.yaml

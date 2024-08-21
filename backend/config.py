@@ -46,7 +46,7 @@ class Config:
 
     @property
     def frontend_url(self):
-        return os.getenv('FRONTEND_URL', 'http://localhost:5173')
+        return os.getenv('FRONTEND_URL', 'https://localhost:5173')
 
     @property
     def server_name(self):
