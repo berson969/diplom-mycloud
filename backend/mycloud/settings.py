@@ -29,7 +29,6 @@ SECRET_KEY = config.secret_key
 DEBUG = config.app_debug
 
 ALLOWED_HOSTS = config.allowed_hosts
-print('ALLOWED_HOSTS', ALLOWED_HOSTS)
 
 # Application definition
 INSTALLED_APPS = [
