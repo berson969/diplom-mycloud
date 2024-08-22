@@ -31,10 +31,11 @@ const Storage: React.FC = () => {
 	}, [currentUser, loginUser, dispatch]);
 
 	const { data: files, isLoading, error }
-		= useGetFilesQuery(currentUser?.folder_name ?? '', {skip: !currentUser?.folder_name,});
+		= useGetFilesQuery(currentUser?.folder_name ?? '', {skip: !currentUser?.folder_name});
 
-	console.log('Files data:', files);
-	console.log('Error:', error);
+	console.log('currentUser', currentUser);
+	// console.log('Files data:', files);
+	// console.log('Error:', error);
 
 	useEffect(() => {
 		if (error) {

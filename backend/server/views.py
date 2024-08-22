@@ -19,7 +19,6 @@ from .serializers import FileSerializer, UserSerializer
 class UserViewSet(viewsets.ModelViewSet):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
-	# authentication_classes = [SessionAuthentication]
 
 	def get_permissions(self):
 		if self.action == 'destroy':
@@ -104,7 +103,6 @@ def user_logout(request):
 class FileViewSet(viewsets.ModelViewSet):
 	queryset = File.objects.all()
 	serializer_class = FileSerializer
-	# authentication_classes = [SessionAuthentication]
 	permission_classes = [permissions.IsAuthenticated]
 
 	def list(self, request, folder_name=None, *args, **kwargs):
