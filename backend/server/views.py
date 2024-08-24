@@ -106,6 +106,8 @@ class FileViewSet(viewsets.ModelViewSet):
 	permission_classes = [permissions.IsAuthenticated]
 
 	def list(self, request, folder_name=None, *args, **kwargs):
+		print("Cookies:", request.COOKIES)
+		print("User:", request.user)
 		if request.user.is_superuser:
 			# Получаем параметр user_folder из запроса, если он есть
 			if not folder_name:
