@@ -32,56 +32,56 @@ ALLOWED_HOSTS = config.allowed_hosts
 
 # Application definition
 INSTALLED_APPS = [
-	'django.contrib.admin',
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.messages',
-	'django.contrib.staticfiles',
-	'corsheaders',
-	'rest_framework',
-	'server',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'corsheaders',
+    'rest_framework',
+    'server',
 ]  # noqa: WPS407
 
 MIDDLEWARE = [
-	'django.middleware.security.SecurityMiddleware',
-	'django.contrib.sessions.middleware.SessionMiddleware',
-	'corsheaders.middleware.CorsMiddleware',
-	'django.middleware.common.CommonMiddleware',
-	'django.middleware.csrf.CsrfViewMiddleware',
-	'django.contrib.auth.middleware.AuthenticationMiddleware',
-	'django.contrib.messages.middleware.MessageMiddleware',
-	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]  # noqa: WPS407
 
 # Settings for CORS
 CORS_ALLOW_HEADERS = default_headers + (
-	'Access-Control-Allow-Headers',
-	'Access-Control-Allow-Credentials',
-	'Access-Control-Allow-Origin',
-	'Authorization',
-	'X-CSRFToken',
+    'Access-Control-Allow-Headers',
+    'Access-Control-Allow-Credentials',
+    'Access-Control-Allow-Origin',
+    'Authorization',
+    'X-CSRFToken',
 )  # noqa: WPS407
 
 CORS_EXPOSE_HEADERS = [
-	'Content-Type',
-	'Authorization',
-	'X-CSRFToken',
+    'Content-Type',
+    'Authorization',
+    'X-CSRFToken',
 ]  # noqa: WPS407
 
 FRONTEND_URL = config.frontend_url
 SERVER_NAME = config.server_name
 if SERVER_NAME == '':
-	BACKEND_URL = ""
+    BACKEND_URL = ""
 else:
-	BACKEND_URL = f"https://{SERVER_NAME}"
+    BACKEND_URL = f"https://{SERVER_NAME}"
 
 CORS_ALLOWED_ORIGINS = [
-	FRONTEND_URL,
-	BACKEND_URL,
-	"https://localhost:5173",
-	"https://localhost:4173",
-	"http://localhost:8000",
+    FRONTEND_URL,
+    BACKEND_URL,
+    "https://localhost:5173",
+    "https://localhost:4173",
+    "http://localhost:8000",
 ]  # noqa: WPS407
 
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
@@ -95,30 +95,30 @@ SESSION_COOKIE_SAMESITE = 'Lax'
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = [
-	"DELETE",
-	"GET",
-	"OPTIONS",
-	"PATCH",
-	"POST",
-	"PUT",
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
 ]  # noqa: WPS407
 
 ROOT_URLCONF = 'mycloud.urls'
 
 TEMPLATES = [
-	{
-		'BACKEND': 'django.template.backends.django.DjangoTemplates',
-		'DIRS': [],
-		'APP_DIRS': True,
-		'OPTIONS': {
-			'context_processors': [
-				'django.template.context_processors.debug',
-				'django.template.context_processors.request',
-				'django.contrib.auth.context_processors.auth',
-				'django.contrib.messages.context_processors.messages',
-			],
-		},
-	},
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
 ]
 
 WSGI_APPLICATION = 'mycloud.wsgi.application'
@@ -126,48 +126,49 @@ WSGI_APPLICATION = 'mycloud.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.postgresql',
-		'NAME': config.db_base,
-		'HOST': config.db_host,
-		'PORT': config.db_port,
-		'USER': config.db_user,
-		'PASSWORD': config.db_pass,
-	},
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config.db_base,
+        'HOST': config.db_host,
+        'PORT': config.db_port,
+        'USER': config.db_user,
+        'PASSWORD': config.db_pass,
+    },
 }  # noqa: WPS407
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-	{
-		'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-	},
-	{
-		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-	},
-	{
-		'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-	},
-	{
-		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-	},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]  # noqa: WPS407
 
 AUTHENTICATION_BACKENDS = [
-	'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
-	'DEFAULT_RENDERER_CLASSES': [
-		'rest_framework.renderers.JSONRenderer',
-	],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
 }  # noqa: WPS407
 
-# Internationalizationy
+# Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
