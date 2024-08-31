@@ -28,8 +28,8 @@ export default defineConfig(({ mode }) => {
 	if (env.VITE_BASE_QUERY_URL === 'https://localhost/api') {
 		config.server = {
 			https: {
-				key: fs.readFileSync(path.resolve(__dirname, '../nginx/ssl/mysite.key')),
-				cert: fs.readFileSync(path.resolve(__dirname, '../nginx/ssl/mysite.crt')),
+				key: fs.readFileSync(path.resolve(__dirname, '../nginx/ssl/cert.key')),
+				cert: fs.readFileSync(path.resolve(__dirname, '../nginx/ssl/cert.crt')),
 			},
 			host: 'localhost',
 			port: 5173,

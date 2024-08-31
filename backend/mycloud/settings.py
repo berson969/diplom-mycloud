@@ -76,9 +76,13 @@ if SERVER_NAME == '':
 else:
     BACKEND_URL = f"https://{SERVER_NAME}"
 
+SESSION_COOKIE_DOMAIN = BACKEND_URL
+CSRF_COOKIE_DOMAIN = BACKEND_URL
+
 CORS_ALLOWED_ORIGINS = [
     FRONTEND_URL,
     BACKEND_URL,
+    'https://berson969.github.io',
     "https://localhost:5173",
     "https://localhost:4173",
     "http://localhost:8000",
@@ -87,21 +91,24 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 
 CSRF_COOKIE_SECURE = True
-CSRF_USE_SESSIONS = True
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_HTTPONLY = True
+CSRF_USE_SESSIONS = False
+SESSION_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = 'Lax'
+
+# SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_HTTPONLY = False
+# SESSION_COOKIE_SAMESITE = 'Lax'
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]  # noqa: WPS407
+# CORS_ALLOW_METHODS = [
+#     "DELETE",
+#     "GET",
+#     "OPTIONS",
+#     "PATCH",
+#     "POST",
+#     "PUT",
+# ]  # noqa: WPS407
 
 ROOT_URLCONF = 'mycloud.urls'
 

@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import FileResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.views.decorators.csrf import csrf_exempt, csrf_protect, ensure_csrf_cookie
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -46,7 +46,8 @@ class UserViewSet(viewsets.ModelViewSet):
 		return Response(response_data, status=status.HTTP_201_CREATED)
 
 
-@csrf_exempt
+# @csrf_exempt
+@ensure_csrf_cookie
 def user_login(request):
 	if request.method == 'POST':
 		try:
@@ -85,7 +86,8 @@ def user_login(request):
 		return JsonResponse(response_data, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
-@csrf_protect
+# @csrf_protect
+@ensure_csrf_cookie
 def user_logout(request):
 	try:
 		logout(request)
@@ -106,8 +108,6 @@ class FileViewSet(viewsets.ModelViewSet):
 	permission_classes = [permissions.IsAuthenticated]
 
 	def list(self, request, folder_name=None, *args, **kwargs):
-		print("Cookies:", request.COOKIES)
-		print("User:", request.user)
 		if request.user.is_superuser:
 			# Получаем параметр user_folder из запроса, если он есть
 			if not folder_name:
