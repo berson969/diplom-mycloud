@@ -25,7 +25,7 @@ jobs:
               env:
                   VITE_BASE_QUERY_URL: https://185.10.45.10/api
                   VITE_BUILD_PREFIX: /diplom-mycloud/
-                  VITE_BASE_HOST: https://berson969.github.io/diplom-mycloud/
+                  VITE_BASE_HOST: https://berson969.github.io
               run: |
                   npm install
                   npm run build
