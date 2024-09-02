@@ -56,6 +56,11 @@ class Config:
     def admin_password(self):
         return os.getenv('ADMIN_PASSWORD', 'adminNEWadmin')
 
+    @property
+    def domain(self):
+        domain = os.getenv('SERVER_NAME', 'localhost')
+        return f".{domain}"
+
 
 # Instantiate the config
 config = Config()
