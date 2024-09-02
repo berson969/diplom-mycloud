@@ -74,14 +74,16 @@ SERVER_NAME = config.server_name
 if SERVER_NAME == '':
     BACKEND_URL = ""
 else:
-    BACKEND_URL = f"https://{SERVER_NAME}"
+    BACKEND_URL = f"./{SERVER_NAME}"
 
 SESSION_COOKIE_DOMAIN = BACKEND_URL
 CSRF_COOKIE_DOMAIN = BACKEND_URL
 
 CORS_ALLOWED_ORIGINS = [
     FRONTEND_URL,
-    BACKEND_URL,
+    # BACKEND_URL,
+    f"https://{SERVER_NAME}",
+    f"http://{SERVER_NAME}",
     'https://berson969.github.io',
     "https://localhost:5173",
     "https://localhost:4173",
