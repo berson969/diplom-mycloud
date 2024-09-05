@@ -22,7 +22,7 @@ const baseQuery = retry(fetchBaseQuery({
 	baseUrl: import.meta.env.VITE_BASE_QUERY_URL,
 	credentials: 'include',
 	prepareHeaders: (headers) => {
-		headers.set('Content-Type', 'application/json');
+		// headers.set('Content-Type', 'application/json');
 		const csrftoken = getCookie('csrftoken');
 
 		if (csrftoken) {
@@ -30,11 +30,11 @@ const baseQuery = retry(fetchBaseQuery({
 			console.log('X-CSRFToken', csrftoken);
 		}
 
-		const sessionId = getCookie('sessionid');
-		if (sessionId) {
-			headers.set('sessionid', sessionId);
-			console.log('sessionid', sessionId);
-		}
+		// const sessionId = getCookie('sessionid');
+		// if (sessionId) {
+		// 	headers.set('sessionid', sessionId);
+		// 	console.log('sessionid', sessionId);
+		// }
 		return headers;
 	},
 }), {

@@ -3,11 +3,21 @@ events {
 }
 
 http {
-    log_format custom '$remote_addr - $remote_user [$time_local] '
-                         '"$request" $status $body_bytes_sent '
-                         '"$http_referer" "$http_user_agent" '
-                         '"$http_x_forwarded_for" "$http_host" "$host" '
-                         '"$http_cookie"';
+    log_format custom
+                        'IP: $remote_addr - User: $remote_user '
+                        'Time: [$time_local] '
+                        'Request: "$request" '
+                        'Status: $status '
+                        'Bytes Sent: $body_bytes_sent '
+                        'Referer: "$http_referer" '
+                        'User Agent: "$http_user_agent" '
+                        'X-Forwarded-For: "$http_x_forwarded_for" '
+                        'HTTP Host: "$http_host" '
+                        'Host: "$host" '
+                        'Cookie: "$http_cookie" '
+                        'X-CSRFToken: "$http_x_csrftoken" '
+                        'Content-Type: "$http_content_type" '
+                        'Authorization: "$http_authorization"';
 
 	upstream backend-web {
 	server backend:8000;
@@ -46,7 +56,7 @@ http {
 			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 			proxy_set_header X-Forwarded-Proto $scheme;
 			proxy_set_header Referer $http_referer;
-			proxy_cookie_path / /;
+			# proxy_cookie_path / /;
 
 			# Отключаем перенаправление
 			proxy_redirect off;
