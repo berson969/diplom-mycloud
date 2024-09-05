@@ -117,25 +117,25 @@ export const  fileApi = createApi({
 			invalidatesTags:  [{ type: 'File', id: 'LIST' }],
 		}),
 		uploadFile: builder.mutation({
-			query: (data) => {
+			query: (data: FormData) => {
 				const isFormData = data instanceof FormData;
 				const csrftoken = getCookie('csrftoken');
 
 				if (isFormData && csrftoken) {
-					// Если это FormData, добавляем CSRF-токен в FormData
 					data.append('csrfmiddlewaretoken', csrftoken);
+				}
+
+				const headers: Record<string, string> = {};
+
+				if (csrftoken) {
+					headers['X-CSRFToken'] = csrftoken;
 				}
 
 				return {
 					url: `/files/${data.get('folder_name')}/`,
 					method: 'POST',
 					body: data,
-					headers: isFormData
-						? {} // Для FormData заголовки устанавливаются автоматически
-						: {
-							'Content-Type': 'application/json',
-							'X-CSRFToken': csrftoken // Для JSON-запросов
-						},
+					headers: headers
 				};
 			},
 			invalidatesTags:  [{type: 'File', id: 'LIST'}]
