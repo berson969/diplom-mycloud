@@ -22,7 +22,7 @@ const baseQuery = retry(fetchBaseQuery({
 	baseUrl: import.meta.env.VITE_BASE_QUERY_URL,
 	credentials: 'include',
 	prepareHeaders: (headers) => {
-		// headers.set('Content-Type', 'application/json');
+		headers.set('Content-Type', 'application/json');
 		const csrftoken = getCookie('csrftoken');
 
 		if (csrftoken) {
