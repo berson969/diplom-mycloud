@@ -115,12 +115,28 @@ export const  fileApi = createApi({
 			invalidatesTags:  [{ type: 'File', id: 'LIST' }],
 		}),
 		uploadFile: builder.mutation({
-			query: (data) => ({
-				url: `/files/${data.get('folder_name')}/`,
-				method: 'POST',
-				body: data,
-			}),
-			invalidatesTags:  [{ type: 'File', id: 'LIST' }],
+			query: (data) => {
+				const isFormData = data instanceof FormData;
+				const csrftoken = getCookie('csrftoken');
+
+				if (isFormData && csrftoken) {
+					// Если это FormData, добавляем CSRF-токен в FormData
+					data.append('csrfmiddlewaretoken', csrftoken);
+				}
+
+				return {
+					url: `/files/${data.get('folder_name')}/`,
+					method: 'POST',
+					body: data,
+					headers: isFormData
+						? {} // Для FormData заголовки устанавливаются автоматически
+						: {
+							'Content-Type': 'application/json',
+							'X-CSRFToken': csrftoken // Для JSON-запросов
+						},
+				};
+			},
+			invalidatesTags:  [{type: 'File', id: 'LIST'}]
 		}),
 		updateFile: builder.mutation({
 			query: (data) => ({
