@@ -5,6 +5,8 @@ import {FileType, UserType} from "../models";
 function getCookie(name: string) {
 	let cookieValue = null;
     console.log('document.cookie', document.cookie)
+	const value = `; ${document.cookie}`;
+	console.log("New cookies", value)
 	if (document.cookie && document.cookie !== '') {
 		const cookies = document.cookie.split(';');
 		for (let i = 0; i < cookies.length; i++) {
