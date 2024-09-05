@@ -30,10 +30,10 @@ const baseQuery = retry(fetchBaseQuery({
 			console.log('X-CSRFToken', csrftoken);
 		}
 
-		const sessionId = getCookie('sessionId');
+		const sessionId = getCookie('sessionid');
 		if (sessionId) {
-			headers.set('sessionId', sessionId);
-			console.log('sessionId', sessionId);
+			headers.set('sessionid', sessionId);
+			console.log('sessionid', sessionId);
 		}
 		return headers;
 	},
