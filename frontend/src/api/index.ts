@@ -29,6 +29,12 @@ const baseQuery = retry(fetchBaseQuery({
 			headers.set('X-CSRFToken', csrftoken);
 			console.log('X-CSRFToken', csrftoken);
 		}
+
+		const sessionId = getCookie('sessionId');
+		if (sessionId) {
+			headers.set('sessionId', sessionId);
+			console.log('sessionId', sessionId);
+		}
 		return headers;
 	},
 }), {
