@@ -58,12 +58,14 @@ jobs:
                     echo "DB_NAME: $DB_NAME"
                   
                     # Настройка PostgreSQL
-                    createdb $DB_NAME || true
-                    sudo -u postgres psql -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';" || true
-                    sudo -u postgres psql -c "ALTER ROLE $DB_USER SET client_encoding TO 'utf8';"
-                    sudo -u postgres psql -c "ALTER ROLE $DB_USER SET default_transaction_isolation TO 'read committed';"
-                    sudo -u postgres psql -c "ALTER ROLE $DB_USER SET timezone TO 'UTC';"
-                    sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
+                  
+                    # Создание пользователя базы данных, если он не существует
+                    sudo -u postgres psql -c 
+                        "CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD'" || echo "User already exists"
+                  
+                    # Создание базы данных от имени нового пользователя, если она не существует
+                    PGPASSWORD=$DB_PASSWORD createdb -U $DB_USER -h localhost $DB_NAME ||
+                    echo "Database already exists"
                   
                     # Проверка подключения с новым пользователем
                     PGPASSWORD=$DB_PASSWORD psql -U $DB_USER -d $DB_NAME -c "SELECT 1;"
