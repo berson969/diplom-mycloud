@@ -7,12 +7,16 @@ class Config:
         load_dotenv()
 
     @property
-    def db_base(self):
-        return os.getenv('DB_BASE', 'mycloud-database')
+        def db_host(self):
+            return os.getenv('DB_HOST', 'localhost')
 
     @property
-    def db_host(self):
-        return os.getenv('DB_HOST', 'localhost')
+    def db_base(self):
+        return os.getenv('DB_NAME', 'mycloud-database')
+
+    @property
+    def db_pass(self):
+        return os.getenv('DB_PASSWORD', 'my_secret_password')
 
     @property
     def db_port(self):
@@ -21,10 +25,6 @@ class Config:
     @property
     def db_user(self):
         return os.getenv('DB_USER', 'some_user')
-
-    @property
-    def db_pass(self):
-        return os.getenv('DB_PASSWORD', 'my_secret_password')
 
     @property
     def django_settings_module(self):
@@ -49,7 +49,7 @@ class Config:
 
     @property
     def server_name(self):
-        return os.getenv('SERVER_NAME', '185.10.45.10')
+        return os.getenv('SERVER_IP', '185.10.45.10')
 
     @property
     def admin_password(self):
@@ -57,7 +57,7 @@ class Config:
 
     @property
     def domain(self):
-        domain = os.getenv('SERVER_NAME', 'localhost')
+        domain = os.getenv('SERVER_IP', 'localhost')
         return f".{domain}"
 
 
