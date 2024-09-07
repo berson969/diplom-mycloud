@@ -47,7 +47,7 @@ jobs:
                     sudo apt-get install -y postgresql postgresql-contrib python3-venv python3-pip nginx
                   
                     # Создание .env файла
-                    bin/cat > /home/$SERVER_USER/backend/.env << EOL
+                    cat > /home/$SERVER_USER/backend/.env << EOL
                     DB_NAME='$DB_NAME'
                     DB_HOST='$DB_HOST'
                     DB_PORT='$DB_PORT'
