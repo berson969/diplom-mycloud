@@ -36,7 +36,8 @@ jobs:
                   DB_HOST: ${{ secrets.DB_HOST }}
                   DB_PORT: ${{ secrets.DB_PORT }}
               run: |
-                    ssh $SERVER_USER@$SERVER_IP << EOF
+                    ssh -t $SERVER_USER@$SERVER_IP << EOF
+                    set -e
                   
                     # Обновление системы и установка необходимых пакетов
                     sudo apt-get update && sudo apt-get upgrade -y
@@ -72,20 +73,21 @@ jobs:
                     chmod 600 /home/$SERVER_USER/backend/.env
                   
                     # Миграции, сбор статических файлов, создание суперпользователя
-                    python manage.py migrate
-                    python manage.py collectstatic --noinput
-                    python manage.py create_superuser
+                    python3 manage.py migrate || { echo "Migration failed"; exit 1; }
+                    python3 manage.py collectstatic --noinput
+                    python3 manage.py create_superuser
                   
                     # Создание директории для логов
                     mkdir -p /home/$SERVER_USER/backend/logs
                   
                     # Копирование и настройка Gunicorn service файла
                     sudo cp /home/$SERVER_USER/backend/gunicorn_one.service /etc/systemd/system/gunicorn.service
-                    sudo sed -i 's/SERVER_USER/$SERVER_USER/g' /etc/systemd/system/gunicorn.service
+                    sudo sed -i "s/SERVER_USER/$SERVER_USER/g" /etc/systemd/system/gunicorn.service
                   
                     # Запуск Gunicorn
                     sudo systemctl daemon-reload
-                    sudo systemctl restart gunicorn
+                    sudo systemctl restart gunicorn 
+                    && sudo systemctl is-active --quiet gunicorn || { echo "Gunicorn failed to start"; exit 1; }
                     sudo systemctl enable gunicorn
                   
                     # Настройка и перезапуск Nginx
@@ -96,4 +98,4 @@ jobs:
 
             - name: Verify deployment
               run: |
-                  curl -I https://${{ secrets.SERVER_IP }}
+                  curl -I --connect-timeout 10 https://${{ secrets.SERVER_IP }}
