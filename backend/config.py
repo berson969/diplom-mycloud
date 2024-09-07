@@ -7,8 +7,8 @@ class Config:
         load_dotenv()
 
     @property
-        def db_host(self):
-            return os.getenv('DB_HOST', 'localhost')
+    def db_host(self):
+        return os.getenv('DB_HOST', 'localhost')
 
     @property
     def db_base(self):
