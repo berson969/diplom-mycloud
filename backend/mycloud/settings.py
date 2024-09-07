@@ -16,6 +16,7 @@ from config import config
 
 from corsheaders.defaults import default_headers
 
+print('ENV', config.db_host, config.db_port, config.db_user, config.db_pass)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

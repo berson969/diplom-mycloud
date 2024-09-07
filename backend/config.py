@@ -24,7 +24,7 @@ class Config:
 
     @property
     def db_pass(self):
-        return os.getenv('DB_PASS', 'my_secret_password')
+        return os.getenv('DB_PASSWORD', 'my_secret_password')
 
     @property
     def django_settings_module(self):
