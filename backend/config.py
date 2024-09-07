@@ -4,8 +4,7 @@ from dotenv import load_dotenv
 
 class Config:
     def __init__(self):
-        if not os.getenv('GITHUB_ACTIONS'):
-            load_dotenv()
+        load_dotenv()
 
     @property
     def db_base(self):
