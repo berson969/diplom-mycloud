@@ -39,7 +39,7 @@ jobs:
                     # Копирование файлов на сервер
                     scp -r backend frontend nginx $SERVER_USER@$SERVER_IP:/home/$SERVER_USER/
                     
-                    ssh -t $SERVER_USER@$SERVER_IP << EOF
+                    ssh $SERVER_USER@$SERVER_IP << EOF
                     set -e
                   
                     # Обновление системы и установка необходимых пакетов
@@ -75,6 +75,7 @@ jobs:
                     pip install -r requirements.txt
                   
                     # Миграции, сбор статических файлов, создание суперпользователя
+                    python3 manage.py  makemigrations
                     python3 manage.py migrate || { echo "Migration failed"; exit 1; }
                     python3 manage.py collectstatic --noinput
                     python3 manage.py create_superuser
