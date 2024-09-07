@@ -19,4 +19,4 @@ python manage.py create_superuser
 #python manage.py test --noinput --keepdb
 
 # Запуск сервера в через gunicorn
-gunicorn -b 0.0.0.0:8000 mycloud.wsgi:application
+gunicorn -b 127.0.0.1:8000 mycloud.wsgi:application

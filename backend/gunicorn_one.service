@@ -1,0 +1,17 @@
+[Unit]
+Description=Gunicorn one service
+After=network.target
+
+[Service]
+User=SERVER_USER
+Group=www-data
+WorkingDirectory=/home/SERVER_USER/backend
+ExecStart=/home/SERVER_USER/backend/venv/bin/gunicorn \
+	--access-logfile  /home/SERVER_USER/backend/logs/gunicorn_access.log \
+	--error-logfile  /home/SERVER_USER/backend/logs/gunicorn_error.log \
+	--workers 3 \
+	--bind unix:/home/SERVER_USER/backend/mycloud/mycloud.sock mycloud.wsgi:application
+
+
+[Install]
+WantedBy=multi-user.target

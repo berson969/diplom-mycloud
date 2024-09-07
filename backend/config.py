@@ -37,11 +37,11 @@ class Config:
 
     @property
     def app_debug(self):
-        return os.getenv('APP_DEBUG', 'True') == 'True'
+        return os.getenv('APP_DEBUG', 'False') == 'True'
 
     @property
     def allowed_hosts(self):
-        ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,0.0.0.0,[::1]')
+        ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,185.10.45.10')
         return ALLOWED_HOSTS.split(',')
 
     @property
@@ -50,7 +50,7 @@ class Config:
 
     @property
     def server_name(self):
-        return os.getenv('SERVER_NAME', 'localhost')
+        return os.getenv('SERVER_NAME', '185.10.45.10')
 
     @property
     def admin_password(self):

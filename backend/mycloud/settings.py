@@ -55,51 +55,48 @@ MIDDLEWARE = [
 ]  # noqa: WPS407
 
 # Settings for CORS
-CORS_ALLOW_HEADERS = default_headers + (
-    'Access-Control-Allow-Headers',
-    'Access-Control-Allow-Credentials',
-    'Access-Control-Allow-Origin',
-    'Authorization',
-    'X-CSRFToken',
-)  # noqa: WPS407
+# CORS_ALLOW_HEADERS = default_headers + (
+#     'Access-Control-Allow-Headers',
+#     'Access-Control-Allow-Credentials',
+#     'Access-Control-Allow-Origin',
+#     'Authorization',
+#     'X-CSRFToken',
+# )  # noqa: WPS407
+#
+# CORS_EXPOSE_HEADERS = [
+#     'Content-Type',
+#     'Authorization',
+#     'X-CSRFToken',
+# ]  # noqa: WPS407
 
-CORS_EXPOSE_HEADERS = [
-    'Content-Type',
-    'Authorization',
-    'X-CSRFToken',
-]  # noqa: WPS407
-
-FRONTEND_URL = config.frontend_url
+# FRONTEND_URL = config.frontend_url
 SERVER_NAME = config.server_name
-DOMAIN = config.domain
-# DOMAIN = '.berson969.github.io'
+# DOMAIN = config.domain
+#
+# SESSION_COOKIE_DOMAIN = DOMAIN
+# CSRF_COOKIE_DOMAIN = DOMAIN
 
-SESSION_COOKIE_DOMAIN = DOMAIN
-CSRF_COOKIE_DOMAIN = DOMAIN
+# Настройки для работы с Nginx
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
 
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    FRONTEND_URL,
-    # BACKEND_URL,
-    f"https://{SERVER_NAME}",
-    f"http://{SERVER_NAME}",
-    'https://berson969.github.io',
-    "https://localhost:5173",
-    "https://localhost:4173",
-    "http://localhost:8000",
+    f"https://{SERVER_NAME}"
 ]  # noqa: WPS407
 
-CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
-
-CSRF_COOKIE_SECURE = True
-CSRF_USE_SESSIONS = True
-# CSRF_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SAMESITE = 'None'
-
-SESSION_COOKIE_SECURE = True
-# SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = 'None'
-
-CORS_ALLOW_CREDENTIALS = True
+# CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
+#
+# CSRF_COOKIE_SECURE = True
+# CSRF_USE_SESSIONS = True
+# # CSRF_COOKIE_HTTPONLY = True
+# CSRF_COOKIE_SAMESITE = 'None'
+#
+# SESSION_COOKIE_SECURE = True
+# # SESSION_COOKIE_HTTPONLY = True
+# SESSION_COOKIE_SAMESITE = 'None'
+#
+# CORS_ALLOW_CREDENTIALS = True
 
 # CORS_ALLOW_METHODS = [
 #     "DELETE",
