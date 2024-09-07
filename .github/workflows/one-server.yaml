@@ -36,6 +36,9 @@ jobs:
                   DB_HOST: ${{ secrets.DB_HOST }}
                   DB_PORT: ${{ secrets.DB_PORT }}
               run: |
+                    # Копирование файлов на сервер
+                    scp -r backend frontend nginx $SERVER_USER@$SERVER_IP:/home/$SERVER_USER/
+                    
                     ssh -t $SERVER_USER@$SERVER_IP << EOF
                     set -e
                   
