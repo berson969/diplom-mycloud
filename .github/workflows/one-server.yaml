@@ -46,8 +46,18 @@ jobs:
                     sudo apt-get update && sudo apt-get upgrade -y
                     sudo apt-get install -y postgresql postgresql-contrib python3-venv python3-pip nginx
                   
+                    # Создание .env файла
+                    cat > /home/$SERVER_USER/backend/.env << EOL
+                    DB_NAME='$DB_NAME'
+                    DB_HOST='$DB_HOST'
+                    DB_PORT='$DB_PORT'
+                    DB_USER='$DB_USER'
+                    DB_PASSWORD='$DB_PASSWORD'
+                    EOL
+                    chmod 600 /home/$SERVER_USER/backend/.env
+                  
                     # Настройка PostgreSQL
-                    sudo -u postgres psql -c "CREATE DATABASE $DB_NAME;" || true
+                    createdb $DB_NAME || true
                     sudo -u postgres psql -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';" || true
                     sudo -u postgres psql -c "ALTER ROLE $DB_USER SET client_encoding TO 'utf8';"
                     sudo -u postgres psql -c "ALTER ROLE $DB_USER SET default_transaction_isolation TO 'read committed';"
@@ -62,16 +72,6 @@ jobs:
                     python3 -m venv venv
                     source venv/bin/activate
                     pip install -r requirements.txt
-                  
-                    # Создание .env файла
-                    cat > /home/$SERVER_USER/backend/.env << EOL
-                    DB_NAME='$DB_NAME'
-                    DB_HOST='$DB_HOST'
-                    DB_PORT='$DB_PORT'
-                    DB_USER='$DB_USER'
-                    DB_PASSWORD='$DB_PASSWORD'
-                    EOL
-                    chmod 600 /home/$SERVER_USER/backend/.env
                   
                     # Миграции, сбор статических файлов, создание суперпользователя
                     python3 manage.py migrate || { echo "Migration failed"; exit 1; }
