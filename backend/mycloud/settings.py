@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 # import os
 from pathlib import Path
 from config import config
-# from distutils.util import strtobool
 
 from corsheaders.defaults import default_headers
 
