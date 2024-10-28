@@ -1,3 +1,5 @@
+version: '3.8'  # Укажите версию Docker Compose
+
 services:
     postgres:
         container_name: postgres
@@ -10,7 +12,7 @@ services:
             POSTGRES_PASSWORD: 'my_secret_password'
             POSTGRES_DB: 'mycloud-database'
         healthcheck:
-            test: [ "CMD-SHELL", "pg_isready -U postgres -d mycloud-database" ]
+            test: ["CMD-SHELL", "pg_isready -U postgres -d mycloud-database"]
             interval: 10s
             timeout: 15s
             retries: 5
@@ -38,15 +40,13 @@ services:
         volumes:
             - static_volume:/app/staticfiles
             - storage_volume:/app/storage
-        expose:
-            - 8000
         depends_on:
             - postgres
 
     frontend:
+        container_name: frontend
         build:
             context: ./frontend                # Путь к вашему фронтенду (Vite)
-        container_name: frontend
         ports:
             - "5173:5173"                      # Порт вашего приложения Vite
         depends_on:
@@ -54,16 +54,17 @@ services:
 
     nginx:
         container_name: proxy
-        build: ./frontend
+        build:
+            context: ./frontend                # Убедитесь, что путь правильный для вашего Nginx
         restart: always
         ports:
-            - '80:80'
-            - '443:443'
+            - "80:80"
+            - "443:443"
         command: sh -c "chmod +x /home/run.sh && /home/run.sh"
         volumes:
             - static_volume:/staticfiles
             - storage_volume:/storage
-            - ./nginx:/home
+            - ./nginx:/home                    # Убедитесь, что директория существует и содержит нужные файлы конфигурации Nginx
         depends_on:
             - backend
             - postgres
