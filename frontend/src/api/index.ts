@@ -21,7 +21,7 @@ function getCookie(name: string) {
 }
 
 const baseQuery = retry(fetchBaseQuery({
-	baseUrl: import.meta.env.VITE_BASE_QUERY_URL,
+	baseUrl: 'https://backend:8000/api',
 	credentials: 'include',
 	prepareHeaders: (headers) => {
 		// headers.set('Content-Type', 'application/json');

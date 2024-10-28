@@ -107,25 +107,25 @@ class FileViewSet(viewsets.ModelViewSet):
 	serializer_class = FileSerializer
 	permission_classes = [permissions.IsAuthenticated]
 
-	def list(self, request, folder_name=None, *args, **kwargs):
-		if request.user.is_superuser:
-			# Получаем параметр user_folder из запроса, если он есть
-			if not folder_name:
-				return Response({"message": "Не указан идентификатор хранилища"}, status=status.HTTP_400_BAD_REQUEST)
-			# Проверяем, существует ли пользователь с указанным идентификатором хранилища
-			try:
-				user = User.objects.get(folder_name=folder_name)
-			except User.DoesNotExist:
-				return Response({"message": "Пользователь с указанным идентификатором хранилища не найден"},
-								status=status.HTTP_404_NOT_FOUND)
-			# Получаем список файлов для указанного пользователя
-			queryset = File.objects.filter(user=user)
-		else:
-			# Если пользователь не администратор, получаем список файлов только для текущего пользователя
-			queryset = File.objects.filter(user=request.user)
+        def list(self, request, folder_name=None, *args, **kwargs):
+            if request.user.is_superuser:
+                # Получаем параметр user_folder из запроса, если он есть
+                if not folder_name:
+                    return Response({"message": "Не указан идентификатор хранилища"}, status=status.HTTP_400_BAD_REQUEST)
+                # Проверяем, существует ли пользователь с указанным идентификатором хранилища
+                try:
+                    user = User.objects.get(folder_name=folder_name)
+                except User.DoesNotExist:
+                    return Response({"message": "Пользователь с указанным идентификатором хранилища не найден"},
+                                    status=status.HTTP_404_NOT_FOUND)
+                # Получаем список файлов для указанного пользователя
+                queryset = File.objects.filter(user=user)
+            else:
+                # Если пользователь не администратор, получаем список файлов только для текущего пользователя
+                queryset = File.objects.filter(user=request.user)
 
-		serializer = self.serializer_class(queryset, many=True)
-		return Response(serializer.data, status=status.HTTP_200_OK)
+            serializer = self.serializer_class(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
 	@action(detail=False, methods=['post'], parser_classes=[MultiPartParser, FormParser])
 	def create(self, request, *args, **kwargs):
