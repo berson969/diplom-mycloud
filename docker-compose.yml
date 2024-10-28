@@ -1,16 +1,16 @@
 services:
     postgres:
-        container_name: ${DB_HOST}
+        container_name: postgres
         image: postgres:16-alpine
         expose:
-            - ${DB_PORT}
+            - "5432"
         restart: unless-stopped
         environment:
-            POSTGRES_USER: ${DB_USER}
-            POSTGRES_PASSWORD: ${DB_PASS}
-            POSTGRES_DB: ${DB_BASE}
+            POSTGRES_USER: 'some_user'
+            POSTGRES_PASSWORD: 'my_secret_password'
+            POSTGRES_DB: 'mycloud-database'
         healthcheck:
-            test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_BASE}" ]
+            test: [ "CMD-SHELL", "pg_isready -U postgres -d mycloud-database" ]
             interval: 10s
             timeout: 15s
             retries: 5
@@ -22,17 +22,16 @@ services:
         build:
             context: ./backend
             args:
-                DB_HOST: ${DB_HOST}
-                DB_PORT: ${DB_PORT}
-                DB_BASE: ${DB_BASE}
-                DB_USER: ${DB_USER}
-                DB_PASS: ${DB_PASS}
-                APP_DEBUG: ${APP_DEBUG}
-                SECRET_KEY: ${SECRET_KEY}
-                ALLOWED_HOSTS: ${ALLOWED_HOSTS}
-                FRONTEND_URL: ${FRONTEND_URL}
-                SERVER_NAME: ${SERVER_NAME}
-                ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+                DB_HOST: 'postgres'
+                DB_PORT: 5432
+                DB_BASE: 'mycloud-database'
+                DB_USER: 'some_user'
+                DB_PASS: 'my_secret-password'
+                APP_DEBUG: false
+                ALLOWED_HOSTS: 'localhost,185.10.45.10'
+                FRONTEND_URL: 'https://185.10.45.10'
+                SERVER_NAME: '185.10.45.10'
+                ADMIN_PASSWORD: 'adminNEWadmin'
         restart: always
         ports:
             - "8000:8000"
