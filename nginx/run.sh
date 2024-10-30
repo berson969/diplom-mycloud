@@ -5,4 +5,4 @@
 #echo "Generated Nginx configuration:"
 #cat /etc/nginx/nginx_old.conf
 
-nginx -g "daemon off;"
+#nginx -g "daemon off;"

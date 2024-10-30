@@ -1,4 +1,4 @@
-version: '3.8'  # Укажите версию Docker Compose
+
 
 services:
     postgres:
@@ -53,18 +53,16 @@ services:
             - backend
 
     nginx:
-        container_name: proxy
+        container_name: nginx
         build:
             context: ./frontend                # Убедитесь, что путь правильный для вашего Nginx
         restart: always
         ports:
             - "80:80"
             - "443:443"
-        command: sh -c "chmod +x /home/run.sh && /home/run.sh"
         volumes:
             - static_volume:/staticfiles
             - storage_volume:/storage
-            - ./nginx:/home                    # Убедитесь, что директория существует и содержит нужные файлы конфигурации Nginx
         depends_on:
             - backend
             - postgres
