@@ -21,7 +21,7 @@ function getCookie(name: string) {
 }
 
 const baseQuery = retry(fetchBaseQuery({
-	baseUrl: 'https://backend:8000/api',
+	baseUrl: 'https://185.10.45.10/api',
 	credentials: 'include',
 	prepareHeaders: (headers) => {
 		// headers.set('Content-Type', 'application/json');

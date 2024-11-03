@@ -15,7 +15,7 @@ from config import config
 
 from corsheaders.defaults import default_headers
 
-print('ENV', config.db_host, config.db_port, config.db_user, config.db_pass)
+# print('ENV', config.db_host, config.db_port, config.db_user, config.db_pass)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -55,13 +55,13 @@ MIDDLEWARE = [
 ]  # noqa: WPS407
 
 # Settings for CORS
-# CORS_ALLOW_HEADERS = default_headers + (
-#     'Access-Control-Allow-Headers',
-#     'Access-Control-Allow-Credentials',
-#     'Access-Control-Allow-Origin',
-#     'Authorization',
-#     'X-CSRFToken',
-# )  # noqa: WPS407
+CORS_ALLOW_HEADERS = default_headers + (
+    'Access-Control-Allow-Headers',
+    'Access-Control-Allow-Credentials',
+    'Access-Control-Allow-Origin',
+    'Authorization',
+    'X-CSRFToken',
+)  # noqa: WPS407
 #
 # CORS_EXPOSE_HEADERS = [
 #     'Content-Type',
@@ -77,15 +77,19 @@ SERVER_NAME = config.server_name
 # CSRF_COOKIE_DOMAIN = DOMAIN
 
 # Настройки для работы с Nginx
-USE_X_FORWARDED_HOST = True
-USE_X_FORWARDED_PORT = True
+# USE_X_FORWARDED_HOST = True
+# USE_X_FORWARDED_PORT = True
 
-CORS_ALLOW_ALL_ORIGINS = False
+# CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOWED_ORIGINS = [
-    f"https://{SERVER_NAME}"
+   "http://localhost:5371",
+   "https://185.10.45.10",
+   "https://backend:8000",
+   "http://backend:8000",
 ]  # noqa: WPS407
 
-# CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 #
 # CSRF_COOKIE_SECURE = True
 # CSRF_USE_SESSIONS = True
@@ -96,7 +100,7 @@ CORS_ALLOWED_ORIGINS = [
 # # SESSION_COOKIE_HTTPONLY = True
 # SESSION_COOKIE_SAMESITE = 'None'
 #
-# CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True
 
 # CORS_ALLOW_METHODS = [
 #     "DELETE",
